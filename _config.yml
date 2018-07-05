@@ -1,22 +1,13 @@
 title: Illogical Expressions
-email: illogicalexpressions@noxr.net
 description: >
-  A tech blog about all things security, development, linux and illogical
-  expressions.
+  A tech blog about all things bug bounty, security and development.
 baseurl: ""
-url: "http://www.illogicalexpressions.com"
-twitter_username: noxrnet
-github_username: noxrnet
+url: "https://ajxchapman.github.io"
+twitter_username: ajxchapman
+github_username: ajxchapman
 
 gems:
   - jekyll-paginate
 paginate: 5
-
-# Build settings
-markdown: IEMarkdownIT
-
-exclude:
-  - vagrantfile
-  - scripts
 
 excerpt_separator: <!--more-->
