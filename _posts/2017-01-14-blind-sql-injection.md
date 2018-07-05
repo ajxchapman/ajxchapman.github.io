@@ -346,16 +346,17 @@ To illustrate the efficiency of these optimizations consider the following table
 
 Technique                            | Result Requests | Additional Requests      | Total Requests
 -------------------------------------|-----------------|--------------------------|---------------
-**Data extraction techniques**       |
+**Data extraction techniques**       |                 |                          |
 Naive byte extraction                | 4,096           | 256 (LC)                 | 4,352
 Divide and conquer byte extraction   | 128             | 8 (LC)                   | 136
 *Bitwise byte extraction*            | 128             | 8 (LC)                   | **136**
-**Character set optimizations**      |
+**Character set optimizations**      |                 |                          |
 ASCII character extraction           | 112             | 7 (LC)                   | 119
 *Character set reduction*            | 96              | 6 (LC) + 1 (CS)          | **103**
-**Multi bit requests**               |
+**Multi bit requests**               |                 |                          |
 Extracting 2 bits of information     | 48              | 3 (LC) + 1 (CS) + 1 (RC) | 53
 *Extracting 3+ bits of information*  | 32              | 2 (LC) + 1 (CS) + 1 (RC) | **36**
+
 `LC`: Length Check request
 `CS`: Character Set request
 `RC`: Result Confirmation request
