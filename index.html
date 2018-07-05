@@ -1,1 +1,47 @@
-# ajxchapman.github.io
+---
+layout: default
+title: Illogical Expressions
+---
+
+<div class="posts">
+  {% for post in paginator.posts %}
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a href="{{ post.url }}">{{ post.title }}</a>
+      </h1>
+      <p class="post-meta">
+        <time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
+          {{ post.date | date: "%Y-%m-%-d" }}
+        </time>
+        {% if post.category %}
+          • <span itemprop="category">{{ post.category | capitalize }}</span>
+        {% endif %}
+      </p>
+    </header>
+    <div class="post-content" itemprop="articleBody">
+      {{ post.excerpt }}
+    </div>
+    <a href="{{ post.url }}">Continue reading...</a>
+  </article>
+  {% endfor %}
+</div>
+
+{% comment %}
+<div class="pagination">
+  {% if paginator.next_page %}
+    <a class="pagination-item older" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
+  {% else %}
+    <span class="pagination-item older">Older</span>
+  {% endif %}
+  {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+      <a class="pagination-item newer" href="{{ site.baseurl }}">Newer</a>
+    {% else %}
+      <a class="pagination-item newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
+    {% endif %}
+  {% else %}
+    <span class="pagination-item newer">Newer</span>
+  {% endif %}
+</div>
+{% endcomment %}

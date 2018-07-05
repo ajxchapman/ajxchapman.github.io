@@ -1,0 +1,6 @@
+_site
+_site_prod
+.sass-cache
+.jekyll-metadata
+.vagrant
+_plugins/node_modules

@@ -1,0 +1,55 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+$base00: #2C3E50;
+$base01: #34495E;
+// $base02: #7F8C8D;
+$base02: #828282;
+$base03: #95A5A6;
+$base04: #BDC3C7;
+$base05: #e0e0e0;
+// $base06: #f5f5f5;
+$base06: #fdfdfd;
+$base07: #ECF0F1;
+$base08: #E74C3C;
+$base09: #E67E22;
+$base0a: #F1C40F;
+$base0b: #2ECC71;
+$base0c: #1ABC9C;
+$base0d: #3498DB;
+$base0e: #9B59B6;
+$base0f: #be643c;
+
+// Our variables
+$base-font-family: "PT Sans", Helvetica, Arial, sans-serif;
+$base-font-size:   20px;
+$base-font-weight: 400;
+$small-font-size:  $base-font-size * 0.8;
+$base-line-height: 1.5;
+
+$code-font-family: 'Source Code Pro', monospace;
+$code-font-size:   15px;
+
+$spacing-unit:     30px;
+
+$text-color:       #111;
+$background-color: $base06;
+$brand-color:      $base0d;
+
+$white-color:      $base06;
+$grey-color:       $base02;
+$grey-color-light: $base05;
+
+// Width of the content area
+// $content-width:    800px;
+
+$icon_size: 1.5em;
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+        "base",
+        "layout",
+        "syntax-highlighting"
+;
