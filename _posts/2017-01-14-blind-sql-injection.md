@@ -237,6 +237,7 @@ Using this method we can extract 2 bits of information per request.
 As described in a post by Hack All The Things +[Extracting Multiple Bits Per Request From Full-blind SQL Injection Vulnerabilities](http://howto.hackallthethings.com/2016/07/extracting-multiple-bits-per-request.html), time-based techniques can be used to extract multiple bits in a single request. This method essentially chunks the result delay into time segments which can be decoded into bit values.
 
 The number of bits which can be accurately extracted in a single request can be calculated by `max_bits = log2((max_timeout/max_rrt) + 1) - (log2((max_timeout/max_rrt) + 1) % 1)` where `max_timeout` is the largest delay the database server will allow a query to delay without throwing an error and `max_rrt` is the maximum Round Trip Time (RRT) we can expect from the target server under load. Some examples of the number of bits that can be extracted per request are:
+
 Max Timeout | Max RRT | Max bits per request
 ------------|---------|---------------------
 60          | 4       | 4
@@ -342,6 +343,7 @@ Combining result guessing and confirmation we can whittle down an input corpus b
 Combining the bitwise character extraction, character set reduction and temporal inference as described above we can often reliably extract query result text using at most 2 requests per character, 2 requests for the `null` character length check and two optional requests (character set confirmation and result confirmation).
 
 To illustrate the efficiency of these optimizations consider the following table showing the number of requests required to extract the text response from a query result with length 16:
+
 Technique                            | Result Requests | Additional Requests      | Total Requests
 -------------------------------------|-----------------|--------------------------|---------------
 **Data extraction techniques**       |
