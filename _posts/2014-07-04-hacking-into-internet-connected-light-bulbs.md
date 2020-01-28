@@ -16,7 +16,7 @@ The LIFX project started off on crowd funding website Kickstarter in September 2
 
 LIFX bulbs connect to a WiFi network in order to allow them to be controlled using a smart phone application. In a situation where multiple bulbs are available, only one bulb will connect to the network. This “master” bulb receives commands from the smart phone application, and broadcasts them to all other bulbs over an 802.15.4 6LoWPAN wireless mesh network.
 
-![WiFi and 802.15.4 6LoWPAN Mesh Network]({{ site.url }}/assets/lightbulbs-2014/2.png)
+![WiFi and 802.15.4 6LoWPAN Mesh Network]({{ site.url }}/assets/lightbulbs-2014/2.png)<br />
 *WiFi and 802.15.4 6LoWPAN Mesh Network*
 
 In the event of the master bulb being turned off or disconnected from the network, one of the remaining bulbs elects to take its position as the master and connects to the WiFi network ready to relay commands to any further remaining bulbs. This architecture requires only one bulb to be connected to the WiFi at a time, which has numerous benefits including allowing the remaining bulbs to run on low power when not illuminated, extending the useable range of the bulb network to well past that of just the WiFi network and reducing congestion on the WiFi network.
@@ -43,7 +43,7 @@ With the Contiki installed Raven network interface we were in a position to moni
 
 Monitoring packets captured from the mesh network whilst adding new bulbs, we were able to identify the specific packets in which the WiFi network credentials were shared among the bulbs. The on-boarding process consists of the master bulb broadcasting for new bulbs on the network. A new bulb responds to the master and then requests the WiFi details to be transferred. The master bulb then broadcasts the WiFi details, encrypted, across the mesh network. The new bulb is then added to the list of available bulbs in the LIFX smart phone application.
 
-![Wireshark 6LoWPAN packet capture]({{ site.url }}/assets/lightbulbs-2014/3.png)
+![Wireshark 6LoWPAN packet capture]({{ site.url }}/assets/lightbulbs-2014/3.png)<br />
 *Wireshark 6LoWPAN packet capture*
 
 As can be observed in the packet capture above, the WiFi details, including credentials, were transferred as an encrypted binary blob.
@@ -57,7 +57,7 @@ In the normal course of gaining an understanding of encryption implementations o
 
 In order to extract the firmware from the device, we first need to gain physical access to the microcontrollers embedded within; an extremely technical process, which to the layman may appear to be no more than hitting it with a hammer until it spills its insides. Once removed from the casing, the Printed Circuit Board (PCB) is accessible providing us with the access we require.
 
-![Extracted LIFX PCB]({{ site.url }}/assets/lightbulbs-2014/4.png)
+![Extracted LIFX PCB]({{ site.url }}/assets/lightbulbs-2014/4.png)<br />
 *Extracted LIFX PCB*
 
 It should be noted that public sources can be consulted if only visual access to the PCB is needed. The American Federal Communications Commission (FCC) often release detailed tear downs of communications equipment which can be a great place to start if the hammer technique is considered slightly over the top [4].
@@ -68,7 +68,7 @@ JTAG, which stands for Joint Test Action Group, is the commonly used name for th
 
 Once the correct JTAG pins for each of the chips were identified, a process which required manual pin tracing, specification analysis and automated probing, we were ready to connect to the JTAG interfaces of the chips. In order to control the JTAG commands sent to the chips, a combination of hardware and software is required. The hardware used in this case was the open hardware BusBlaster JTAG debugger [5], which was paired with the open source Open On-Chip Debugger (OpenOCD) [6]. After configuring the hardware and software pair, we were in a position where we could issue JTAG commands to the chips.
 
-![BusBlaster JTAG debugger]({{ site.url }}/assets/lightbulbs-2014/5.png)
+![BusBlaster JTAG debugger]({{ site.url }}/assets/lightbulbs-2014/5.png)<br />
 *BusBlaster JTAG debugger [5]*
 
 At this point we can merrily dump the flash memory from each of the chips and start the firmware reverse engineering process.
@@ -82,7 +82,7 @@ AES, being a symmetric encryption cipher, requires both the encrypting party and
 
 References to the cryptographic constants can also be used to identify the assembly code responsible for implementing the encryption and decryption routines. With the assistance of a free software AES implementation [7], reversing the identified encryption functions to extract the encryption key, initialization vector and block mode was relatively simple.
 
-![IDA Pro disassembly of firmware encryption code]({{ site.url }}/assets/lightbulbs-2014/6.png)
+![IDA Pro disassembly of firmware encryption code]({{ site.url }}/assets/lightbulbs-2014/6.png)<br />
 *IDA Pro disassembly of firmware encryption code*
 
 The final step was to prove the accuracy of the extracted encryption variables by using them to decrypt WiFi credentials sniffed off the mesh network.
