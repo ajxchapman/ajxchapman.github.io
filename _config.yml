@@ -6,8 +6,10 @@ url: "https://ajxchapman.github.io"
 twitter_username: ajxchapman
 github_username: ajxchapman
 
-gems:
+plugins:
   - jekyll-paginate
+  - jekyll-redirect-from
+
 paginate: 5
 
 excerpt_separator: <!--more-->
