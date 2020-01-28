@@ -6,11 +6,11 @@ category: security
 
 The subject of this blog, the LIFX light bulb, bills itself as the light bulb reinvented; a "WiFi enabled multi-color, energy efficient LED light bulb" that can be controlled from a smartphone [1]. We chose to investigate this device due to its use of emerging wireless network protocols, the way it came to market and its appeal to the technophile in all of us.
 
-<!-- more -->
+<!--more-->
 
 *This blog post was originally published on the [Context Information Security](https://www.contextis.com/) blog at (https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs). It is reproduced here for posterity.*
 
-!({{ site.url }}/assets/lightbulbs-2014/1.png)
+![]({{ site.url }}/assets/lightbulbs-2014/1.png)
 
 The LIFX project started off on crowd funding website Kickstarter in September 2012 where it proved hugely popular, bringing in over 13 times its original funding target.
 
