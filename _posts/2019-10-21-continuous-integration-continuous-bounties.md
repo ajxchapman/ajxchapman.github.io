@@ -9,7 +9,7 @@ CI/CD pipelines are the perfect, bug-rich target for new and experienced bug hun
 <!--more-->
 
 ## Recording
-<iframe width="100%" src="https://www.youtube.com/embed/AQCvfzwcGso" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="832" height="468" src="https://www.youtube.com/embed/AQCvfzwcGso" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Slides
 <script async class="speakerdeck-embed" data-id="fa6fd29c01bf4e36b25d3d84bd06f458" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
