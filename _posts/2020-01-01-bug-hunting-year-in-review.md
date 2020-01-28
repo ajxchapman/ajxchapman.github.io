@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Bug Hunting Year in Review - 2019
-category: bug bounty
+category: bugbounty
 ---
 
 As I come to the end of my first year of full-time Bug Bounty Hunting in this post I share some statistics of the bug reports I've submitted during 2019.
