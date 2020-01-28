@@ -8,7 +8,7 @@ The subject of this blog, the LIFX light bulb, bills itself as the light bulb re
 
 <!--more-->
 
-*This blog post was originally published on the [Context Information Security](https://www.contextis.com/) blog at https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs. It is reproduced here for posterity.*
+*This blog post was originally published on the [Context Information Security](https://www.contextis.com/) blog at [https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs](https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs). It is reproduced here for posterity.*
 
 ![]({{ site.url }}/assets/lightbulbs-2014/1.png)
 
@@ -93,20 +93,20 @@ Armed with knowledge of the encryption algorithm, key, initialization vector and
 It should be noted, since this attack works on the 802.15.4 6LoWPAN wireless mesh network, an attacker would need to be within wireless range, ~30 meters, of a vulnerable LIFX bulb to perform this attack, severely limiting the practicality for exploitation on a large scale.
 
 ## Vendor fix
-Context informed LIFX of our research findings, who were proactive in their response. Context have since worked with LIFX to help them provide a fix this specific issue, along with other further security improvements. The fix, which is included in the new firmware available at http://updates.lifx.co/, now encrypts all 6LoWPAN traffic, using an encryption key derived from the WiFi credentials, and includes functionality for secure on-boarding of new bulbs on to the network.
+Context informed LIFX of our research findings, who were proactive in their response. Context have since worked with LIFX to help them provide a fix this specific issue, along with other further security improvements. The fix, which is included in the new firmware available at [http://updates.lifx.co/](http://updates.lifx.co/), now encrypts all 6LoWPAN traffic, using an encryption key derived from the WiFi credentials, and includes functionality for secure on-boarding of new bulbs on to the network.
 Of course, as with any internet connecting device, whether phone, laptop, light bulb or rabbit, there is always a chance of someone being able to hack it. Look forward to our upcoming blogs for more details.
 
 ## References
-[1] http://lifx.co
+[1] [http://lifx.co](http://lifx.co)
 
-[2] http://www.atmel.com/tools/avrraven.aspx
+[2] [http://www.atmel.com/tools/avrraven.aspx](http://www.atmel.com/tools/avrraven.aspx)
 
-[3] http://www.contiki-os.org/
+[3] [http://www.contiki-os.org/](http://www.contiki-os.org/)
 
-[4] https://apps.fcc.gov/oetcf/eas/reports/ViewExhibitReport.cfm?mode=Exhibits&RequestTimeout=500&calledFromFrame=N&application_id=216608&fcc_id=2AA53-LIFX01
+[4] [https://apps.fcc.gov/oetcf/eas/reports/ViewExhibitReport.cfm?mode=Exhibits&RequestTimeout=500&calledFromFrame=N&application_id=216608&fcc_id=2AA53-LIFX01](https://apps.fcc.gov/oetcf/eas/reports/ViewExhibitReport.cfm?mode=Exhibits&RequestTimeout=500&calledFromFrame=N&application_id=216608&fcc_id=2AA53-LIFX01)
 
-[5] http://dangerousprototypes.com/docs/Bus_Blaster
+[5] [http://dangerousprototypes.com/docs/Bus_Blaster](http://dangerousprototypes.com/docs/Bus_Blaster)
 
-[6] http://openocd.sourceforge.net/
+[6] [http://openocd.sourceforge.net/](http://openocd.sourceforge.net/)
 
-[7] http://svn.ghostscript.com/ghostscript/tags/ghostscript-9.01/base/aes.c
+[7] [http://svn.ghostscript.com/ghostscript/tags/ghostscript-9.01/base/aes.c](http://svn.ghostscript.com/ghostscript/tags/ghostscript-9.01/base/aes.c)
