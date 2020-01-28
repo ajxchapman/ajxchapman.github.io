@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 44Con 2019 - Continuous Integration Continuous Bounties
-category: security
+category: presentations
 ---
 
 CI/CD pipelines are the perfect, bug-rich target for new and experienced bug hunters. As complex, user-controlled automated processes with access to authentication secrets, source code, and application servers in multi-system, multi-user environments, they combine all the things that make bugs likely. In the presentation, I will outline a methodology for hunting for bugs in CI/CD pipelines and walk through actual bugs which have resulted in tens of thousands of dollars in bounty payments.
