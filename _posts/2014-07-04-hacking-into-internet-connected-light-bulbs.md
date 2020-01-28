@@ -8,7 +8,7 @@ The subject of this blog, the LIFX light bulb, bills itself as the light bulb re
 
 <!--more-->
 
-*This blog post was originally published on the [Context Information Security](https://www.contextis.com/) blog at (https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs). It is reproduced here for posterity.*
+*This blog post was originally published on the [Context Information Security](https://www.contextis.com/) blog at https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs. It is reproduced here for posterity.*
 
 ![]({{ site.url }}/assets/lightbulbs-2014/1.png)
 
