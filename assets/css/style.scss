@@ -1,0 +1,20 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+article {
+  padding-bottom: 2em;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination-item {
+  font-weight: bold;
+  border: 1px solid #606c71;
+  border-radius: 4px;
+  padding: 0.5em;
+}
