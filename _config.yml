@@ -10,7 +10,7 @@ plugins:
   - jekyll-paginate
   - jekyll-redirect-from
 
-paginate: 5
+paginate: 10
 
 excerpt_separator: <!--more-->
 
