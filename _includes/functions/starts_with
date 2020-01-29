@@ -1,0 +1,5 @@
+{% assign starts_with = false %}
+{% assign _parts = include.haystack | split: include.needle %}
+{% if _parts[0] == "" %}
+  {% assign starts_with = true %}
+{% endif %}

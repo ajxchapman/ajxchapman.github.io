@@ -1,0 +1,13 @@
+{% assign external_url = false %}
+{% if include.url %}
+  {% include functions/starts_with needle="/" haystack=include.url %}
+  {% if starts_with == true %}
+    {% include functions/starts_with needle="//" haystack=include.url %}
+    {% assign external_url = starts_with %}
+  {% else %}
+    {% include functions/starts_with needle=site.url haystack=include.url %}
+    {% if starts_with != true %}
+      {% assign external_url = true %}
+    {% endif %}
+  {% endif %}
+{% endif %}

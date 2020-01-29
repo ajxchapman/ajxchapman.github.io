@@ -1,9 +1,0 @@
-{% comment %} Pull the category display name from the post_categories collection if it exists {% endcomment %}
-{% assign mapped_category = include.category | default: page.category %}
-{% for _category in site.post_categories %}
-  {% if _category.tag == mapped_category %}
-    {% assign mapped_category = mapped_category | capitalize %}
-    {% assign mapped_category = _category.display | default: mapped_category %}
-    {% break %}
-  {% endif %}
-{% endfor %}

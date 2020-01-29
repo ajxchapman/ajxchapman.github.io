@@ -2,7 +2,7 @@
 layout: page
 ---
 
-{% include category_map.html %}
+{% include functions/category_map %}
 
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
@@ -12,7 +12,7 @@ layout: page
         {{ page.date | date: "%Y-%m-%-d" }}
       </time>
       {% if page.category %}
-        • <span itemprop="category">{{ mapped_category }}</span>
+        • <span itemprop="category">{{ category_map }}</span>
       {% endif %}
   </header>
   <div class="post-content" itemprop="articleBody">
