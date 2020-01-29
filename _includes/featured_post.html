@@ -1,0 +1,18 @@
+{% comment %} Featured post widget to display a random post with the `featured` attribute {% endcomment %}
+<div class="featured_placeholder">
+  <h3>Featured Post</h3>
+{% for post in site.posts %}
+  {% if post.featured %}
+    <div id="featured_{{ post.id }}" class="featured_post featured_hidden">
+      {% include post_summary.html post=post %}
+    </div>
+  {% endif %}
+{% endfor %}
+  <script>
+    (function() {
+      var posts = document.getElementsByClassName("featured_post");
+      var post = posts[Math.floor((Math.random() * posts.length))];
+      post.classList.remove("featured_hidden");
+    })();
+  </script>
+</div>

@@ -5,6 +5,11 @@ title: Alex Chapman's Blog
 
 
 <div class="posts">
+  {% comment %} Only include featured post on the front page {% endcomment %}
+  {% unless paginator.previous_page %}
+    {% include featured_post.html %}
+  {% endunless %}
+
   {% for post in paginator.posts %}
     {% include post_summary.html post=post %}
   {% endfor %}

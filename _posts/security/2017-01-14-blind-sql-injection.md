@@ -2,6 +2,7 @@
 layout: post
 title: Blind SQL injection optimization
 category: security
+featured: true
 ---
 
 In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests.

@@ -2,6 +2,7 @@
 layout: post
 title: GitLab - Importing GitLab project archives can replace uploads of other users
 category: bugreports
+featured: true
 redirect_to: https://hackerone.com/reports/534794
 ---
 
