@@ -3,11 +3,31 @@
 
 @import "{{ site.theme }}";
 
-article {
-  padding-bottom: 2em;
+// Theme overrides
+.page-header {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
+// Article styling
+article + article {
+  padding-top: 2em;
+}
+
+// Feature post styling
+.featured_post {
+  border-bottom: 1px solid #606c71;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+
+.featured_hidden {
+  display: none;
+}
+
+// Pagination styling
 .pagination {
+  margin-top: 2em;
   display: flex;
   justify-content: space-between;
 }
