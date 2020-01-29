@@ -15,6 +15,7 @@ paginate: 5
 excerpt_separator: <!--more-->
 
 theme: jekyll-theme-cayman
-category_map:
-  bugreports: "Bug Reports"
-  bugbounty: "Bug Bounty"
+collections:
+  post_categories:
+    output: true
+    permalink: /:path/index.html

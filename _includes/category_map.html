@@ -1,7 +1,9 @@
 {% assign mapped_category = include.category | default: page.category %}
-{% assign mapped_category = site.category_map[mapped_category] | default: mapped_category  %}
-{% if mapped_category %}
-  {% assign mapped_category = mapped_category | split: ' ' %}
-  {% capture mapped_category %}{% for word in mapped_category %}{{ word | capitalize }} {% endfor %}{% endcapture %}
-  {% assign mapped_category = mapped_category | strip %}
-{% endif %}
+
+{% comment %} Pull the category display name from the post_categories collection {% endcomment %}
+{% for _category in site.post_categories %}
+  {% if _category.tag == mapped_category %}
+    {% assign mapped_category = mapped_category | capitalize %}
+    {% assign mapped_category = _category.display | default: mapped_category %}
+  {% endif %}
+{% endfor %}
