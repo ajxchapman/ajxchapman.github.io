@@ -8,6 +8,8 @@ The Almost Native Graphics Layer Engine (ANGLE) library as used in Google Chrome
 
 <!--more-->
 
+*Original bug report can be viewed at [https://bugs.chromium.org/p/chromium/issues/detail?id=257363](https://bugs.chromium.org/p/chromium/issues/detail?id=257363)*
+
 <pre class="bugreport">
 Description:		Almost Native Graphics Layer Engine (ANGLE) library Integer Overflow
 Versions Affected: 	Google Chrome 27.0.1453.116 m

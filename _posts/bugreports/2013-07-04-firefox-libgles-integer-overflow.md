@@ -11,6 +11,8 @@ used by Firefox on Windows as a bridge between the OpenGL ES 2.0 API and DirectX
 
 <!--more-->
 
+*Original bug report can be viewed at [https://bugzilla.mozilla.org/show_bug.cgi?id=890277](https://bugzilla.mozilla.org/show_bug.cgi?id=890277)*
+
 <pre class="bugreport">
 Description:		Almost Native Graphics Layer Engine (ANGLE) library Integer Overflow
 Versions Affected: 	Mozilla Firefox 22.0, Mozilla Nightly 25.0a1 (2013-07-03)
