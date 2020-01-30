@@ -58,7 +58,7 @@ Nginx access logs of Windows and Google Chrome fetching PAC script before connec
 
 Squid-cache access logs of proxy connections for www.contextis.com before connecting to the VPN:
 
-    1460122463.651    156 88.98.79.12 TCP_MISS/304 475 GET http://www.contextis.com/ - HIER_DIRECT/93.184.216.34 -
+    156 88.98.79.12 TCP_MISS/304 475 GET http://www.contextis.com/ - HIER_DIRECT/93.184.216.34 -
 
 Nginx access logs of Windows and Google Chrome fetching PAC script after connecting to the VPN:
 
@@ -68,7 +68,7 @@ Nginx access logs of Windows and Google Chrome fetching PAC script after connect
 
 Squid-cache access logs of proxy connections for www.contextis.com after connecting to the VPN:
 
-    1460122571.505    151 46.28.53.168 TCP_MISS/304 453 GET http://www.contextis.com/ - HIER_DIRECT/93.184.216.34 -
+    151 46.28.53.168 TCP_MISS/304 453 GET http://www.contextis.com/ - HIER_DIRECT/93.184.216.34 -
 
 NOTE: The IP address on the "after" logs have changed to that of the VPN end point.
 
