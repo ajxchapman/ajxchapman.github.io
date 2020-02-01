@@ -1,0 +1,16 @@
+<!-- Logging to {{ site.log_endpoint }} -->
+{% if jekyll.environment != "development" %}
+<script>
+  fetch("{{ site.log_endpoint }}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain'
+    },
+    body: JSON.stringify({
+        path: document.location.pathname,
+        referer:  document.referrer,
+        userAgent: navigator.userAgent
+    })
+  });
+</script>
+{% endif %}

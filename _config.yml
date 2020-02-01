@@ -13,6 +13,7 @@ plugins:
 paginate: 10
 
 excerpt_separator: <!--more-->
+log_endpoint: "https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger"
 
 theme: jekyll-theme-cayman
 collections:
