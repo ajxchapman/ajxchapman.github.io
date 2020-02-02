@@ -1,16 +1,58 @@
-<!-- Logging to {{ site.log_endpoint }} -->
 {% if jekyll.environment != "development" %}
 <script>
-  fetch("{{ site.log_endpoint }}", {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain'
-    },
-    body: JSON.stringify({
-        path: document.location.pathname,
-        referer:  document.referrer,
-        userAgent: navigator.userAgent
-    })
-  });
+  async function calculateClientId() {
+    /*
+    Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+    calculated from the browser user-agent, language and timezone only. This is
+    meant to be enough to track a browser across pages for a period of time, but
+    othing more. The client Id is is non-persistent and re-calculated each page
+    load, it is not stored in a cookie or local storage.
+    */
+    const identifier = [
+      new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+      navigator.userAgent,                            // User agent
+      navigator.language,                             // Browser language, e.g. "en-US"
+      new Date().getTimezoneOffset()                  // Timezone offset
+    ];
+
+    // Hash the identifier, discard a potion of the hash and coerce into the correct format
+    const msgUint8 = new TextEncoder().encode(identifier.join(","));
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+    return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+  }
+
+  (function() {
+    // Only perform analytics on browsers which have not enabled doNotTrack
+    if (navigator.doNotTrack != 1) {
+      /*
+      References:
+        https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+        https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+      */
+
+      // Asynchronously load the Google Analytics script
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      calculateClientId().then((clientId) => {
+        // Create the Google Analytics command queue
+        ga('create', '{{ site.webstats_id }}' , {
+          'storage': 'none',    // Disable _g* cookies
+          'storeGac': false,    // Disable _gac* cookies
+          'clientId': clientId  // Set the clientId manually
+        });
+
+        // Set anonymizeIp option in order to only record 'masked' IP addresses
+        ga('set', 'anonymizeIp', true);
+
+        // Send a single pageview event per request
+        ga('send', 'pageview');
+      });
+    }
+  })();
 </script>
 {% endif %}
