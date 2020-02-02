@@ -13,7 +13,11 @@ plugins:
 paginate: 10
 
 excerpt_separator: <!--more-->
-webstats_id: UA-157572028-1
+webstats:
+    - endpoint: https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger
+      method: POST
+    - endpoint: https://www.google-analytics.com/collect
+      id: UA-157572028-1
 
 theme: jekyll-theme-cayman
 collections:
