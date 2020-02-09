@@ -9,7 +9,7 @@ layout: page
     <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
     <p class="post-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-        {{ page.date | date: "%Y-%m-%-d" }}
+        {{ page.date | date: "%Y-%m-%d" }}
       </time>
       {% if page.category %}
         • <span itemprop="category">{{ category_map }}</span>
