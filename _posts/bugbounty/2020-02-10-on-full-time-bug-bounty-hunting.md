@@ -29,6 +29,13 @@ When I introduce myself to others in the IT Security industry as a full-time Bug
   background-color: #fff5f5;
 }
 
+.ttable {
+  width: auto !important;
+  display: table !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .tpoint {
   margin-top: 1em;
   padding: 0.5em;
@@ -41,25 +48,30 @@ When I introduce myself to others in the IT Security industry as a full-time Bug
 # My Story
 Hi, I'm Alex or [@ajxchapman](https://twitter.com/ajxchapman) on pretty much all social media. I am in my mid-30s (ouch), living in London (England) with my wife and our dog (West Highland Terrier). It's a pleasure to meet you.
 
+<img style="display: block; margin-left: auto; margin-right: auto; border-radius: 50%;" src="{{ site.url }}/assets/avatar.jpg" />
+
 I completed a Computer Science BSc in 2007 and started working as a Penetration Tester straight out of University for Deloitte in their Enterprise Risk Services business group. After a few years there I moved to a smaller penetration testing consultancy, Context Information Security, where I stayed for 6 years doing penetration testing, red teaming and security research. With ~10 years experience as a Penetration Tester I got an offer to move into an internal Red Team position at Yahoo, who were subsequently acquired by Verizon under the Oath brand. It was at Yahoo where I had my first real exposure to modern bug bounty. Here I joined the team responsible for assessing the technical and business impact of bug reports received through the public Yahoo bug bounty program. With just over a year at Yahoo I accepted an opportunity to work at HackerOne to help other companies setup and run successful bug bounty programs. Throughout my time at Yahoo and HackerOne I started bug hunting and reporting bugs to bug bounty programs in my spare time, with some good initial success.
 
-Sadly, at this time my personal life took an unexpected turn. My wife and I were expecting a child, and we learned in early April 2018 that our unborn daughter had a chromosomal disorder known as Edward's Syndrome. This ultimately meant we would lose our child before or shortly after she was born. We lost Chloë in August 2018 shortly before her due date. For anyone who would like to understand more about this experience, my wife wrote an overview of our difficult journey on [Facebook](https://www.facebook.com/becca.trumper/posts/10102998321397050). HackerOne, as my then employer, were fantastic during this time, giving me the support and time off to grieve, but ultimately when returning to work in early January 2019 it was clear I still needed time to get myself back on track, so I decided to hand in my notice.
+Sadly, at this time my personal life took an unexpected turn. My wife, Rebecca, and I were expecting a child, and we learned in early April 2018 that our unborn daughter had a chromosomal disorder known as Edward's Syndrome. This ultimately meant we would lose our child before or shortly after she was born. We lost Chloë in August 2018 shortly before her due date. For anyone who would like to understand more about this experience, Rebecca wrote an <a href="https://www.facebook.com/becca.trumper/posts/10102998321397050" target="_blank">overview of our difficult journey</a>. HackerOne, as my then employer, were fantastic during this time, giving me the support and time off to grieve, but ultimately when returning to work in early January 2019 it was clear I still needed time to get myself back on track, so I decided to hand in my notice.
 
-It was at this point I decided to give full-time bug hunting a real shot as it would allow me the flexibility and space to continue to look after my own mental health, support my family as well as potentially earn a good salary.
+It was around this point I decided to give full-time bug hunting a real chance as it would allow me the flexibility and space to continue to look after my own mental health, support my family as well as potentially earn good money.
 
-# Money and Work commitment
+# Money and Work Commitment
 Not surprisingly, since starting bug hunting as a full-time profession I'm often asked questions regarding money, expected earnings and the sustainability of full-time bug hunting.
 
-When starting out, I was fortunate to be in a stable financial situation, allowing me to weather a few initial bad months if they occurred. I had modest savings and my wife worked a good job which could cover our outgoings if required. This significantly reduced the risk for me starting out in this venture.
+When starting out, I was fortunate to be in a stable financial situation, allowing me to survive a few initial bad months if they occurred. I had modest savings and my wife worked a good job which could cover our outgoings if required. This significantly reduced the risk for me starting out in this venture.
 
-I set myself a monthly target of $10,000 USD from bug bounty earnings. This target was calculated roughly considering my previous salaries, expected salary if I were to go back into employment, outgoings, financial commitments and quality of life factors (also because it was a nice round number). My aim was to meet this financial target working roughly two to three weeks in every four, allowing me to take time off to look after myself and my family as required.
+I set myself a monthly target of $10,000 USD from bug bounty earnings. This target was calculated roughly considering my previous salaries, expected salary if I were to go back into employment, outgoings, financial commitments and quality of life factors (also because it was a nice round number). My aim was to meet this financial target working roughly two to three weeks each month, allowing me to take time off to look after myself and my family as required.
 
-In order to meet these targets, I generally focus my efforts on identifying high and critical impact issues on high paying bug bounty programs. In general bug hunting I do report some medium impact issues, especially if I come across them whilst looking for or chaining higher impact issues, but don't usually report lower impact issues. I modify this tactic slightly when submitting bugs against targets at Live Hacking Events, where I am more inclined to hunt for and submit all impacts of bugs. I previously released some statistics of the bugs I reported in 2019 [here]({% post_url 2020-01-01-bug-hunting-year-in-review %}), which gives some more insight into my bug hunting style.
+In order to meet these targets, I generally focus my efforts on identifying high and critical impact issues on high paying bug bounty programs. In general bug hunting I do report some medium impact issues, especially if I come across them whilst looking for or chaining higher impact issues, but don't usually report lower impact issues. I modify this tactic slightly when submitting bugs against targets at Live Hacking Events, where I am more inclined to hunt for and submit all impacts of bugs. I previously released some [statistics of the bugs I reported in 2019]({% post_url 2020-01-01-bug-hunting-year-in-review %}), which gives some more insight into my bug hunting style.
+
+[![Income From Impact]({{ site.url }}/assets/bug-hunting-2019/5.png)]({% post_url 2020-01-01-bug-hunting-year-in-review %})
+<div style="margin-top: -1.5em; text-align: right; font-style: italic; font-size: 0.9em;">Sample statistics from <a href="{% post_url 2020-01-01-bug-hunting-year-in-review %}">Bug Hunting Year in Review - 2019</a></div>
 
 I am happy to say that one year into this journey I am more than meeting my self imposed targets. This has allowed me to choose the focus of my work based on my technical preferences and have a lot of flexibility in how I choose to work.
 
 # Pros and Cons of Bug Hunting
-<table style="width: auto; display: table; border: 1px solid black; margin-left: auto; margin-right: auto;">
+<table class="ttable">
   <tr>
     <th>Pros</th>
     <th>Cons</th>
@@ -89,7 +101,7 @@ Bug hunting provides me the <b>flexibility</b> I need at this point in my life, 
 </div>
 
 <div class="tpoint cons" id="cons_financialrisk">
-That being said, full-time bug hunting carries not inconsiderable <b>financial risk</b> (yes the money is both a pro and a con). If I don't find many bugs or miss my financial targets, that can add financial strain which I would not have under a salaried position.
+That being said, full-time bug hunting carries not inconsiderable <b>financial risk</b> (yes the money is both a pro and a con). As bug bounty programs generally pay on a results basis, if I don't find any bugs I don't get paid. This can lead to frustrating weeks where many hours are spent working, but without any kind of financial reward. This can obviously add financial strain which I would not have with a salaried position.
 </div>
 
 <div class="tpoint pros" id="pros_community">
