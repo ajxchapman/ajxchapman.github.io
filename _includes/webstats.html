@@ -1,74 +1,93 @@
-{% if jekyll.environment != "development" %}
+{% comment %}
+Web stats include to send page count data to potentially multiple endpoints.
+Arguments
+[tags]        - Whether to include the script tags. Default: true
+[then]        - A javascript function to call when all endpoints have been fetched.
+[call_after]  - A javascript function to call after requesting all endpoints.
+{% endcomment %}
+{% if include.tags != false %}
 <script>
-  async function calculateClientId() {
+{% endif %}
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
     /*
-    Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
-    calculated from the browser user-agent, language and timezone only. This is
-    meant to be enough to track a browser across pages for a period of time, but
-    othing more. The client Id is is non-persistent and re-calculated each page
-    load, it is not stored in a cookie or local storage.
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
     */
-    const identifier = [
-      new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
-      navigator.userAgent,                            // User agent
-      navigator.language,                             // Browser language, e.g. "en-US"
-      new Date().getTimezoneOffset()                  // Timezone offset
-    ];
 
-    // Hash the identifier, discard a potion of the hash and coerce into the correct format
-    const msgUint8 = new TextEncoder().encode(identifier.join(","));
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
-    return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+    var promises = [];
+    {% for endpoint in site.webstats %}
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        {% if endpoint.id %}tid: '{{ endpoint.id }}', // Endpoint Id{% endif %}
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = '{% if jekyll.environment == "development" %}https://domaindoesnotexist/?{% endif %}{{ endpoint.endpoint }}';
+
+      {% if endpoint.method == "POST" %}
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      {% else %}
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      {% endif %}
+    });
+    {% endfor %}
+
+    {% if include.then %}
+    Promise.all(promises).finally({{ include.then }});
+    {% endif %}
+    {% if include.call_after %}
+    {{ include.call_after }}();
+    {% endif %}
   }
+})();
 
-  (function() {
-    // Only perform analytics on browsers which have not enabled doNotTrack
-    if (navigator.doNotTrack != 1) {
-      /*
-      References:
-        https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
-        https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
-        https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
-      */
-
-      {% for endpoint in site.webstats %}
-      calculateClientId().then((clientId) => {
-        const stat_vars = {
-          v:  1,                    // Version
-          {% if endpoint.id %}tid: '{{ endpoint.id }}', // Endpoint Id{% endif %}
-          cid: clientId,            // Client Id
-          t: 'pageview',            // Hit type
-          aip: 1,                   // Set anonymizeIp to mask IP addresses
-          dl: window.location.href, // Document location
-          dt: document.title,       // Document title
-          dr: document.referrer,    // Document referrer
-          z: Date.now()             // Cache buster
-        };
-
-        {% if endpoint.method == "POST" %}
-        fetch('{{ endpoint.endpoint }}', {
-          credentials: 'omit',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify(stat_vars)
-        });
-        {% else %}
-        let uri_vars = [];
-        for (var_key in stat_vars) {
-          uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
-        }
-
-        fetch(`{{ endpoint.endpoint }}?${uri_vars.join('&')}`, {
-          credentials: 'omit'
-        });
-        {% endif %}
-      });
-      {% endfor %}
-    }
-  })();
+{% if include.tags != false %}
 </script>
 {% endif %}
