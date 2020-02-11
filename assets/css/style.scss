@@ -43,3 +43,13 @@ article + article {
 pre.bugreport {
   white-space: pre-wrap;
 }
+
+.postheader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.postfooter {
+  display: flex;
+  justify-content: space-between;
+}
