@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Bugbounty | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Bugbounty" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A tech blog about all things bug bounty, security and development." />
+<meta property="og:description" content="A tech blog about all things bug bounty, security and development." />
+<link rel="canonical" href="https://ajxchapman.github.io/bugbounty/" />
+<meta property="og:url" content="https://ajxchapman.github.io/bugbounty/" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-15T07:08:10-06:00" />
+<script type="application/ld+json">
+{"description":"A tech blog about all things bug bounty, security and development.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/bugbounty/"},"url":"https://ajxchapman.github.io/bugbounty/","@type":"BlogPosting","headline":"Bugbounty","dateModified":"2020-11-15T07:08:10-06:00","datePublished":"2020-11-15T07:08:10-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      <div class="posts">
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html" >On Full-Time Bug Bounty Hunting</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-02-10T00:00:00-06:00" itemprop="datePublished">
+        2020-02-10
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>When I introduce myself to others in the IT Security industry as a full-time Bug Hunter getting paid through Bug Bounties, they often have many questions (when I do this to people outside the industry they look at me funny and fake reasons to excuse themselves). In this post I reflect on my experiences after 12 months bug hunting for my primary source of income, and try to answer some of the more common questions I receive.</p>
+
+
+  </div>
+  <a href="/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html" >Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2020/01/01/bug-hunting-year-in-review.html" >Bug Hunting Year in Review - 2019</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-01-01T00:00:00-06:00" itemprop="datePublished">
+        2020-01-01
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>As I come to the end of my first year of full-time Bug Bounty Hunting in this post I share some statistics of the bug reports I’ve submitted during 2019.</p>
+
+
+  </div>
+  <a href="/bugbounty/2020/01/01/bug-hunting-year-in-review.html" >Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2019/03/26/h1-702-ctf-2019.html" >H1-702 2019 - CTF Writeup</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-03-26T00:00:00-05:00" itemprop="datePublished">
+        2019-03-26
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a <a href="https://gist.github.com/ajxchapman/b7baca094e61ff120c44379029646b97">GitHub Gist</a>.</p>
+
+
+  </div>
+  <a href="/bugbounty/2019/03/26/h1-702-ctf-2019.html" >Continue reading...</a>
+</article>
+
+  
+</div>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="1; url=https://hackerone.com/reports/329749">
+  <title>https://hackerone.com/reports/329749</title>
+  <link rel="canonical" href="https://hackerone.com/reports/329749">
+  <script>
+function redirect() {
+  window.location='https://hackerone.com/reports/329749';
+}
+
+
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+    redirect();
+    
+  }
+})();
+
+
+
+setTimeout(redirect, 1000);
+  </script>
+</html>

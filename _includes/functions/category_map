@@ -1,9 +1,0 @@
-{% comment %} Pull the category display name from the post_categories collection if it exists {% endcomment %}
-{% assign category_map = include.category | default: page.category %}
-{% for _category in site.post_categories %}
-  {% if _category.tag == category_map %}
-    {% assign category_map = category_map | capitalize %}
-    {% assign category_map = _category.display | default: category_map %}
-    {% break %}
-  {% endif %}
-{% endfor %}

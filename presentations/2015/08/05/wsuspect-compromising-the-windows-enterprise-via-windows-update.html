@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Black Hat 2015 - WSUSpect - Compromising the Windows Enterprise via Windows Update | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Black Hat 2015 - WSUSpect - Compromising the Windows Enterprise via Windows Update" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Ever wondered what really happens when you plug in a USB device and Windows begins ‘searching for Drivers’? Who doesn’t have that Windows Update reboot dialog sitting in the corner of their desktop? Our talk will take an exciting look at one of the dullest corners of the Windows OS. WSUS (Windows Server Update Services) allows admins to co-ordinate software updates to servers and desktops throughout their organisation. Whilst all updates must be signed by Microsoft, we find other routes to deliver malicious updates to Windows systems using WSUS. We will demonstrate how a default WSUS deployment can be leveraged to gain SYSTEM level access to machines on the local network." />
+<meta property="og:description" content="Ever wondered what really happens when you plug in a USB device and Windows begins ‘searching for Drivers’? Who doesn’t have that Windows Update reboot dialog sitting in the corner of their desktop? Our talk will take an exciting look at one of the dullest corners of the Windows OS. WSUS (Windows Server Update Services) allows admins to co-ordinate software updates to servers and desktops throughout their organisation. Whilst all updates must be signed by Microsoft, we find other routes to deliver malicious updates to Windows systems using WSUS. We will demonstrate how a default WSUS deployment can be leveraged to gain SYSTEM level access to machines on the local network." />
+<link rel="canonical" href="https://ajxchapman.github.io/presentations/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html" />
+<meta property="og:url" content="https://ajxchapman.github.io/presentations/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-08-05T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Ever wondered what really happens when you plug in a USB device and Windows begins ‘searching for Drivers’? Who doesn’t have that Windows Update reboot dialog sitting in the corner of their desktop? Our talk will take an exciting look at one of the dullest corners of the Windows OS. WSUS (Windows Server Update Services) allows admins to co-ordinate software updates to servers and desktops throughout their organisation. Whilst all updates must be signed by Microsoft, we find other routes to deliver malicious updates to Windows systems using WSUS. We will demonstrate how a default WSUS deployment can be leveraged to gain SYSTEM level access to machines on the local network.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/presentations/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html"},"url":"https://ajxchapman.github.io/presentations/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html","@type":"BlogPosting","headline":"Black Hat 2015 - WSUSpect - Compromising the Windows Enterprise via Windows Update","dateModified":"2015-08-05T00:00:00-05:00","datePublished":"2015-08-05T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Black Hat 2015 - WSUSpect - Compromising the Windows Enterprise via Windows Update</h1>
+    <p class="post-meta">
+      <time datetime="2015-08-05T00:00:00-05:00" itemprop="datePublished">
+        2015-08-05
+      </time>
+      
+        • <span itemprop="category">Presentations</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Ever wondered what really happens when you plug in a USB device and Windows begins ‘searching for Drivers’? Who doesn’t have that Windows Update reboot dialog sitting in the corner of their desktop? Our talk will take an exciting look at one of the dullest corners of the Windows OS.</p>
+
+<p>WSUS (Windows Server Update Services) allows admins to co-ordinate software updates to servers and desktops throughout their organisation. Whilst all updates must be signed by Microsoft, we find other routes to deliver malicious updates to Windows systems using WSUS. We will demonstrate how a default WSUS deployment can be leveraged to gain SYSTEM level access to machines on the local network.</p>
+
+<!--more-->
+
+<p>We also take a look at exactly what happens when you plug in a new USB device into a Windows desktop. There are thousands Microsoft-signed updates for 3rd party drivers available through Windows Update. We show how driver installs can be triggered by low privileged users and look at the insecurities that can be introduced by these Microsoft-blessed drivers.</p>
+
+<p>In addition to some exciting demos we will also describe how to lock down enterprise WSUS configurations to avoid these “on by default” vulnerabilities.</p>
+
+<p>You have 1 malicious update ready to install…</p>
+
+<h2 id="recording">Recording</h2>
+<iframe width="832" height="468" src="https://www.youtube.com/embed/mU8vw4gRaGs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="slides">Slides</h2>
+<script async="" class="speakerdeck-embed" data-id="12246f6d001d4e4c9f8a7c40581bc320" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+
+<p><a href="https://drive.google.com/open?id=1JZc4LAzS0DfCkGVhloLPe5AUigxka_ms"><strong>Download Slides</strong></a></p>
+
+<p><a href="https://drive.google.com/open?id=14XFaewaPh4SzI-gSdiP6HrOrA_RIHdPM"><strong>Download White Paper</strong></a></p>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/presentations/index.html">More Presentations posts</a>
+    
+  </div>
+</article>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

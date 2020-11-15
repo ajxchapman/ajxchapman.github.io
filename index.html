@@ -1,33 +1,855 @@
----
-layout: page
-title: Alex Chapman's Blog
----
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Alex Chapman’s Blog | A tech blog about all things bug bounty, security and development.</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Alex Chapman’s Blog" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A tech blog about all things bug bounty, security and development." />
+<meta property="og:description" content="A tech blog about all things bug bounty, security and development." />
+<link rel="canonical" href="https://ajxchapman.github.io/" />
+<meta property="og:url" content="https://ajxchapman.github.io/" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<link rel="next" href="https://ajxchapman.github.io/page2" />
+<script type="application/ld+json">
+{"description":"A tech blog about all things bug bounty, security and development.","url":"https://ajxchapman.github.io/","@type":"WebSite","headline":"Alex Chapman’s Blog","name":"Alex Chapman’s Blog","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      <div class="posts">
+  
+  
+    
+<div class="featured_placeholder">
+  <h3>Featured Post</h3>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div id="featured_/bugreports/2019/12/11/hackerone-gitlab-534794" class="featured_post featured_hidden">
+      
 
 
-<div class="posts">
-  {% comment %} Only include featured post on the front page {% endcomment %}
-  {% unless paginator.previous_page %}
-    {% include featured_post.html %}
-  {% endunless %}
+  
 
-  {% for post in paginator.posts %}
-    {% include post_summary.html post=post %}
-  {% endfor %}
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/12/11/hackerone-gitlab-534794.html" target="_blank">GitLab - Importing GitLab project archives can replace uploads of other users</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-12-11T00:00:00-06:00" itemprop="datePublished">
+        2019-12-11
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> Importing a modified exported GitLab project archive can overwrite uploads for other users. If the <code class="highlighter-rouge">secret</code> and <code class="highlighter-rouge">file name</code> of an upload are known (these can be easily identified for any uploads to public repositories), any user can import a new project which overwrites the served content of the upload with arbitrary content.</p>
+
+  </div>
+  <a href="/bugreports/2019/12/11/hackerone-gitlab-534794.html" target="_blank">Continue reading...</a>
+</article>
+
+    </div>
+  
+
+  
+    <div id="featured_/presentations/2019/09/11/continuous-integration-continuous-bounties" class="featured_post featured_hidden">
+      
+
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html" >44Con 2019 - Continuous Integration Continuous Bounties</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-09-11T00:00:00-05:00" itemprop="datePublished">
+        2019-09-11
+      </time>
+      
+        • <span itemprop="category">Presentations</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>CI/CD pipelines are the perfect, bug-rich target for new and experienced bug hunters. As complex, user-controlled automated processes with access to authentication secrets, source code, and application servers in multi-system, multi-user environments, they combine all the things that make bugs likely. In the presentation, I will outline a methodology for hunting for bugs in CI/CD pipelines and walk through actual bugs which have resulted in tens of thousands of dollars in bounty payments.</p>
+
+
+  </div>
+  <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html" >Continue reading...</a>
+</article>
+
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div id="featured_/bugbounty/2019/03/26/h1-702-ctf-2019" class="featured_post featured_hidden">
+      
+
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2019/03/26/h1-702-ctf-2019.html" >H1-702 2019 - CTF Writeup</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-03-26T00:00:00-05:00" itemprop="datePublished">
+        2019-03-26
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a <a href="https://gist.github.com/ajxchapman/b7baca094e61ff120c44379029646b97">GitHub Gist</a>.</p>
+
+
+  </div>
+  <a href="/bugbounty/2019/03/26/h1-702-ctf-2019.html" >Continue reading...</a>
+</article>
+
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div id="featured_/security/2017/01/14/blind-sql-injection" class="featured_post featured_hidden">
+      
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/security/2017/01/14/blind-sql-injection.html" >Blind SQL injection optimization</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-01-14T00:00:00-06:00" itemprop="datePublished">
+        2017-01-14
+      </time>
+      
+        • <span itemprop="category">Security</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests.</p>
+
+<p>This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.</p>
+
+
+  </div>
+  <a href="/security/2017/01/14/blind-sql-injection.html" >Continue reading...</a>
+</article>
+
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script>
+    (function() {
+      var posts = document.getElementsByClassName("featured_post");
+      var post = posts[Math.floor((Math.random() * posts.length))];
+      post.classList.remove("featured_hidden");
+    })();
+  </script>
+</div>
+
+  
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/11/04/hackerone-gitlab-955016.html" target="_blank">GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-11-04T00:00:00-06:00" itemprop="datePublished">
+        2020-11-04
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> GitLab-Runner, when running on Windows with a <code class="highlighter-rouge">docker</code> executor, is vulnerable to Command Injection via the <code class="highlighter-rouge">DOCKER_AUTH_CONFIG</code> build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.</p>
+
+  </div>
+  <a href="/bugreports/2020/11/04/hackerone-gitlab-955016.html" target="_blank">Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/02/29/hackerone-greenhouseio-315205.html" target="_blank">Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-02-29T00:00:00-06:00" itemprop="datePublished">
+        2020-02-29
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to Greenhouse.io:</strong> The configuration of the Sintra framework application hosted at <code class="highlighter-rouge">oauth-redirector.services.greenhouse.io</code> exposes internal information when exceptions occur. The application is configured with the <code class="highlighter-rouge">show_exceptions</code> setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur.</p>
+
+  </div>
+  <a href="/bugreports/2020/02/29/hackerone-greenhouseio-315205.html" target="_blank">Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/02/28/hackerone-semrush-316713.html" target="_blank">SEMrush - Ad Builder Display Ads Path Traversal</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-02-28T00:00:00-06:00" itemprop="datePublished">
+        2020-02-28
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to SEMrush:</strong> The Semrush Ad Builder for Display Ads is vulnerable to path traversal when extracting zip files and referencing images from the embedded <code class="highlighter-rouge">data.csv</code> file.</p>
+
+  </div>
+  <a href="/bugreports/2020/02/28/hackerone-semrush-316713.html" target="_blank">Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html" >On Full-Time Bug Bounty Hunting</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-02-10T00:00:00-06:00" itemprop="datePublished">
+        2020-02-10
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>When I introduce myself to others in the IT Security industry as a full-time Bug Hunter getting paid through Bug Bounties, they often have many questions (when I do this to people outside the industry they look at me funny and fake reasons to excuse themselves). In this post I reflect on my experiences after 12 months bug hunting for my primary source of income, and try to answer some of the more common questions I receive.</p>
+
+
+  </div>
+  <a href="/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html" >Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/01/30/hackerone-wordpress-205481.html" target="_blank">WordPress - Wordpress unzip_file path traversal</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-01-30T00:00:00-06:00" itemprop="datePublished">
+        2020-01-30
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to WordPress:</strong> The Wordpress unzip_file function (https://codex.wordpress.org/Function_Reference/unzip_file) is vulnerable to path traversal when extracting zip files. Extracting untrusted zip files using this function this could lead to code execution through placing arbitrary PHP files in the DocumentRoot of the webserver.</p>
+
+  </div>
+  <a href="/bugreports/2020/01/30/hackerone-wordpress-205481.html" target="_blank">Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2020/01/01/bug-hunting-year-in-review.html" >Bug Hunting Year in Review - 2019</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-01-01T00:00:00-06:00" itemprop="datePublished">
+        2020-01-01
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>As I come to the end of my first year of full-time Bug Bounty Hunting in this post I share some statistics of the bug reports I’ve submitted during 2019.</p>
+
+
+  </div>
+  <a href="/bugbounty/2020/01/01/bug-hunting-year-in-review.html" >Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/12/12/hackerone-gitlab-541169.html" target="_blank">GitLab - GitLab::UrlBlocker validation bypass leading to full Server Side Request Forgery</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-12-12T00:00:00-06:00" itemprop="datePublished">
+        2019-12-12
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> The <code class="highlighter-rouge">GitLab::UrlBlocker</code> IP address validation methods suffer from a Time of Check to Time of Use (ToCToU) vulnerability. The vulnerability occurs due to multiple DNS resolution requests performed before and after the checks. This issue allows a malicious authenticated user to send GET and POST HTTP requests to arbitrary hosts, including the localhost, cloud metadata services and the local network, and read the HTTP response.</p>
+
+  </div>
+  <a href="/bugreports/2019/12/12/hackerone-gitlab-541169.html" target="_blank">Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/12/11/hackerone-gitlab-534794.html" target="_blank">GitLab - Importing GitLab project archives can replace uploads of other users</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-12-11T00:00:00-06:00" itemprop="datePublished">
+        2019-12-11
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> Importing a modified exported GitLab project archive can overwrite uploads for other users. If the <code class="highlighter-rouge">secret</code> and <code class="highlighter-rouge">file name</code> of an upload are known (these can be easily identified for any uploads to public repositories), any user can import a new project which overwrites the served content of the upload with arbitrary content.</p>
+
+  </div>
+  <a href="/bugreports/2019/12/11/hackerone-gitlab-534794.html" target="_blank">Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html" >44Con 2019 - Continuous Integration Continuous Bounties</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-09-11T00:00:00-05:00" itemprop="datePublished">
+        2019-09-11
+      </time>
+      
+        • <span itemprop="category">Presentations</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>CI/CD pipelines are the perfect, bug-rich target for new and experienced bug hunters. As complex, user-controlled automated processes with access to authentication secrets, source code, and application servers in multi-system, multi-user environments, they combine all the things that make bugs likely. In the presentation, I will outline a methodology for hunting for bugs in CI/CD pipelines and walk through actual bugs which have resulted in tens of thousands of dollars in bounty payments.</p>
+
+
+  </div>
+  <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html" >Continue reading...</a>
+</article>
+
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-07-02T00:00:00-05:00" itemprop="datePublished">
+        2019-07-02
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to New Relic:</strong> The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.</p>
+
+  </div>
+  <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">Continue reading...</a>
+</article>
+
+  
 </div>
 
 <div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ site.baseurl }}/page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.previous_page == 1 %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}/">Newer</a>
-    {% else %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}/page{{paginator.previous_page}}">Newer</a>
-    {% endif %}
-  {% else %}
+  
+    <a class="pagination-item older" href="/page2">Older</a>
+  
+  <span class="pagination-text">Page 1 of 4</span>
+  
     <span class="pagination-item newer">Newer</span>
-  {% endif %}
+  
 </div>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

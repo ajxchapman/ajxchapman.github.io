@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Ruxcon 2012 - Examination of the VMware ESXi Binary Protocol Using CANAPE | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Ruxcon 2012 - Examination of the VMware ESXi Binary Protocol Using CANAPE" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This presentation will cover a demonstration of the new version of the Canape protocol analysis tool being released for Ruxcon. During the course of the presentation various attack scenarios against the VMWare ESXi binary protocol will be demonstrated using Canape." />
+<meta property="og:description" content="This presentation will cover a demonstration of the new version of the Canape protocol analysis tool being released for Ruxcon. During the course of the presentation various attack scenarios against the VMWare ESXi binary protocol will be demonstrated using Canape." />
+<link rel="canonical" href="https://ajxchapman.github.io/presentations/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html" />
+<meta property="og:url" content="https://ajxchapman.github.io/presentations/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-10-21T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"This presentation will cover a demonstration of the new version of the Canape protocol analysis tool being released for Ruxcon. During the course of the presentation various attack scenarios against the VMWare ESXi binary protocol will be demonstrated using Canape.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/presentations/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html"},"url":"https://ajxchapman.github.io/presentations/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html","@type":"BlogPosting","headline":"Ruxcon 2012 - Examination of the VMware ESXi Binary Protocol Using CANAPE","dateModified":"2012-10-21T00:00:00-05:00","datePublished":"2012-10-21T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+        <h1 class="project-name">Alex Chapman's Blog</h1>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        </a>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Ruxcon 2012 - Examination of the VMware ESXi Binary Protocol Using CANAPE</h1>
+    <p class="post-meta">
+      <time datetime="2012-10-21T00:00:00-05:00" itemprop="datePublished">
+        2012-10-21
+      </time>
+      
+        • <span itemprop="category">Presentations</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>This presentation will cover a demonstration of the new version of the Canape protocol analysis tool being released for Ruxcon. During the course of the presentation various attack scenarios against the VMWare ESXi binary protocol will be demonstrated using Canape.</p>
+
+<!--more-->
+
+<p>The VMWare ESXi protocol is a complex multi-layered protocol which transitions between many protocol states throughout a connection lifetime. The protocol uses multiplexed frames, compression and encryption all over a single TCP connection. The talk will discuss and outline serious weaknesses within the ESXi protocol and how these can be leveraged from within Canape.</p>
+
+<p>During the talk, new features of Canape will be demonstrated live to show the audience how the tool can be used from traffic interception and initial protocol dissection through data injection and fuzzing and finally demonstrating full PoC exploitation all within Canape.</p>
+
+<p>Presentation outline:</p>
+<ul>
+  <li>What is Canape</li>
+  <li>Examining the VMWare ESXi protocol</li>
+  <li>Demonstrating ESXi protocol interception</li>
+  <li>Intercepting the ESXi encryption</li>
+  <li>Data injection to brute force user credentials</li>
+  <li>Fuzzing ESXi</li>
+  <li>0day demonstration</li>
+</ul>
+
+<h2 id="canape">Canape</h2>
+
+<p>Testing and exploiting binary network protocols can be both complex and time consuming. More often than not, custom software needs to be developed to proxy, parse and manipulate the target traffic.</p>
+
+<p>Canape is a network protocol analysis tool which takes the existing paradigm of Web Application testing tools (such as CAT, Burp or Fiddler) and applies that to network protocol testing. Canape provides a user interface that facilitates the capture and replaying of binary network traffic, whilst providing a framework to develop parsers and fuzzers.</p>
+
+<p>Rather than creating a complete bespoke program to proxy and manipulate protocol traffic, Canape can be used to provide the networking, parsing and fuzzing infrastructure to significantly reduce assessment effort.</p>
+
+<h2 id="recording">Recording</h2>
+<iframe width="832" height="468" src="https://www.youtube.com/embed/rR7jdzl_NNc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="slides">Slides</h2>
+<script async="" class="speakerdeck-embed" data-id="93783ca26a8846bfa19801e209126f5a" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+
+<p><a href="https://drive.google.com/open?id=1csR7JaRBo9CvlYZvnRG_yo5Zwfwa3n3N"><strong>Download Slides</strong></a></p>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/presentations/index.html">More Presentations posts</a>
+    
+  </div>
+</article>
+
+
+
+
+<script>
+
+async function calculateClientId() {
+  /*
+  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
+  calculated from the browser user-agent, language and timezone only. This is
+  meant to be enough to track a browser across pages for a period of time, but
+  othing more. The client Id is is non-persistent and re-calculated each page
+  load, it is not stored in a cookie or local storage.
+  */
+  const identifier = [
+    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
+    navigator.userAgent,                            // User agent
+    navigator.language,                             // Browser language, e.g. "en-US"
+    new Date().getTimezoneOffset()                  // Timezone offset
+  ];
+
+  // Hash the identifier, discard a potion of the hash and coerce into the correct format
+  const msgUint8 = new TextEncoder().encode(identifier.join(","));
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
+  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
+}
+
+(function() {
+  // Only perform analytics on browsers which have not enabled doNotTrack
+  if (navigator.doNotTrack != 1) {
+    /*
+    References:
+      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
+      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
+    */
+
+    var promises = [];
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
+
+      
+      promises.push(fetch(url, {
+        credentials: 'omit',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(stat_vars)
+      }));
+      
+    });
+    
+    calculateClientId().then((clientId) => {
+      const stat_vars = {
+        v:  1,                    // Version
+        tid: 'UA-157572028-1', // Endpoint Id
+        cid: clientId,            // Client Id
+        t: 'pageview',            // Hit type
+        aip: 1,                   // Set anonymizeIp to mask IP addresses
+        dl: window.location.href, // Document location
+        dt: document.title,       // Document title
+        dr: document.referrer,    // Document referrer
+        z: Date.now()             // Cache buster
+      };
+      const url = 'https://www.google-analytics.com/collect';
+
+      
+      let uri_vars = [];
+      for (var_key in stat_vars) {
+        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
+      }
+
+      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
+        credentials: 'omit'
+      }));
+      
+    });
+    
+
+    
+    
+  }
+})();
+
+
+</script>
+
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
