@@ -6,9 +6,23 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 19 Nov 2020 05:50:19 -0600</pubDate>
-    <lastBuildDate>Thu, 19 Nov 2020 05:50:19 -0600</lastBuildDate>
+    <pubDate>Thu, 19 Nov 2020 10:31:35 -0600</pubDate>
+    <lastBuildDate>Thu, 19 Nov 2020 10:31:35 -0600</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Privileged Container Escape - Control Groups release_agent</title>
+        <description>&lt;p&gt;I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by &lt;a href=&quot;https://twitter.com/_fel1x&quot;&gt;Felix Wilhelm (@_fel1x)&lt;/a&gt; to escape a privileged container to execute arbitrary commands on the container host.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 19 Nov 2020 00:00:00 -0600</pubDate>
+        <link>https://ajxchapman.github.io/containers/2020/11/19/privileged-container-escape.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/containers/2020/11/19/privileged-container-escape.html</guid>
+        
+        
+        <category>containers</category>
+        
+      </item>
     
       <item>
         <title>GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</title>
@@ -127,19 +141,6 @@
         
         
         <category>presentations</category>
-        
-      </item>
-    
-      <item>
-        <title>New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests</title>
-        <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to New Relic:&lt;/strong&gt; The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 02 Jul 2019 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2019/07/02/hackerone-new-relic-344032.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2019/07/02/hackerone-new-relic-344032.html</guid>
-        
-        
-        <category>bugreports</category>
         
       </item>
     

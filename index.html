@@ -41,44 +41,35 @@
   
 
   
-    
-    
-    
-
-
-
-  
-
-
 
   
     
-
-
-
     
-  
+    
+
+
 
 
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2020/11/04/hackerone-gitlab-955016.html" target="_blank">GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</a>
+      <a href="/containers/2020/11/19/privileged-container-escape.html" >Privileged Container Escape - Control Groups release_agent</a>
     </h1>
     <p class="post-meta">
-      <time datetime="2020-11-04T00:00:00-06:00" itemprop="datePublished">
-        2020-11-04
+      <time datetime="2020-11-19T00:00:00-06:00" itemprop="datePublished">
+        2020-11-19
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category">Containers</span>
       
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to GitLab:</strong> GitLab-Runner, when running on Windows with a <code class="highlighter-rouge">docker</code> executor, is vulnerable to Command Injection via the <code class="highlighter-rouge">DOCKER_AUTH_CONFIG</code> build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.</p>
+    <p>I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by <a href="https://twitter.com/_fel1x">Felix Wilhelm (@_fel1x)</a> to escape a privileged container to execute arbitrary commands on the container host.</p>
+
 
   </div>
-  <a href="/bugreports/2020/11/04/hackerone-gitlab-955016.html" target="_blank">Continue reading...</a>
+  <a href="/containers/2020/11/19/privileged-container-escape.html" >Continue reading...</a>
 </article>
 
 
@@ -88,6 +79,48 @@
         
 <div class="featured_placeholder">
   <h3>Featured Post</h3>
+
+  
+    <div id="featured_/containers/2020/11/19/privileged-container-escape" class="featured_post featured_hidden">
+      
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/containers/2020/11/19/privileged-container-escape.html" >Privileged Container Escape - Control Groups release_agent</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-11-19T00:00:00-06:00" itemprop="datePublished">
+        2020-11-19
+      </time>
+      
+        • <span itemprop="category">Containers</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by <a href="https://twitter.com/_fel1x">Felix Wilhelm (@_fel1x)</a> to escape a privileged container to execute arbitrary commands on the container host.</p>
+
+
+  </div>
+  <a href="/containers/2020/11/19/privileged-container-escape.html" >Continue reading...</a>
+</article>
+
+    </div>
+  
 
   
 
@@ -338,6 +371,56 @@
 </div>
 
       
+    
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/11/04/hackerone-gitlab-955016.html" target="_blank">GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-11-04T00:00:00-06:00" itemprop="datePublished">
+        2020-11-04
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> GitLab-Runner, when running on Windows with a <code class="highlighter-rouge">docker</code> executor, is vulnerable to Command Injection via the <code class="highlighter-rouge">DOCKER_AUTH_CONFIG</code> build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.</p>
+
+  </div>
+  <a href="/bugreports/2020/11/04/hackerone-gitlab-955016.html" target="_blank">Continue reading...</a>
+</article>
+
+
+    
     
   
     
@@ -703,56 +786,6 @@
 
   </div>
   <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html" >Continue reading...</a>
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2019-07-02T00:00:00-05:00" itemprop="datePublished">
-        2019-07-02
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to New Relic:</strong> The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.</p>
-
-  </div>
-  <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">Continue reading...</a>
 </article>
 
 
