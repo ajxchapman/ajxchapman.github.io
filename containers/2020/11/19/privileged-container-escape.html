@@ -132,7 +132,7 @@ root@container:~<span class="nv">$ </span><span class="nb">sed</span> <span clas
 
 <p>In this instance the container is configured to use <code class="highlighter-rouge">overlayfs</code>, which exposes the host file system path of container mounts to the container itself. The host file system path here would be <code class="highlighter-rouge">/var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/diff</code></p>
 
-<p>This can be demonstrated by creating a file within a container:</p>
+<p>This can be confirmed by creating a file within a container:</p>
 
 <div class="shell_output container">
 <div class="header">Container</div>
@@ -190,7 +190,7 @@ kataShared on / <span class="nb">type </span>9p <span class="o">(</span>rw,dirsy
 
 <h3 id="proc-to-the-rescue">Proc to the Rescue</h3>
 
-<p>The Linux <code class="highlighter-rouge">/proc</code> pseudo-filesystem exposes kernel process data structures for all processing running on a system, including those running in different namespaces, for example within a container. This can be shown by running a command in a container and accessing the <code class="highlighter-rouge">/proc</code> directory of the process on the host:</p>
+<p>The Linux <code class="highlighter-rouge">/proc</code> pseudo-filesystem exposes kernel process data structures for all processes running on a system, including those running in different namespaces, for example within a container. This can be shown by running a command in a container and accessing the <code class="highlighter-rouge">/proc</code> directory of the process on the host:</p>
 
 <div class="shell_output container">
 <div class="header">Container</div>
