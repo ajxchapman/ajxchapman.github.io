@@ -6,12 +6,12 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 Dec 2020 11:56:34 -0600</pubDate>
-    <lastBuildDate>Mon, 14 Dec 2020 11:56:34 -0600</lastBuildDate>
+    <pubDate>Mon, 14 Dec 2020 11:59:02 -0600</pubDate>
+    <lastBuildDate>Mon, 14 Dec 2020 11:59:02 -0600</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
-        <title>Private Program - Kata Containers `hostPath` file write</title>
+        <title>Kata Containers `hostPath` file write</title>
         <description>&lt;p&gt;&lt;strong&gt;Bugcrowd bug report to a Private Program:&lt;/strong&gt; Kata Containers was found to be vulnerable to an issue allowing Kata VMs to write to &lt;code class=&quot;highlighter-rouge&quot;&gt;hostPath&lt;/code&gt; mount points which should have been read only. This issue was fixed in the Kata Containers project and assigned CVE-2020-28914.&lt;/p&gt;
 </description>
         <pubDate>Mon, 30 Nov 2020 00:00:00 -0600</pubDate>
