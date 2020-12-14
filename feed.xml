@@ -6,9 +6,22 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 Nov 2020 08:19:44 -0600</pubDate>
-    <lastBuildDate>Thu, 26 Nov 2020 08:19:44 -0600</lastBuildDate>
+    <pubDate>Mon, 14 Dec 2020 11:56:34 -0600</pubDate>
+    <lastBuildDate>Mon, 14 Dec 2020 11:56:34 -0600</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Private Program - Kata Containers `hostPath` file write</title>
+        <description>&lt;p&gt;&lt;strong&gt;Bugcrowd bug report to a Private Program:&lt;/strong&gt; Kata Containers was found to be vulnerable to an issue allowing Kata VMs to write to &lt;code class=&quot;highlighter-rouge&quot;&gt;hostPath&lt;/code&gt; mount points which should have been read only. This issue was fixed in the Kata Containers project and assigned CVE-2020-28914.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 30 Nov 2020 00:00:00 -0600</pubDate>
+        <link>https://ajxchapman.github.io/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</guid>
+        
+        
+        <category>bugreports</category>
+        
+      </item>
     
       <item>
         <title>Privileged Container Escape - Control Groups release_agent</title>
@@ -127,20 +140,6 @@
         
         
         <category>bugreports</category>
-        
-      </item>
-    
-      <item>
-        <title>44Con 2019 - Continuous Integration Continuous Bounties</title>
-        <description>&lt;p&gt;CI/CD pipelines are the perfect, bug-rich target for new and experienced bug hunters. As complex, user-controlled automated processes with access to authentication secrets, source code, and application servers in multi-system, multi-user environments, they combine all the things that make bugs likely. In the presentation, I will outline a methodology for hunting for bugs in CI/CD pipelines and walk through actual bugs which have resulted in tens of thousands of dollars in bounty payments.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 11 Sep 2019 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/presentations/2019/09/11/continuous-integration-continuous-bounties.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/presentations/2019/09/11/continuous-integration-continuous-bounties.html</guid>
-        
-        
-        <category>presentations</category>
         
       </item>
     
