@@ -6,9 +6,23 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Jan 2021 03:33:44 -0600</pubDate>
-    <lastBuildDate>Mon, 11 Jan 2021 03:33:44 -0600</lastBuildDate>
+    <pubDate>Sat, 06 Feb 2021 09:00:19 -0600</pubDate>
+    <lastBuildDate>Sat, 06 Feb 2021 09:00:19 -0600</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Moby - Access to remapped root allows privilege escalation to real root</title>
+        <description>&lt;p&gt;When using &lt;code class=&quot;highlighter-rouge&quot;&gt;--userns-remap&lt;/code&gt;, if the root user in the remapped namespace has access to the host filesystem they can modify files under &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/docker/&amp;lt;remapping&amp;gt;&lt;/code&gt; that cause writing files with extended privileges.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 02 Feb 2021 00:00:00 -0600</pubDate>
+        <link>https://ajxchapman.github.io/advisory/2021/02/02/CVE-2021-21284.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/advisory/2021/02/02/CVE-2021-21284.html</guid>
+        
+        
+        <category>advisory</category>
+        
+      </item>
     
       <item>
         <title>Kata Containers `hostPath` file write</title>
@@ -38,6 +52,19 @@
       </item>
     
       <item>
+        <title>Kata Containers - Improper file permissions for read-only volumes</title>
+        <description>&lt;p&gt;An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes host-path volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as read-only inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 18 Nov 2020 00:00:00 -0600</pubDate>
+        <link>https://ajxchapman.github.io/advisory/2020/11/18/CVE-2020-28914.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/advisory/2020/11/18/CVE-2020-28914.html</guid>
+        
+        
+        <category>advisory</category>
+        
+      </item>
+    
+      <item>
         <title>GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</title>
         <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to GitLab:&lt;/strong&gt; GitLab-Runner, when running on Windows with a &lt;code class=&quot;highlighter-rouge&quot;&gt;docker&lt;/code&gt; executor, is vulnerable to Command Injection via the &lt;code class=&quot;highlighter-rouge&quot;&gt;DOCKER_AUTH_CONFIG&lt;/code&gt; build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.&lt;/p&gt;
 </description>
@@ -47,6 +74,47 @@
         
         
         <category>bugreports</category>
+        
+      </item>
+    
+      <item>
+        <title>Daily Swig - Collaborative bug hunting ‘could be very lucrative’ – security pro Alex Chapman on the future of ethical hacking</title>
+        <description>&lt;p&gt;“It all started with a Commodore 64, but Alex Chapman’s passion for programming crystalized into an interest in ethical hacking following a careers advice day at university.&lt;/p&gt;
+
+&lt;p&gt;Since graduating in computer science in 2007, the London-based vulnerability researcher has worked in pen testing, red teaming, and security research during stints at Deloitte, Context Information Security, and Yahoo.”&lt;/p&gt;
+</description>
+        <pubDate>Mon, 26 Oct 2020 00:00:00 -0500</pubDate>
+        <link>https://ajxchapman.github.io/media/2020/10/26/daily-swig.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/media/2020/10/26/daily-swig.html</guid>
+        
+        
+        <category>media</category>
+        
+      </item>
+    
+      <item>
+        <title>Hacker Spotlight - Interview with ajxchapman</title>
+        <description>&lt;p&gt;“Alex Chapman, otherwise known as @ajxchapman, has been a bug bounty hunter for over a decade after starting in the field as a pentester for Deloitte in 2007. Alex says being a full-time bounty hunter gives him the freedom he’s looking for to enjoy his work and spend quality time in London with his wife, baby girl and their West Highland Terrier.”&lt;/p&gt;
+</description>
+        <pubDate>Fri, 25 Sep 2020 00:00:00 -0500</pubDate>
+        <link>https://ajxchapman.github.io/media/2020/09/25/hackerone-spotlight.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/media/2020/09/25/hackerone-spotlight.html</guid>
+        
+        
+        <category>media</category>
+        
+      </item>
+    
+      <item>
+        <title>Full Time Bug Hunting with Alex Chapman</title>
+        <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/J1O_mLUjBuA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 -0500</pubDate>
+        <link>https://ajxchapman.github.io/media/2020/09/09/insiderphd.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/media/2020/09/09/insiderphd.html</guid>
+        
+        
+        <category>media</category>
         
       </item>
     
@@ -70,73 +138,6 @@
         <pubDate>Fri, 28 Feb 2020 00:00:00 -0600</pubDate>
         <link>https://ajxchapman.github.io/bugreports/2020/02/28/hackerone-semrush-316713.html</link>
         <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2020/02/28/hackerone-semrush-316713.html</guid>
-        
-        
-        <category>bugreports</category>
-        
-      </item>
-    
-      <item>
-        <title>On Full-Time Bug Bounty Hunting</title>
-        <description>&lt;p&gt;When I introduce myself to others in the IT Security industry as a full-time Bug Hunter getting paid through Bug Bounties, they often have many questions (when I do this to people outside the industry they look at me funny and fake reasons to excuse themselves). In this post I reflect on my experiences after 12 months bug hunting for my primary source of income, and try to answer some of the more common questions I receive.&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 10 Feb 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html</guid>
-        
-        
-        <category>bugbounty</category>
-        
-      </item>
-    
-      <item>
-        <title>WordPress - Wordpress unzip_file path traversal</title>
-        <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to WordPress:&lt;/strong&gt; The Wordpress unzip_file function (https://codex.wordpress.org/Function_Reference/unzip_file) is vulnerable to path traversal when extracting zip files. Extracting untrusted zip files using this function this could lead to code execution through placing arbitrary PHP files in the DocumentRoot of the webserver.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 30 Jan 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2020/01/30/hackerone-wordpress-205481.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2020/01/30/hackerone-wordpress-205481.html</guid>
-        
-        
-        <category>bugreports</category>
-        
-      </item>
-    
-      <item>
-        <title>Bug Hunting Year in Review - 2019</title>
-        <description>&lt;p&gt;As I come to the end of my first year of full-time Bug Bounty Hunting in this post I share some statistics of the bug reports I’ve submitted during 2019.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 01 Jan 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugbounty/2020/01/01/bug-hunting-year-in-review.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugbounty/2020/01/01/bug-hunting-year-in-review.html</guid>
-        
-        
-        <category>bugbounty</category>
-        
-      </item>
-    
-      <item>
-        <title>GitLab - GitLab::UrlBlocker validation bypass leading to full Server Side Request Forgery</title>
-        <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to GitLab:&lt;/strong&gt; The &lt;code class=&quot;highlighter-rouge&quot;&gt;GitLab::UrlBlocker&lt;/code&gt; IP address validation methods suffer from a Time of Check to Time of Use (ToCToU) vulnerability. The vulnerability occurs due to multiple DNS resolution requests performed before and after the checks. This issue allows a malicious authenticated user to send GET and POST HTTP requests to arbitrary hosts, including the localhost, cloud metadata services and the local network, and read the HTTP response.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 12 Dec 2019 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2019/12/12/hackerone-gitlab-541169.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2019/12/12/hackerone-gitlab-541169.html</guid>
-        
-        
-        <category>bugreports</category>
-        
-      </item>
-    
-      <item>
-        <title>GitLab - Importing GitLab project archives can replace uploads of other users</title>
-        <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to GitLab:&lt;/strong&gt; Importing a modified exported GitLab project archive can overwrite uploads for other users. If the &lt;code class=&quot;highlighter-rouge&quot;&gt;secret&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;file name&lt;/code&gt; of an upload are known (these can be easily identified for any uploads to public repositories), any user can import a new project which overwrites the served content of the upload with arbitrary content.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 11 Dec 2019 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2019/12/11/hackerone-gitlab-534794.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2019/12/11/hackerone-gitlab-534794.html</guid>
         
         
         <category>bugreports</category>

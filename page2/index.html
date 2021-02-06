@@ -15,7 +15,7 @@
 <link rel="prev" href="https://ajxchapman.github.io/" />
 <link rel="next" href="https://ajxchapman.github.io/page3" />
 <script type="application/ld+json">
-{"description":"A tech blog about all things bug bounty, security and development.","url":"https://ajxchapman.github.io/page2/","@type":"WebPage","headline":"Alex Chapman’s Blog","@context":"https://schema.org"}</script>
+{"url":"https://ajxchapman.github.io/page2/","@type":"WebPage","description":"A tech blog about all things bug bounty, security and development.","headline":"Alex Chapman’s Blog","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,6 +38,326 @@
   
     
 
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html" >On Full-Time Bug Bounty Hunting</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-02-10T00:00:00-06:00" itemprop="datePublished">
+        2020-02-10
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>When I introduce myself to others in the IT Security industry as a full-time Bug Hunter getting paid through Bug Bounties, they often have many questions (when I do this to people outside the industry they look at me funny and fake reasons to excuse themselves). In this post I reflect on my experiences after 12 months bug hunting for my primary source of income, and try to answer some of the more common questions I receive.</p>
+
+
+  </div>
+  
+    <a href="/bugbounty/2020/02/10/on-full-time-bug-bounty-hunting.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/01/30/hackerone-wordpress-205481.html" target="_blank">WordPress - Wordpress unzip_file path traversal</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-01-30T00:00:00-06:00" itemprop="datePublished">
+        2020-01-30
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+        • <span itemprop="cve">CVE-2017-14719</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to WordPress:</strong> The Wordpress unzip_file function (https://codex.wordpress.org/Function_Reference/unzip_file) is vulnerable to path traversal when extracting zip files. Extracting untrusted zip files using this function this could lead to code execution through placing arbitrary PHP files in the DocumentRoot of the webserver.</p>
+
+  </div>
+  
+    <a href="/bugreports/2020/01/30/hackerone-wordpress-205481.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugbounty/2020/01/01/bug-hunting-year-in-review.html" >Bug Hunting Year in Review - 2019</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-01-01T00:00:00-06:00" itemprop="datePublished">
+        2020-01-01
+      </time>
+      
+        • <span itemprop="category">Bug Bounty</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>As I come to the end of my first year of full-time Bug Bounty Hunting in this post I share some statistics of the bug reports I’ve submitted during 2019.</p>
+
+
+  </div>
+  
+    <a href="/bugbounty/2020/01/01/bug-hunting-year-in-review.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/12/12/hackerone-gitlab-541169.html" target="_blank">GitLab - GitLab::UrlBlocker validation bypass leading to full Server Side Request Forgery</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-12-12T00:00:00-06:00" itemprop="datePublished">
+        2019-12-12
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> The <code class="highlighter-rouge">GitLab::UrlBlocker</code> IP address validation methods suffer from a Time of Check to Time of Use (ToCToU) vulnerability. The vulnerability occurs due to multiple DNS resolution requests performed before and after the checks. This issue allows a malicious authenticated user to send GET and POST HTTP requests to arbitrary hosts, including the localhost, cloud metadata services and the local network, and read the HTTP response.</p>
+
+  </div>
+  
+    <a href="/bugreports/2019/12/12/hackerone-gitlab-541169.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/12/11/hackerone-gitlab-534794.html" target="_blank">GitLab - Importing GitLab project archives can replace uploads of other users</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-12-11T00:00:00-06:00" itemprop="datePublished">
+        2019-12-11
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+        • <span itemprop="cve">CVE-2019-5469</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> Importing a modified exported GitLab project archive can overwrite uploads for other users. If the <code class="highlighter-rouge">secret</code> and <code class="highlighter-rouge">file name</code> of an upload are known (these can be easily identified for any uploads to public repositories), any user can import a new project which overwrites the served content of the upload with arbitrary content.</p>
+
+  </div>
+  
+    <a href="/bugreports/2019/12/11/hackerone-gitlab-534794.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/media/2019/09/12/hackerone-hacker-interview.html" target="_blank">HackerOne Hacker Interviews</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-09-12T00:00:00-05:00" itemprop="datePublished">
+        2019-09-12
+      </time>
+      
+        • <span itemprop="category">Media</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <iframe width="832" height="468" src="https://www.youtube.com/embed/ASagnIt0-fY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+  </div>
+  
+    <a href="/media/2019/09/12/hackerone-hacker-interview.html" target="_blank">Continue reading on www.youtube.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
 
   
 
@@ -67,6 +387,7 @@
       
         • <span itemprop="category">Presentations</span>
       
+      
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
@@ -74,17 +395,19 @@
 
 
   </div>
-  <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html" >Continue reading...</a>
+  
+    <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html">Continue reading...</a>
+  
 </article>
 
 
     
     
-      
-    
   
     
 
+
+  
 
   
 
@@ -120,13 +443,16 @@
       
         • <span itemprop="category">Bug Reports</span>
       
+      
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
     <p><strong>HackerOne bug report to New Relic:</strong> The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.</p>
 
   </div>
-  <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">Continue reading...</a>
+  
+    <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">Continue reading on hackerone.com...</a>
+  
 </article>
 
 
@@ -135,6 +461,8 @@
   
     
 
+
+  
 
   
 
@@ -158,6 +486,7 @@
       
         • <span itemprop="category">Bug Reports</span>
       
+      
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
@@ -165,7 +494,9 @@
 
 
   </div>
-  <a href="/bugreports/2019/04/23/perforce-local-file-disclosure.html" >Continue reading...</a>
+  
+    <a href="/bugreports/2019/04/23/perforce-local-file-disclosure.html">Continue reading...</a>
+  
 </article>
 
 
@@ -174,6 +505,8 @@
   
     
 
+
+  
 
   
 
@@ -209,288 +542,16 @@
       
         • <span itemprop="category">Bug Reports</span>
       
+      
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
     <p><strong>HackerOne bug report to Lob:</strong> The Template Preview function allows users to render arbitrary HTML to a PDF document, this includes the ability to execute arbitrary Javascript. The HTML agent used to render the HTML is based on an old version of WebKit which has known security issues, for which public exploits and Proof of Concepts (PoCs) are available.</p>
 
   </div>
-  <a href="/bugreports/2019/04/23/hackerone-lob-520717.html" target="_blank">Continue reading...</a>
-</article>
-
-
-    
-    
   
-    
-
-
+    <a href="/bugreports/2019/04/23/hackerone-lob-520717.html" target="_blank">Continue reading on hackerone.com...</a>
   
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2019/04/04/perforce-local-file-disclosure.html" >Perforce - Helix Command-Line Client Arbitrary File Read / Write</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2019-04-04T00:00:00-05:00" itemprop="datePublished">
-        2019-04-04
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>The <code class="highlighter-rouge">p4</code> Helix Command-Line Client accepts and responds to Perforce protocol commands supplied by a connected server without any validation. A malicious Perforce server can send arbitrary Perforce protocol commands to connecting clients in order to expose the contents of client system files or write arbitrary files on the client system.</p>
-
-
-  </div>
-  <a href="/bugreports/2019/04/04/perforce-local-file-disclosure.html" >Continue reading...</a>
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugbounty/2019/03/26/h1-702-ctf-2019.html" >H1-702 2019 - CTF Writeup</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2019-03-26T00:00:00-05:00" itemprop="datePublished">
-        2019-03-26
-      </time>
-      
-        • <span itemprop="category">Bug Bounty</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a <a href="https://gist.github.com/ajxchapman/b7baca094e61ff120c44379029646b97">GitHub Gist</a>.</p>
-
-
-  </div>
-  <a href="/bugbounty/2019/03/26/h1-702-ctf-2019.html" >Continue reading...</a>
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2018/07/02/hackerone-ubiquiti-inc-329770.html" target="_blank">Ubiquiti Inc. - UniFi Video Server web interface Configuration Restore path traversal leading to local system compromise</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2018-07-02T00:00:00-05:00" itemprop="datePublished">
-        2018-07-02
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to Ubiquiti Inc.:</strong> The UniFi Video <code class="highlighter-rouge">Configuration Restore</code> functionality is vulnerable to a path traversal vulnerability when extracting the contents of POSTed zip files.</p>
-
-  </div>
-  <a href="/bugreports/2018/07/02/hackerone-ubiquiti-inc-329770.html" target="_blank">Continue reading...</a>
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2018/04/28/hackerone-ubiquiti-inc-329749.html" target="_blank">Ubiquiti Inc. - UniFi Video Server web interface Configuration Restore CSRF leading to full application compromise</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2018-04-28T00:00:00-05:00" itemprop="datePublished">
-        2018-04-28
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to Ubiquiti Inc.:</strong> The UniFi Video <code class="highlighter-rouge">Configuration Restore</code> functionality is vulnerable to CSRF. A successful attack would allow modification of any application configuration setting, including creating new administrative users.</p>
-
-  </div>
-  <a href="/bugreports/2018/04/28/hackerone-ubiquiti-inc-329749.html" target="_blank">Continue reading...</a>
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2018/03/13/hackerone-semrush-312543.html" target="_blank">SEMrush - XXE in Site Audit function exposing file and directory contents</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2018-03-13T00:00:00-05:00" itemprop="datePublished">
-        2018-03-13
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to SEMrush:</strong> The Project Site Audit function is vulnerable to XXE when parsing sitemap.xml files.</p>
-
-  </div>
-  <a href="/bugreports/2018/03/13/hackerone-semrush-312543.html" target="_blank">Continue reading...</a>
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/security/2017/01/14/blind-sql-injection.html" >Blind SQL injection optimization</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2017-01-14T00:00:00-06:00" itemprop="datePublished">
-        2017-01-14
-      </time>
-      
-        • <span itemprop="category">Security</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests.</p>
-
-<p>This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.</p>
-
-
-  </div>
-  <a href="/security/2017/01/14/blind-sql-injection.html" >Continue reading...</a>
 </article>
 
 
