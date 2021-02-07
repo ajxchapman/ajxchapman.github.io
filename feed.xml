@@ -6,8 +6,8 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Feb 2021 06:20:00 -0600</pubDate>
-    <lastBuildDate>Sun, 07 Feb 2021 06:20:00 -0600</lastBuildDate>
+    <pubDate>Sun, 07 Feb 2021 10:06:05 -0600</pubDate>
+    <lastBuildDate>Sun, 07 Feb 2021 10:06:05 -0600</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -132,15 +132,15 @@
       </item>
     
       <item>
-        <title>Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io</title>
-        <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to Greenhouse.io:&lt;/strong&gt; The configuration of the Sintra framework application hosted at &lt;code class=&quot;highlighter-rouge&quot;&gt;oauth-redirector.services.greenhouse.io&lt;/code&gt; exposes internal information when exceptions occur. The application is configured with the &lt;code class=&quot;highlighter-rouge&quot;&gt;show_exceptions&lt;/code&gt; setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur.&lt;/p&gt;
+        <title>Ubiquiti UniFi Video - Configuration restore privilege escalation</title>
+        <description>&lt;p&gt;The UniFi Video Server (Windows) web interface configuration restore functionality at the “backup” and “wizard” endpoints does not implement sufficient privilege checks. Low privileged users, belonging to the PUBLIC_GROUP or CUSTOM_GROUP groups, can access these endpoints and overwrite the current application configuration. This can be abused for various purposes, including adding new administrative users. Affected Products: UniFi Video Controller v3.9.3 (for Windows 7/8/10 x64) and prior. Fixed in UniFi Video Controller v3.9.6 and newer.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 29 Feb 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2020/02/29/hackerone-greenhouseio-315205.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2020/02/29/hackerone-greenhouseio-315205.html</guid>
+        <pubDate>Mon, 30 Mar 2020 00:00:00 -0500</pubDate>
+        <link>https://ajxchapman.github.io/advisory/2020/03/30/CVE-2020-8145.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/advisory/2020/03/30/CVE-2020-8145.html</guid>
         
         
-        <category>bugreports</category>
+        <category>advisory</category>
         
       </item>
     

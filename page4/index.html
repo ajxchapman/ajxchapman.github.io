@@ -62,6 +62,170 @@
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2017/09/19/CVE-2017-14719.html" target="_blank">WordPress - Unzip path traversal vulnerability</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-09-19T00:00:00-05:00" itemprop="datePublished">
+        2017-09-19
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2017-14719</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Before version 4.8.2, WordPress was vulnerable to a directory traversal attack during unzip operations in the ZipArchive and PclZip components.</p>
+
+  </div>
+  
+    <a href="/advisory/2017/09/19/CVE-2017-14719.html" target="_blank">Continue reading on wordpress.org...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2017/01/23/CVE-2016-1801.html" target="_blank">Apple OS X - WPAD CFNetwork Proxies information leak</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-01-23T00:00:00-06:00" itemprop="datePublished">
+        2017-01-23
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2016-1801</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>The CFNetwork Proxies subsystem in Apple iOS before 9.3.2, OS X before 10.11.5, and tvOS before 9.2.1 mishandles URLs in http and https requests, which allows remote attackers to obtain sensitive information via unspecified vectors.</p>
+
+  </div>
+  
+    <a href="/advisory/2017/01/23/CVE-2016-1801.html" target="_blank">Continue reading on support.apple.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/security/2017/01/14/blind-sql-injection.html" >Blind SQL injection optimization</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-01-14T00:00:00-06:00" itemprop="datePublished">
+        2017-01-14
+      </time>
+      
+        • <span itemprop="category">Security</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests.</p>
+
+<p>This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.</p>
+
+
+  </div>
+  
+    <a href="/security/2017/01/14/blind-sql-injection.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
       <a href="/advisory/2017/01/04/CVE-2017-5384.html" target="_blank">Mozilla Firefox - Information disclosure via Proxy Auto-Config (PAC)</a>
     </h1>
     <p class="post-meta">
@@ -87,8 +251,6 @@
 
 
     
-    
-      
     
   
     
@@ -378,142 +540,6 @@
   </div>
   
     <a href="/bugreports/2016/04/14/openvpn-traffic-interception.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2016/03/10/firefox-pac-url-disclosure.html" >Firefox - Proxy Auto-Config SSL/TLS Url Disclosure</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2016-03-10T00:00:00-06:00" itemprop="datePublished">
-        2016-03-10
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-        • <span itemprop="cve">CVE-2017-5384</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Firefox.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2016/03/10/firefox-pac-url-disclosure.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2016/03/10/chrome-pac-url-disclosure.html" >Chrome - Proxy Auto-Config SSL/TLS Url Disclosure</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2016-03-10T00:00:00-06:00" itemprop="datePublished">
-        2016-03-10
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-        • <span itemprop="cve">CVE-2016-5134</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Malicious Proxy Auto-Config (PAC) files allow for the disclosure of SSL/TLS encrypted HTTPS request URLs (including full paths and query strings) from Chrome.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2016/03/10/chrome-pac-url-disclosure.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2015/10/07/dompdf-file-disclosure.html" >dompdf - Local File Disclosure</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2015-10-07T00:00:00-05:00" itemprop="datePublished">
-        2015-10-07
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Dompdf is vulnerable to a file disclosure vulnerability which can be exploited by anonymous, unauthenticated attackers to download arbitrary files from the underlying hosting server. Exploitation of this issue requires a non-standard configuration option to be set, specifically the DOMPDF_ENABLE_REMOTE option must be set to true.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2015/10/07/dompdf-file-disclosure.html">Continue reading...</a>
   
 </article>
 

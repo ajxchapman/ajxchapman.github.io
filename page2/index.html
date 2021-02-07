@@ -40,6 +40,116 @@
 
 
   
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2020/03/30/CVE-2020-8144.html" target="_blank">Ubiquiti UniFi Video - Firmware update path traversal</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-03-30T00:00:00-05:00" itemprop="datePublished">
+        2020-03-30
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2020-8144</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>The UniFi Video Server v3.9.3 and prior (for Windows 7/8/10 x64) web interface Firmware Update functionality, under certain circumstances, does not validate firmware download destinations to ensure they are within the intended destination directory tree. It accepts a request with a URL to firmware update information. If the version field contains ..\ character sequences, the destination file path to save the firmware can be manipulated to be outside the intended destination directory tree. Fixed in UniFi Video Controller v3.10.3 and newer.</p>
+
+  </div>
+  
+    <a href="/advisory/2020/03/30/CVE-2020-8144.html" target="_blank">Continue reading on community.ui.com...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2020/02/29/hackerone-greenhouseio-315205.html" target="_blank">Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-02-29T00:00:00-06:00" itemprop="datePublished">
+        2020-02-29
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to Greenhouse.io:</strong> The configuration of the Sintra framework application hosted at <code class="highlighter-rouge">oauth-redirector.services.greenhouse.io</code> exposes internal information when exceptions occur. The application is configured with the <code class="highlighter-rouge">show_exceptions</code> setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur.</p>
+
+  </div>
+  
+    <a href="/bugreports/2020/02/29/hackerone-greenhouseio-315205.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
 
   
 
@@ -89,8 +199,6 @@
 
 
     
-    
-      
     
   
     
@@ -452,114 +560,6 @@
   </div>
   
     <a href="/presentations/2019/09/11/continuous-integration-continuous-bounties.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/advisory/2019/07/29/CVE-2019-5469.html" target="_blank">GitLab - Arbitrary File Upload via Import Project Archive</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2019-07-29T00:00:00-05:00" itemprop="datePublished">
-        2019-07-29
-      </time>
-      
-        • <span itemprop="category">Advisories</span>
-      
-      
-        • <span itemprop="cve">CVE-2019-5469</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>An IDOR vulnerability exists in GitLab &lt;v12.1.2, &lt;v12.0.4, and &lt;v11.11.6 that allowed uploading files from project archive to replace other users files potentially allowing an attacker to replace project binaries or other uploaded assets.</p>
-
-  </div>
-  
-    <a href="/advisory/2019/07/29/CVE-2019-5469.html" target="_blank">Continue reading on about.gitlab.com...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2019-07-02T00:00:00-05:00" itemprop="datePublished">
-        2019-07-02
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to New Relic:</strong> The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.</p>
-
-  </div>
-  
-    <a href="/bugreports/2019/07/02/hackerone-new-relic-344032.html" target="_blank">Continue reading on hackerone.com...</a>
   
 </article>
 
