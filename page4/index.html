@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 4 of 4 for Alex Chapman’s Blog | A tech blog about all things bug bounty, security and development.</title>
+<title>Page 4 of 6 for Alex Chapman’s Blog | A tech blog about all things bug bounty, security and development.</title>
 <meta name="generator" content="Jekyll v3.8.6" />
 <meta property="og:title" content="Alex Chapman’s Blog" />
 <meta property="og:locale" content="en_US" />
@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://ajxchapman.github.io/page4/" />
 <meta property="og:site_name" content="Alex Chapman’s Blog" />
 <link rel="prev" href="https://ajxchapman.github.io/page3" />
+<link rel="next" href="https://ajxchapman.github.io/page5" />
 <script type="application/ld+json">
 {"url":"https://ajxchapman.github.io/page4/","@type":"WebPage","description":"A tech blog about all things bug bounty, security and development.","headline":"Alex Chapman’s Blog","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
@@ -34,6 +35,355 @@
 
     <main id="content" class="main-content" role="main">
       <div class="posts">
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2017/01/04/CVE-2017-5384.html" target="_blank">Mozilla Firefox - Information disclosure via Proxy Auto-Config (PAC)</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-01-04T00:00:00-06:00" itemprop="datePublished">
+        2017-01-04
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2017-5384</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Proxy Auto-Config (PAC) files can specify a JavaScript function called for all URL requests with the full URL path which exposes more information than would be sent to the proxy itself in the case of HTTPS. Normally the Proxy Auto-Config file is specified by the user or machine owner and presumed to be non-malicious, but if a user has enabled Web Proxy Auto Detect (WPAD) this file can be served remotely. This vulnerability affects Firefox &lt; 51.</p>
+
+  </div>
+  
+    <a href="/advisory/2017/01/04/CVE-2017-5384.html" target="_blank">Continue reading on www.mozilla.org...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/linux/2016/08/31/seccomp-and-seccomp-bpf.html" >Seccomp and Seccomp-BPF</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2016-08-31T00:00:00-05:00" itemprop="datePublished">
+        2016-08-31
+      </time>
+      
+        • <span itemprop="category">Linux</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>This post delves into the details of seccomp and seccomp-BPF, how they are implemented and how developers can configure them. Seccomp and Seccomp-BPF are used to limit the system calls available to a Linux process. Typically developers will implement a seccomp configuration for their application, however seccomp configurations can also be applied by system administrators to pre-compiled applications using various tricks.</p>
+
+
+  </div>
+  
+    <a href="/linux/2016/08/31/seccomp-and-seccomp-bpf.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/presentations/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html" >DEF CON 24 - Toxic Proxies - Bypassing HTTPS & VPNs to Pwn Your Online Identity</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2016-08-07T00:00:00-05:00" itemprop="datePublished">
+        2016-08-07
+      </time>
+      
+        • <span itemprop="category">Presentations</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Rogue access points provide attackers with powerful capabilities, but in 2016 modern privacy protections such as HTTPS Everywhere, free TLS certificates and HSTS are de-facto standards. Surely our encrypted traffic is now safe on the local coffee shop network? If not, my VPN will definitely protect me… right?</p>
+
+
+  </div>
+  
+    <a href="/presentations/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2016/07/20/CVE-2016-5134.html" target="_blank">Google Chrome - URL leakage via PAC script</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2016-07-20T00:00:00-05:00" itemprop="datePublished">
+        2016-07-20
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2016-5134</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>net/proxy/proxy_service.cc in the Proxy Auto-Config (PAC) feature in Google Chrome before 52.0.2743.82 does not ensure that URL information is restricted to a scheme, host, and port, which allows remote attackers to discover credentials by operating a server with a PAC script, a related issue to CVE-2016-3763.</p>
+
+  </div>
+  
+    <a href="/advisory/2016/07/20/CVE-2016-5134.html" target="_blank">Continue reading on chromereleases.googleblog.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2016/07/06/CVE-2016-3763.html" target="_blank">Android - URL leakage via PAC script</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2016-07-06T00:00:00-05:00" itemprop="datePublished">
+        2016-07-06
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2016-3763</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>net/PacProxySelector.java in the Proxy Auto-Config (PAC) feature in Android 4.x before 4.4.4, 5.0.x before 5.0.2, 5.1.x before 5.1.1, and 6.x before 2016-07-01 does not ensure that URL information is restricted to a scheme, host, and port, which allows remote attackers to discover credentials by operating a server with a PAC script, aka internal bug 27593919.</p>
+
+  </div>
+  
+    <a href="/advisory/2016/07/06/CVE-2016-3763.html" target="_blank">Continue reading on source.android.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2016/04/14/pia-traffic-interception.html" >PIA Client - HTTP(S) Tunnelled Traffic Interception</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2016-04-14T00:00:00-05:00" itemprop="datePublished">
+        2016-04-14
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from.</p>
+
+
+  </div>
+  
+    <a href="/bugreports/2016/04/14/pia-traffic-interception.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2016/04/14/openvpn-traffic-interception.html" >OpenVPN - HTTP(S) Tunnelled Traffic Interception</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2016-04-14T00:00:00-05:00" itemprop="datePublished">
+        2016-04-14
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Windows OpenVPN users connecting to a VPN network from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted by a 3rd party. OpenVPN on Windows honours the Web Proxy Auto-Discovery (WPAD) settings, configured by the network the client is connecting from, on VPN connections.</p>
+
+
+  </div>
+  
+    <a href="/bugreports/2016/04/14/openvpn-traffic-interception.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
   
     
 
@@ -79,8 +429,6 @@
 
 
     
-    
-      
     
   
     
@@ -173,320 +521,13 @@
     
     
   
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/presentations/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html" >Black Hat 2015 - WSUSpect - Compromising the Windows Enterprise via Windows Update</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2015-08-05T00:00:00-05:00" itemprop="datePublished">
-        2015-08-05
-      </time>
-      
-        • <span itemprop="category">Presentations</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Ever wondered what really happens when you plug in a USB device and Windows begins ‘searching for Drivers’? Who doesn’t have that Windows Update reboot dialog sitting in the corner of their desktop? Our talk will take an exciting look at one of the dullest corners of the Windows OS.</p>
-
-<p>WSUS (Windows Server Update Services) allows admins to co-ordinate software updates to servers and desktops throughout their organisation. Whilst all updates must be signed by Microsoft, we find other routes to deliver malicious updates to Windows systems using WSUS. We will demonstrate how a default WSUS deployment can be leveraged to gain SYSTEM level access to machines on the local network.</p>
-
-
-  </div>
-  
-    <a href="/presentations/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/presentations/2014/09/11/hacking-an-internet-enabled-lagomorph.html" >44Con 2014 - Hacking an Internet Enabled Lagomorph</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2014-09-11T00:00:00-05:00" itemprop="datePublished">
-        2014-09-11
-      </time>
-      
-        • <span itemprop="category">Presentations</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>So, I have to admit, I got a little obsessed with this project. Who would have thought an internet enabled, hyperkinetic, 9.6-inch rabbity thing could hold so much intrigue. Little did I know that in procuring this geek toy I’d be delving down the proverbial rabbit hole of ARM exploitation, including reverse engineering, cross compiling, protocol analysis, 0days and producing exploits from vulnerability advisories. All this in an attempt to get remote code execution… on a rabbit… seriously!</p>
-
-
-  </div>
-  
-    <a href="/presentations/2014/09/11/hacking-an-internet-enabled-lagomorph.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html" >Hacking into Internet Connected Light Bulbs</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2014-07-04T00:00:00-05:00" itemprop="datePublished">
-        2014-07-04
-      </time>
-      
-        • <span itemprop="category">Security</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>The subject of this blog, the LIFX light bulb, bills itself as the light bulb reinvented; a “WiFi enabled multi-color, energy efficient LED light bulb” that can be controlled from a smartphone [1]. We chose to investigate this device due to its use of emerging wireless network protocols, the way it came to market and its appeal to the technophile in all of us.</p>
-
-
-  </div>
-  
-    <a href="/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2013/07/04/firefox-libgles-integer-overflow.html" >Firefox - Almost Native Graphics Layer Engine (ANGLE) library Integer Overflow</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2013-07-04T00:00:00-05:00" itemprop="datePublished">
-        2013-07-04
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-        • <span itemprop="cve">CVE-2013-1721</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>The Almost Native Graphics Layer Engine (ANGLE) library as used in Mozilla Firefox
-is vulnerable to an integer overflow vulnerability leading to memory corruption
-which may allow an attacker to exploit the browser process. The ANGLE library is
-used by Firefox on Windows as a bridge between the OpenGL ES 2.0 API and DirectX.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2013/07/04/firefox-libgles-integer-overflow.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2013/07/04/chrome-libgles-integer-overflow.html" >Chrome - Almost Native Graphics Layer Engine (ANGLE) library Integer Overflow</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2013-07-04T00:00:00-05:00" itemprop="datePublished">
-        2013-07-04
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-        • <span itemprop="cve">CVE-2013-2901</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>The Almost Native Graphics Layer Engine (ANGLE) library as used in Google Chrome is vulnerable to an integer overflow vulnerability leading to memory corruption which may allow an attacker to exploit the browser process. The ANGLE library is used by Chrome on Windows as a bridge between the OpenGL ES 2.0 API and DirectX.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2013/07/04/chrome-libgles-integer-overflow.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/presentations/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html" >Ruxcon 2012 - Examination of the VMware ESXi Binary Protocol Using CANAPE</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2012-10-21T00:00:00-05:00" itemprop="datePublished">
-        2012-10-21
-      </time>
-      
-        • <span itemprop="category">Presentations</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>This presentation will cover a demonstration of the new version of the Canape protocol analysis tool being released for Ruxcon. During the course of the presentation various attack scenarios against the VMWare ESXi binary protocol will be demonstrated using Canape.</p>
-
-
-  </div>
-  
-    <a href="/presentations/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
 </div>
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page5">Older</a>
   
-  <span class="pagination-text">Page 4 of 4</span>
+  <span class="pagination-text">Page 4 of 6</span>
   
     
       <a class="pagination-item newer" href="/page3">Newer</a>

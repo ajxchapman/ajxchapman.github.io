@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 3 of 4 for Alex Chapman’s Blog | A tech blog about all things bug bounty, security and development.</title>
+<title>Page 3 of 6 for Alex Chapman’s Blog | A tech blog about all things bug bounty, security and development.</title>
 <meta name="generator" content="Jekyll v3.8.6" />
 <meta property="og:title" content="Alex Chapman’s Blog" />
 <meta property="og:locale" content="en_US" />
@@ -54,6 +54,107 @@
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/04/23/perforce-local-file-disclosure.html" >Perforce - Helix Command-Line Client P4CLIENTPATH  Leading to Arbitrary File Read / Write</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-04-23T00:00:00-05:00" itemprop="datePublished">
+        2019-04-23
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>The <code class="highlighter-rouge">p4</code> Helix Command-Line Client uses the optional <code class="highlighter-rouge">P4CLIENTPATH</code> environment variable to restrict directories to which the application permitted to read or write files. This configuration can be trivially bypassed allowing a malicious Perforce server to read or write arbitrary files on the client system.</p>
+
+
+  </div>
+  
+    <a href="/bugreports/2019/04/23/perforce-local-file-disclosure.html">Continue reading...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/bugreports/2019/04/23/hackerone-lob-520717.html" target="_blank">Lob - Old WebKit HTML agent in Template Preview function has multiple known vulnerabilities leading to RCE</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-04-23T00:00:00-05:00" itemprop="datePublished">
+        2019-04-23
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to Lob:</strong> The Template Preview function allows users to render arbitrary HTML to a PDF document, this includes the ability to execute arbitrary Javascript. The HTML agent used to render the HTML is based on an old version of WebKit which has known security issues, for which public exploits and Proof of Concepts (PoCs) are available.</p>
+
+  </div>
+  
+    <a href="/bugreports/2019/04/23/hackerone-lob-520717.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
       <a href="/bugreports/2019/04/04/perforce-local-file-disclosure.html" >Perforce - Helix Command-Line Client Arbitrary File Read / Write</a>
     </h1>
     <p class="post-meta">
@@ -78,8 +179,6 @@
 
 
     
-    
-      
     
   
     
@@ -293,6 +392,112 @@
 
 
   
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2017/09/19/CVE-2017-14719.html" target="_blank">WordPress - Unzip path traversal vulnerability</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-09-19T00:00:00-05:00" itemprop="datePublished">
+        2017-09-19
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2017-14719</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Before version 4.8.2, WordPress was vulnerable to a directory traversal attack during unzip operations in the ZipArchive and PclZip components.</p>
+
+  </div>
+  
+    <a href="/advisory/2017/09/19/CVE-2017-14719.html" target="_blank">Continue reading on wordpress.org...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2017/01/23/CVE-2016-1801.html" target="_blank">Apple OS X - WPAD CFNetwork Proxies information leak</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2017-01-23T00:00:00-06:00" itemprop="datePublished">
+        2017-01-23
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2016-1801</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>The CFNetwork Proxies subsystem in Apple iOS before 9.3.2, OS X before 10.11.5, and tvOS before 9.2.1 mishandles URLs in http and https requests, which allows remote attackers to obtain sensitive information via unspecified vectors.</p>
+
+  </div>
+  
+    <a href="/advisory/2017/01/23/CVE-2016-1801.html" target="_blank">Continue reading on support.apple.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
 
   
 
@@ -345,201 +550,13 @@
     
     
   
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/linux/2016/08/31/seccomp-and-seccomp-bpf.html" >Seccomp and Seccomp-BPF</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2016-08-31T00:00:00-05:00" itemprop="datePublished">
-        2016-08-31
-      </time>
-      
-        • <span itemprop="category">Linux</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>This post delves into the details of seccomp and seccomp-BPF, how they are implemented and how developers can configure them. Seccomp and Seccomp-BPF are used to limit the system calls available to a Linux process. Typically developers will implement a seccomp configuration for their application, however seccomp configurations can also be applied by system administrators to pre-compiled applications using various tricks.</p>
-
-
-  </div>
-  
-    <a href="/linux/2016/08/31/seccomp-and-seccomp-bpf.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/presentations/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html" >DEF CON 24 - Toxic Proxies - Bypassing HTTPS & VPNs to Pwn Your Online Identity</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2016-08-07T00:00:00-05:00" itemprop="datePublished">
-        2016-08-07
-      </time>
-      
-        • <span itemprop="category">Presentations</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Rogue access points provide attackers with powerful capabilities, but in 2016 modern privacy protections such as HTTPS Everywhere, free TLS certificates and HSTS are de-facto standards. Surely our encrypted traffic is now safe on the local coffee shop network? If not, my VPN will definitely protect me… right?</p>
-
-
-  </div>
-  
-    <a href="/presentations/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2016/04/14/pia-traffic-interception.html" >PIA Client - HTTP(S) Tunnelled Traffic Interception</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2016-04-14T00:00:00-05:00" itemprop="datePublished">
-        2016-04-14
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Private Internet Access(PIA) VPN users connecting to the PIA VPN service from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted. The PIA client for Windows honours the Web Proxy Auto-Discovery (WPAD) settings configured by the local network the client is connecting from.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2016/04/14/pia-traffic-interception.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2016/04/14/openvpn-traffic-interception.html" >OpenVPN - HTTP(S) Tunnelled Traffic Interception</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2016-04-14T00:00:00-05:00" itemprop="datePublished">
-        2016-04-14
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Windows OpenVPN users connecting to a VPN network from an untrusted/malicious network are at risk of having all VPN tunnelled HTTP(S) traffic intercepted by a 3rd party. OpenVPN on Windows honours the Web Proxy Auto-Discovery (WPAD) settings, configured by the network the client is connecting from, on VPN connections.</p>
-
-
-  </div>
-  
-    <a href="/bugreports/2016/04/14/openvpn-traffic-interception.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
 </div>
 
 <div class="pagination">
   
     <a class="pagination-item older" href="/page4">Older</a>
   
-  <span class="pagination-text">Page 3 of 4</span>
+  <span class="pagination-text">Page 3 of 6</span>
   
     
       <a class="pagination-item newer" href="/page2">Newer</a>

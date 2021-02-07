@@ -76,7 +76,7 @@
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
-    <p>When using <code class="highlighter-rouge">--userns-remap</code>, if the root user in the remapped namespace has access to the host filesystem they can modify files under <code class="highlighter-rouge">/var/lib/docker/&lt;remapping&gt;</code> that cause writing files with extended privileges.</p>
+    <p>In Docker before versions 9.03.15, 20.10.3 there is a vulnerability involving the –userns-remap option in which access to remapped root allows privilege escalation to real root. When using “–userns-remap”, if the root user in the remapped namespace has access to the host filesystem they can modify files under “/var/lib/docker/<remapping>" that cause writing files with extended privileges. Versions 20.10.3 and 19.03.15 contain patches that prevent privilege escalation from remapped user.</remapping></p>
 
 
   </div>
@@ -144,6 +144,8 @@
 </article>
 
     </div>
+  
+
   
 
   
@@ -292,6 +294,8 @@
   
 
   
+
+  
     
     <div id="featured_/bugbounty/2019/03/26/h1-702-ctf-2019" class="featured_post featured_hidden">
       
@@ -333,6 +337,10 @@
 </article>
 
     </div>
+  
+
+  
+
   
 
   
@@ -397,6 +405,26 @@
 </article>
 
     </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
   
 
   
@@ -581,7 +609,7 @@
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
-    <p>An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes host-path volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as read-only inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.</p>
+    <p>An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes hostPath volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as readOnly inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.</p>
 
   </div>
   
@@ -704,6 +732,59 @@
   </div>
   
     <a href="/media/2020/10/26/daily-swig.html" target="_blank">Continue reading on portswigger.net...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2020/10/01/CVE-2020-13347.html" target="_blank">GitLab - Command injection on runner host</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-10-01T00:00:00-05:00" itemprop="datePublished">
+        2020-10-01
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2020-13347</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>A command injection vulnerability was discovered in Gitlab runner versions prior to 13.2.4, 13.3.2 and 13.4.1. When the runner is configured on a Windows system with a docker executor, which allows the attacker to run arbitrary commands on Windows host, via DOCKER_AUTH_CONFIG build variable.</p>
+
+  </div>
+  
+    <a href="/advisory/2020/10/01/CVE-2020-13347.html" target="_blank">Continue reading on about.gitlab.com...</a>
   
 </article>
 
@@ -888,68 +969,13 @@
     
     
   
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/bugreports/2020/02/28/hackerone-semrush-316713.html" target="_blank">SEMrush - Ad Builder Display Ads Path Traversal</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2020-02-28T00:00:00-06:00" itemprop="datePublished">
-        2020-02-28
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to SEMrush:</strong> The Semrush Ad Builder for Display Ads is vulnerable to path traversal when extracting zip files and referencing images from the embedded <code class="highlighter-rouge">data.csv</code> file.</p>
-
-  </div>
-  
-    <a href="/bugreports/2020/02/28/hackerone-semrush-316713.html" target="_blank">Continue reading on hackerone.com...</a>
-  
-</article>
-
-
-    
-    
-  
 </div>
 
 <div class="pagination">
   
     <a class="pagination-item older" href="/page2">Older</a>
   
-  <span class="pagination-text">Page 1 of 4</span>
+  <span class="pagination-text">Page 1 of 6</span>
   
     <span class="pagination-item newer">Newer</span>
   
