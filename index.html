@@ -39,6 +39,16 @@
 
 
   
+
+  
+
+  
+
+  
+
+  
+
+  
     
     
     
@@ -61,27 +71,24 @@
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">
-      <a href="/advisory/2021/02/02/CVE-2021-21284.html" target="_blank">Moby - Access to remapped root allows privilege escalation to real root</a>
+      <a href="/media/2021/03/22/gitlab-ama.html" target="_blank">GitLab AMA - Bug Bounty with Alex Chapman</a>
     </h1>
     <p class="post-meta">
-      <time datetime="2021-02-02T00:00:00-06:00" itemprop="datePublished">
-        2021-02-02
+      <time datetime="2021-03-22T00:00:00-05:00" itemprop="datePublished">
+        2021-03-22
       </time>
       
-        • <span itemprop="category">Advisories</span>
+        • <span itemprop="category">Media</span>
       
-      
-        • <span itemprop="cve">CVE-2021-21284</span>
       
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
-    <p>In Docker before versions 9.03.15, 20.10.3 there is a vulnerability involving the –userns-remap option in which access to remapped root allows privilege escalation to real root. When using “–userns-remap”, if the root user in the remapped namespace has access to the host filesystem they can modify files under “/var/lib/docker/<remapping>" that cause writing files with extended privileges. Versions 20.10.3 and 19.03.15 contain patches that prevent privilege escalation from remapped user.</remapping></p>
-
+    <iframe width="832" height="468" src="https://www.youtube.com/embed/Km6toD6CAAw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 
   </div>
   
-    <a href="/advisory/2021/02/02/CVE-2021-21284.html" target="_blank">Continue reading on github.com...</a>
+    <a href="/media/2021/03/22/gitlab-ama.html" target="_blank">Continue reading on www.youtube.com...</a>
   
 </article>
 
@@ -93,6 +100,10 @@
 <div class="featured_placeholder">
   <h3>Featured Post</h3>
 
+
+  
+
+  
 
   
 
@@ -479,6 +490,123 @@
   
 
   
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/media/2021/02/09/daily-swig.html" target="_blank">Daily Swig - Container security: Privilege escalation bug patched in Docker Engine</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2021-02-09T00:00:00-06:00" itemprop="datePublished">
+        2021-02-09
+      </time>
+      
+        • <span itemprop="category">Media</span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>A vulnerability in a Docker Engine security feature potentially allowed attackers to escalate privileges from a remapped user to root.</p>
+
+<p>“The two avenues of exploitation I found would allow writing of arbitrary files as the real root user” or seizing ownership of files previously accessible only by the root user, security researcher Alex Chapman, who unearthed the flaw, tells The Daily Swig.</p>
+
+  </div>
+  
+    <a href="/media/2021/02/09/daily-swig.html" target="_blank">Continue reading on portswigger.net...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+    
+    
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/advisory/2021/02/02/CVE-2021-21284.html" target="_blank">Moby - Access to remapped root allows privilege escalation to real root</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2021-02-02T00:00:00-06:00" itemprop="datePublished">
+        2021-02-02
+      </time>
+      
+        • <span itemprop="category">Advisories</span>
+      
+      
+        • <span itemprop="cve">CVE-2021-21284</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>In Docker before versions 9.03.15, 20.10.3 there is a vulnerability involving the –userns-remap option in which access to remapped root allows privilege escalation to real root. When using “–userns-remap”, if the root user in the remapped namespace has access to the host filesystem they can modify files under “/var/lib/docker/<remapping>" that cause writing files with extended privileges. Versions 20.10.3 and 19.03.15 contain patches that prevent privilege escalation from remapped user.</remapping></p>
+
+
+  </div>
+  
+    <a href="/advisory/2021/02/02/CVE-2021-21284.html" target="_blank">Continue reading on github.com...</a>
+  
+</article>
+
+
+    
+    
+  
+    
+
+
+  
+
+  
+
+  
     
     
     
@@ -852,120 +980,6 @@
   </div>
   
     <a href="/media/2020/09/25/hackerone-spotlight.html" target="_blank">Continue reading on www.hackerone.com...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/media/2020/09/09/insiderphd.html" target="_blank">Full Time Bug Hunting with Alex Chapman</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2020-09-09T00:00:00-05:00" itemprop="datePublished">
-        2020-09-09
-      </time>
-      
-        • <span itemprop="category">Media</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <iframe width="832" height="468" src="https://www.youtube.com/embed/J1O_mLUjBuA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-  </div>
-  
-    <a href="/media/2020/09/09/insiderphd.html" target="_blank">Continue reading on www.youtube.com...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/advisory/2020/03/30/CVE-2020-8145.html" target="_blank">Ubiquiti UniFi Video - Configuration restore privilege escalation</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2020-03-30T00:00:00-05:00" itemprop="datePublished">
-        2020-03-30
-      </time>
-      
-        • <span itemprop="category">Advisories</span>
-      
-      
-        • <span itemprop="cve">CVE-2020-8145</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>The UniFi Video Server (Windows) web interface configuration restore functionality at the “backup” and “wizard” endpoints does not implement sufficient privilege checks. Low privileged users, belonging to the PUBLIC_GROUP or CUSTOM_GROUP groups, can access these endpoints and overwrite the current application configuration. This can be abused for various purposes, including adding new administrative users. Affected Products: UniFi Video Controller v3.9.3 (for Windows 7/8/10 x64) and prior. Fixed in UniFi Video Controller v3.9.6 and newer.</p>
-
-  </div>
-  
-    <a href="/advisory/2020/03/30/CVE-2020-8145.html" target="_blank">Continue reading on community.ui.com...</a>
   
 </article>
 

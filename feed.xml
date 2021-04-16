@@ -6,9 +6,37 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Feb 2021 10:06:05 -0600</pubDate>
-    <lastBuildDate>Sun, 07 Feb 2021 10:06:05 -0600</lastBuildDate>
+    <pubDate>Fri, 16 Apr 2021 03:38:53 -0500</pubDate>
+    <lastBuildDate>Fri, 16 Apr 2021 03:38:53 -0500</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>GitLab AMA - Bug Bounty with Alex Chapman</title>
+        <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/Km6toD6CAAw&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Mon, 22 Mar 2021 00:00:00 -0500</pubDate>
+        <link>https://ajxchapman.github.io/media/2021/03/22/gitlab-ama.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/media/2021/03/22/gitlab-ama.html</guid>
+        
+        
+        <category>media</category>
+        
+      </item>
+    
+      <item>
+        <title>Daily Swig - Container security: Privilege escalation bug patched in Docker Engine</title>
+        <description>&lt;p&gt;A vulnerability in a Docker Engine security feature potentially allowed attackers to escalate privileges from a remapped user to root.&lt;/p&gt;
+
+&lt;p&gt;“The two avenues of exploitation I found would allow writing of arbitrary files as the real root user” or seizing ownership of files previously accessible only by the root user, security researcher Alex Chapman, who unearthed the flaw, tells The Daily Swig.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 09 Feb 2021 00:00:00 -0600</pubDate>
+        <link>https://ajxchapman.github.io/media/2021/02/09/daily-swig.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/media/2021/02/09/daily-swig.html</guid>
+        
+        
+        <category>media</category>
+        
+      </item>
     
       <item>
         <title>Moby - Access to remapped root allows privilege escalation to real root</title>
@@ -115,32 +143,6 @@
         
         
         <category>media</category>
-        
-      </item>
-    
-      <item>
-        <title>Full Time Bug Hunting with Alex Chapman</title>
-        <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/J1O_mLUjBuA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-</description>
-        <pubDate>Wed, 09 Sep 2020 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/media/2020/09/09/insiderphd.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/media/2020/09/09/insiderphd.html</guid>
-        
-        
-        <category>media</category>
-        
-      </item>
-    
-      <item>
-        <title>Ubiquiti UniFi Video - Configuration restore privilege escalation</title>
-        <description>&lt;p&gt;The UniFi Video Server (Windows) web interface configuration restore functionality at the “backup” and “wizard” endpoints does not implement sufficient privilege checks. Low privileged users, belonging to the PUBLIC_GROUP or CUSTOM_GROUP groups, can access these endpoints and overwrite the current application configuration. This can be abused for various purposes, including adding new administrative users. Affected Products: UniFi Video Controller v3.9.3 (for Windows 7/8/10 x64) and prior. Fixed in UniFi Video Controller v3.9.6 and newer.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 30 Mar 2020 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/advisory/2020/03/30/CVE-2020-8145.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/advisory/2020/03/30/CVE-2020-8145.html</guid>
-        
-        
-        <category>advisory</category>
         
       </item>
     
