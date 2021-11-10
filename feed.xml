@@ -6,13 +6,13 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 10 Nov 2021 07:43:34 -0600</pubDate>
-    <lastBuildDate>Wed, 10 Nov 2021 07:43:34 -0600</lastBuildDate>
+    <pubDate>Wed, 10 Nov 2021 07:48:06 -0600</pubDate>
+    <lastBuildDate>Wed, 10 Nov 2021 07:48:06 -0600</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>Practical Security Recommendations for Start-ups with Limited Budgets</title>
-        <description>&lt;p&gt;Hi, my name is Alex, I’ve been an IT security professional since 2007 and I’ve recently entered the start-up world with my project &lt;a href=&quot;https://bughuntr.io&quot;&gt;bughuntr.io&lt;/a&gt;. In putting together this project, security has been a primary concern for me. This is both due to my background and the nature of the project, being a training platform for security professionals and enthusiasts alike. In my security career, I’ve been hired to assess countless web applications, cloud environments and computer networks for security vulnerabilities. In these assessments, it is always clear when security is ‘bolted on’ as a compliance requirement before releasing a product, or added at a later date in response to an incident. Start-ups have a rare opportunity to ‘bake’ security in at the start of a project, but this is often seen as an expensive endeavor. In this post, I aim to ease that fear and provide practical (and cheap) advice for start-ups who want to release a more secure product right from the start.&lt;/p&gt;
+        <description>&lt;p&gt;Hi, my name is &lt;a href=&quot;https://twitter.com/ajxchapman&quot;&gt;Alex&lt;/a&gt;, I’ve been an IT security professional since 2007 and I’ve recently entered the start-up world with my project &lt;a href=&quot;https://bughuntr.io&quot;&gt;bughuntr.io&lt;/a&gt;. In putting together this project, security has been a primary concern for me. This is both due to my background and the nature of the project, being a training platform for security professionals and enthusiasts alike. In my security career, I’ve been hired to assess countless web applications, cloud environments and computer networks for security vulnerabilities. In these assessments, it is always clear when security is ‘bolted on’ as a compliance requirement before releasing a product, or added at a later date in response to an incident. Start-ups have a rare opportunity to ‘bake’ security in at the start of a project, but this is often seen as an expensive endeavor. In this post, I aim to ease that fear and provide practical (and cheap) advice for start-ups who want to release a more secure product right from the start.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 10 Nov 2021 00:00:00 -0600</pubDate>
