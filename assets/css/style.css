@@ -816,6 +816,11 @@ a {
 .page-header {
   padding-top: 20px;
   padding-bottom: 20px; }
+  .page-header .social img {
+    width: 32px;
+    height: 32px;
+    margin-left: 2px;
+    margin-right: 2px; }
 
 article + article {
   padding-top: 2em; }
