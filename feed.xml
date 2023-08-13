@@ -6,9 +6,22 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 13 Aug 2023 13:32:53 -0500</pubDate>
-    <lastBuildDate>Sun, 13 Aug 2023 13:32:53 -0500</lastBuildDate>
+    <pubDate>Sun, 13 Aug 2023 13:35:38 -0500</pubDate>
+    <lastBuildDate>Sun, 13 Aug 2023 13:35:38 -0500</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Critical Thinking Episode 31: Alex Chapman - The Man of Many Crits</title>
+        <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/zYjbItyOoRY&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Thu, 10 Aug 2023 00:00:00 -0500</pubDate>
+        <link>https://ajxchapman.github.io/media/2023/08/10/ctbb.html</link>
+        <guid isPermaLink="true">https://ajxchapman.github.io/media/2023/08/10/ctbb.html</guid>
+        
+        
+        <category>media</category>
+        
+      </item>
     
       <item>
         <title>Practical Security Recommendations for Start-ups with Limited Budgets</title>
@@ -133,21 +146,6 @@
         
         
         <category>bugreports</category>
-        
-      </item>
-    
-      <item>
-        <title>Daily Swig - Collaborative bug hunting ‘could be very lucrative’ – security pro Alex Chapman on the future of ethical hacking</title>
-        <description>&lt;p&gt;“It all started with a Commodore 64, but Alex Chapman’s passion for programming crystalized into an interest in ethical hacking following a careers advice day at university.&lt;/p&gt;
-
-&lt;p&gt;Since graduating in computer science in 2007, the London-based vulnerability researcher has worked in pen testing, red teaming, and security research during stints at Deloitte, Context Information Security, and Yahoo.”&lt;/p&gt;
-</description>
-        <pubDate>Mon, 26 Oct 2020 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/media/2020/10/26/daily-swig.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/media/2020/10/26/daily-swig.html</guid>
-        
-        
-        <category>media</category>
         
       </item>
     
