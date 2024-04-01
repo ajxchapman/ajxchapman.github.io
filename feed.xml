@@ -6,8 +6,8 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 01 Apr 2024 09:14:10 -0500</pubDate>
-    <lastBuildDate>Mon, 01 Apr 2024 09:14:10 -0500</lastBuildDate>
+    <pubDate>Mon, 01 Apr 2024 09:19:30 -0500</pubDate>
+    <lastBuildDate>Mon, 01 Apr 2024 09:19:30 -0500</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -56,7 +56,7 @@
 
 &lt;p&gt;The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Note: This post originally appears on &lt;a href=&quot;https://www.bugcrowd.com/blog/big-bugs-cve-2020-28914/&quot;&gt;Bugcrowd’s blog&lt;/a&gt; it is re-posted here as the Bugcrowd post has suffered some formatting mangling and has been truncated, this appears to have occured when they moved blogging platforms.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note: This post originally appeared on &lt;a href=&quot;https://www.bugcrowd.com/blog/big-bugs-cve-2020-28914/&quot;&gt;Bugcrowd’s blog&lt;/a&gt; it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration.&lt;/em&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 28 Feb 2021 00:00:00 -0600</pubDate>
