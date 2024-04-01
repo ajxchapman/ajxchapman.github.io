@@ -6,8 +6,8 @@
 </description>
     <link>https://ajxchapman.github.io/</link>
     <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 06 Feb 2024 16:39:37 -0600</pubDate>
-    <lastBuildDate>Tue, 06 Feb 2024 16:39:37 -0600</lastBuildDate>
+    <pubDate>Mon, 01 Apr 2024 08:56:34 -0500</pubDate>
+    <lastBuildDate>Mon, 01 Apr 2024 08:56:34 -0500</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -51,12 +51,13 @@
       </item>
     
       <item>
-        <title>Bugcrowd Big Bugs: BitBucket Pipelines Kata Containers Build Container Escape</title>
-        <description>&lt;p&gt;Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the Bitbucket Pipelines CI/CD environment.&lt;/p&gt;
+        <title>BitBucket Pipelines Kata Containers Virtual Machine Escape</title>
+        <description>&lt;p&gt;Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of &lt;a href=&quot;https://katacontainers.io/&quot;&gt;Kata Containers&lt;/a&gt; within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned &lt;a href=&quot;https://github.com/kata-containers/community/blob/master/VMT/KCSA/KCSA-CVE-2020-28914.md&quot;&gt;CVE-2020-28914&lt;/a&gt;. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt; user.&lt;/p&gt;
 
-&lt;p&gt;Within the project, Researcher Alex Chapman (axjchapman) identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. Exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user.&lt;/p&gt;
+&lt;p&gt;The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment.&lt;/p&gt;
 
-&lt;p&gt;This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note: This post originally appears on &lt;a href=&quot;https://www.bugcrowd.com/blog/big-bugs-cve-2020-28914/&quot;&gt;Bugcrowd’s blog&lt;/a&gt; it is re-posted here as the Bugcrowd post has suffered some formatting mangling and has been truncated, this appears to have occured when they moved blogging platforms.&lt;/em&gt;&lt;/p&gt;
+
 </description>
         <pubDate>Sun, 28 Feb 2021 00:00:00 -0600</pubDate>
         <link>https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html</link>
