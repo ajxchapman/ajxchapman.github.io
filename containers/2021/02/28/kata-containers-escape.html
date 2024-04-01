@@ -86,7 +86,7 @@
 <p>In the new BitBucket Pipelines environment build jobs were executed as Kubernetes Pods with Kata Containers configured as the container runtime, causing each build job to be executed within separate Kata VMs.</p>
 
 <figure class="image">
-  <img src="https://ajxchapman.github.io/assets/kata-hostPath-2020/overview.png" alt="BitBucket Pipelines environment overview" />
+  <img src="https://ajxchapman.github.io/assets/kata-hostPath-2021/overview.png" alt="BitBucket Pipelines environment overview" />
   <figcaption><sup>BitBucket Pipelines environment overview</sup></figcaption>
 </figure>
 
@@ -214,7 +214,7 @@ root@host<span class="nv">$ </span><span class="nb">cat</span> /opt/docker/bin/d
 <p>Moving back to the Pipelines environment, I confirmed I was able to modify the <code class="highlighter-rouge">docker</code> binary on the container host, and have the modified binary affect another build, <em>very cool</em>!</p>
 
 <figure class="image">
-  <img src="https://ajxchapman.github.io/assets/kata-hostPath-2020/docker_backdoor.png" alt="BitBucket Pipelines output showing result of running the modified `docker` binary from a build job" />
+  <img src="https://ajxchapman.github.io/assets/kata-hostPath-2021/docker_backdoor.png" alt="BitBucket Pipelines output showing result of running the modified `docker` binary from a build job" />
   <figcaption><sup>BitBucket Pipelines output showing result of running the modified `docker` binary from a build job</sup></figcaption>
 </figure>
 
