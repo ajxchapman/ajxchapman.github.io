@@ -6,10 +6,16 @@
 </description>
     <link>https://blog.ajxchapman.com/</link>
     <atom:link href="https://blog.ajxchapman.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 May 2024 09:40:51 -0500</pubDate>
-    <lastBuildDate>Wed, 08 May 2024 09:40:51 -0500</lastBuildDate>
-    <generator>Jekyll v3.8.6</generator>
+    <pubDate>Wed, 08 May 2024 10:15:11 -0500</pubDate>
+    <lastBuildDate>Wed, 08 May 2024 10:15:11 -0500</lastBuildDate>
+
     
+    
+      
+      
+      
+      
+      
       <item>
         <title>Critical Thinking Episode 31: Alex Chapman - The Man of Many Crits</title>
         <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/zYjbItyOoRY&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
@@ -19,10 +25,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/media/2023/08/10/ctbb.html</guid>
         
         
-        <category>media</category>
+          <category>media</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>Practical Security Recommendations for Start-ups with Limited Budgets</title>
         <description>&lt;p&gt;Hi, my name is &lt;a href=&quot;https://twitter.com/ajxchapman&quot;&gt;Alex&lt;/a&gt;, I’ve been an IT security professional since 2007 and I’ve recently entered the start-up world with my project &lt;a href=&quot;https://bughuntr.io&quot;&gt;bughuntr.io&lt;/a&gt;. In putting together this project, security has been a primary concern for me. This is both due to my background and the nature of the project, being a training platform for security professionals and enthusiasts alike. In my security career, I’ve been hired to assess countless web applications, cloud environments and computer networks for security vulnerabilities. In these assessments, it is always clear when security is ‘bolted on’ as a compliance requirement before releasing a product, or added at a later date in response to an incident. Start-ups have a rare opportunity to ‘bake’ security in at the start of a project, but this is often seen as an expensive endeavor. In this post, I aim to ease that fear and provide practical (and cheap) advice for start-ups who want to release a more secure product right from the start.&lt;/p&gt;
@@ -33,10 +42,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/security/2021/11/10/practical-security-recommendations-for-startups.html</guid>
         
         
-        <category>security</category>
+          <category>security</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>GitLab AMA - Bug Bounty with Alex Chapman</title>
         <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/Km6toD6CAAw&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
@@ -46,10 +58,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/media/2021/03/22/gitlab-ama.html</guid>
         
         
-        <category>media</category>
+          <category>media</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>BitBucket Pipelines Kata Containers Virtual Machine Escape</title>
         <description>&lt;p&gt;Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of &lt;a href=&quot;https://katacontainers.io/&quot;&gt;Kata Containers&lt;/a&gt; within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned &lt;a href=&quot;https://github.com/kata-containers/community/blob/master/VMT/KCSA/KCSA-CVE-2020-28914.md&quot;&gt;CVE-2020-28914&lt;/a&gt;. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt; user.&lt;/p&gt;
@@ -64,10 +79,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html</guid>
         
         
-        <category>containers</category>
+          <category>containers</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>Daily Swig - Container security: Privilege escalation bug patched in Docker Engine</title>
         <description>&lt;p&gt;A vulnerability in a Docker Engine security feature potentially allowed attackers to escalate privileges from a remapped user to root.&lt;/p&gt;
@@ -79,10 +97,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/media/2021/02/09/daily-swig.html</guid>
         
         
-        <category>media</category>
+          <category>media</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>Moby - Access to remapped root allows privilege escalation to real root</title>
         <description>&lt;p&gt;In Docker before versions 9.03.15, 20.10.3 there is a vulnerability involving the –userns-remap option in which access to remapped root allows privilege escalation to real root. When using “–userns-remap”, if the root user in the remapped namespace has access to the host filesystem they can modify files under “/var/lib/docker/&lt;remapping&gt;&quot; that cause writing files with extended privileges. Versions 20.10.3 and 19.03.15 contain patches that prevent privilege escalation from remapped user.&lt;/remapping&gt;&lt;/p&gt;
@@ -93,10 +114,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/advisory/2021/02/02/CVE-2021-21284.html</guid>
         
         
-        <category>advisory</category>
+          <category>advisory</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>Kata Containers `hostPath` file write</title>
         <description>&lt;p&gt;&lt;strong&gt;Bugcrowd bug report to a Private Program:&lt;/strong&gt; Kata Containers was found to be vulnerable to an issue allowing Kata VMs to write to &lt;code class=&quot;highlighter-rouge&quot;&gt;hostPath&lt;/code&gt; mount points which should have been read only. This issue was fixed in the Kata Containers project and assigned CVE-2020-28914.&lt;/p&gt;
@@ -106,10 +130,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</guid>
         
         
-        <category>bugreports</category>
+          <category>bugreports</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>Privileged Container Escape - Control Groups release_agent</title>
         <description>&lt;p&gt;I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by &lt;a href=&quot;https://twitter.com/_fel1x&quot;&gt;Felix Wilhelm (@_fel1x)&lt;/a&gt; to escape a privileged container to execute arbitrary commands on the container host.&lt;/p&gt;
@@ -120,10 +147,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/containers/2020/11/19/privileged-container-escape.html</guid>
         
         
-        <category>containers</category>
+          <category>containers</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>Kata Containers - Improper file permissions for read-only volumes</title>
         <description>&lt;p&gt;An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes hostPath volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as readOnly inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.&lt;/p&gt;
@@ -133,10 +163,13 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/advisory/2020/11/18/CVE-2020-28914.html</guid>
         
         
-        <category>advisory</category>
+          <category>advisory</category>
         
       </item>
     
+      
+      
+      
       <item>
         <title>GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</title>
         <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to GitLab:&lt;/strong&gt; GitLab-Runner, when running on Windows with a &lt;code class=&quot;highlighter-rouge&quot;&gt;docker&lt;/code&gt; executor, is vulnerable to Command Injection via the &lt;code class=&quot;highlighter-rouge&quot;&gt;DOCKER_AUTH_CONFIG&lt;/code&gt; build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.&lt;/p&gt;
@@ -146,9 +179,10 @@
         <guid isPermaLink="true">https://blog.ajxchapman.com/bugreports/2020/11/04/hackerone-gitlab-955016.html</guid>
         
         
-        <category>bugreports</category>
+          <category>bugreports</category>
         
       </item>
     
+      
   </channel>
 </rss>
