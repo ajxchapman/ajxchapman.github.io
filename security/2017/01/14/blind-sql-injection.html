@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum." />
 <meta property="og:description" content="In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum." />
-<link rel="canonical" href="https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html" />
-<meta property="og:url" content="https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html" />
+<link rel="canonical" href="https://blog.ajxchapman.com/security/2017/01/14/blind-sql-injection.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/security/2017/01/14/blind-sql-injection.html" />
 <meta property="og:site_name" content="Alex Chapman’s Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2017-01-14T00:00:00-06:00" />
 <script type="application/ld+json">
-{"headline":"Blind SQL injection optimization","dateModified":"2017-01-14T00:00:00-06:00","datePublished":"2017-01-14T00:00:00-06:00","@type":"BlogPosting","description":"In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.","url":"https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/security/2017/01/14/blind-sql-injection.html"},"@context":"https://schema.org"}</script>
+{"headline":"Blind SQL injection optimization","dateModified":"2017-01-14T00:00:00-06:00","datePublished":"2017-01-14T00:00:00-06:00","@type":"BlogPosting","description":"In this post I examine techniques and optimizations which can be used to efficiently extract SQL query results from Blind SQL Injection vulnerabilities. With the correct techniques and optimizations the majority of SQL query results can be extracted using at most two requests per character in the result string plus two requests for a length check. Under certain conditions results may be able to be extracted using significantly fewer requests. This post draws together known Blind SQL Injection data extraction techniques and builds upon them in order to reduce the number of requests required to extract query results to the absolute minimum.","url":"https://blog.ajxchapman.com/security/2017/01/14/blind-sql-injection.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/security/2017/01/14/blind-sql-injection.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
         <a href="/">
           <h1 class="project-name">Alex Chapman's Blog</h1>
         </a>
-        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
 </h2>
         <div class="social">
           <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>

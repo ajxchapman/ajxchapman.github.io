@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="The subject of this blog, the LIFX light bulb, bills itself as the light bulb reinvented; a “WiFi enabled multi-color, energy efficient LED light bulb” that can be controlled from a smartphone [1]. We chose to investigate this device due to its use of emerging wireless network protocols, the way it came to market and its appeal to the technophile in all of us." />
 <meta property="og:description" content="The subject of this blog, the LIFX light bulb, bills itself as the light bulb reinvented; a “WiFi enabled multi-color, energy efficient LED light bulb” that can be controlled from a smartphone [1]. We chose to investigate this device due to its use of emerging wireless network protocols, the way it came to market and its appeal to the technophile in all of us." />
-<link rel="canonical" href="https://ajxchapman.github.io/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html" />
-<meta property="og:url" content="https://ajxchapman.github.io/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html" />
+<link rel="canonical" href="https://blog.ajxchapman.com/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html" />
 <meta property="og:site_name" content="Alex Chapman’s Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2014-07-04T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Hacking into Internet Connected Light Bulbs","dateModified":"2014-07-04T00:00:00-05:00","datePublished":"2014-07-04T00:00:00-05:00","@type":"BlogPosting","description":"The subject of this blog, the LIFX light bulb, bills itself as the light bulb reinvented; a “WiFi enabled multi-color, energy efficient LED light bulb” that can be controlled from a smartphone [1]. We chose to investigate this device due to its use of emerging wireless network protocols, the way it came to market and its appeal to the technophile in all of us.","url":"https://ajxchapman.github.io/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html"},"@context":"https://schema.org"}</script>
+{"headline":"Hacking into Internet Connected Light Bulbs","dateModified":"2014-07-04T00:00:00-05:00","datePublished":"2014-07-04T00:00:00-05:00","@type":"BlogPosting","description":"The subject of this blog, the LIFX light bulb, bills itself as the light bulb reinvented; a “WiFi enabled multi-color, energy efficient LED light bulb” that can be controlled from a smartphone [1]. We chose to investigate this device due to its use of emerging wireless network protocols, the way it came to market and its appeal to the technophile in all of us.","url":"https://blog.ajxchapman.com/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/security/2014/07/04/hacking-into-internet-connected-light-bulbs.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
         <a href="/">
           <h1 class="project-name">Alex Chapman's Blog</h1>
         </a>
-        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
 </h2>
         <div class="social">
           <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
@@ -85,13 +85,13 @@
 
 <p><em>This blog post was originally published on the <a href="https://www.contextis.com/">Context Information Security</a> blog at <a href="https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs">https://www.contextis.com/en/blog/hacking-into-internet-connected-light-bulbs</a>. It is reproduced here for posterity.</em></p>
 
-<p><img src="https://ajxchapman.github.io/assets/lightbulbs-2014/1.png" alt="" /></p>
+<p><img src="https://blog.ajxchapman.com/assets/lightbulbs-2014/1.png" alt="" /></p>
 
 <p>The LIFX project started off on crowd funding website Kickstarter in September 2012 where it proved hugely popular, bringing in over 13 times its original funding target.</p>
 
 <p>LIFX bulbs connect to a WiFi network in order to allow them to be controlled using a smart phone application. In a situation where multiple bulbs are available, only one bulb will connect to the network. This “master” bulb receives commands from the smart phone application, and broadcasts them to all other bulbs over an 802.15.4 6LoWPAN wireless mesh network.</p>
 
-<p><img src="https://ajxchapman.github.io/assets/lightbulbs-2014/2.png" alt="WiFi and 802.15.4 6LoWPAN Mesh Network" /><br />
+<p><img src="https://blog.ajxchapman.com/assets/lightbulbs-2014/2.png" alt="WiFi and 802.15.4 6LoWPAN Mesh Network" /><br />
 <em>WiFi and 802.15.4 6LoWPAN Mesh Network</em></p>
 
 <p>In the event of the master bulb being turned off or disconnected from the network, one of the remaining bulbs elects to take its position as the master and connects to the WiFi network ready to relay commands to any further remaining bulbs. This architecture requires only one bulb to be connected to the WiFi at a time, which has numerous benefits including allowing the remaining bulbs to run on low power when not illuminated, extending the useable range of the bulb network to well past that of just the WiFi network and reducing congestion on the WiFi network.</p>
@@ -120,7 +120,7 @@
 
 <p>Monitoring packets captured from the mesh network whilst adding new bulbs, we were able to identify the specific packets in which the WiFi network credentials were shared among the bulbs. The on-boarding process consists of the master bulb broadcasting for new bulbs on the network. A new bulb responds to the master and then requests the WiFi details to be transferred. The master bulb then broadcasts the WiFi details, encrypted, across the mesh network. The new bulb is then added to the list of available bulbs in the LIFX smart phone application.</p>
 
-<p><img src="https://ajxchapman.github.io/assets/lightbulbs-2014/3.png" alt="Wireshark 6LoWPAN packet capture" /><br />
+<p><img src="https://blog.ajxchapman.com/assets/lightbulbs-2014/3.png" alt="Wireshark 6LoWPAN packet capture" /><br />
 <em>Wireshark 6LoWPAN packet capture</em></p>
 
 <p>As can be observed in the packet capture above, the WiFi details, including credentials, were transferred as an encrypted binary blob.</p>
@@ -134,7 +134,7 @@
 
 <p>In order to extract the firmware from the device, we first need to gain physical access to the microcontrollers embedded within; an extremely technical process, which to the layman may appear to be no more than hitting it with a hammer until it spills its insides. Once removed from the casing, the Printed Circuit Board (PCB) is accessible providing us with the access we require.</p>
 
-<p><img src="https://ajxchapman.github.io/assets/lightbulbs-2014/4.png" alt="Extracted LIFX PCB" /><br />
+<p><img src="https://blog.ajxchapman.com/assets/lightbulbs-2014/4.png" alt="Extracted LIFX PCB" /><br />
 <em>Extracted LIFX PCB</em></p>
 
 <p>It should be noted that public sources can be consulted if only visual access to the PCB is needed. The American Federal Communications Commission (FCC) often release detailed tear downs of communications equipment which can be a great place to start if the hammer technique is considered slightly over the top [4].</p>
@@ -145,7 +145,7 @@
 
 <p>Once the correct JTAG pins for each of the chips were identified, a process which required manual pin tracing, specification analysis and automated probing, we were ready to connect to the JTAG interfaces of the chips. In order to control the JTAG commands sent to the chips, a combination of hardware and software is required. The hardware used in this case was the open hardware BusBlaster JTAG debugger [5], which was paired with the open source Open On-Chip Debugger (OpenOCD) [6]. After configuring the hardware and software pair, we were in a position where we could issue JTAG commands to the chips.</p>
 
-<p><img src="https://ajxchapman.github.io/assets/lightbulbs-2014/5.png" alt="BusBlaster JTAG debugger" /><br />
+<p><img src="https://blog.ajxchapman.com/assets/lightbulbs-2014/5.png" alt="BusBlaster JTAG debugger" /><br />
 <em>BusBlaster JTAG debugger [5]</em></p>
 
 <p>At this point we can merrily dump the flash memory from each of the chips and start the firmware reverse engineering process.</p>
@@ -159,7 +159,7 @@
 
 <p>References to the cryptographic constants can also be used to identify the assembly code responsible for implementing the encryption and decryption routines. With the assistance of a free software AES implementation [7], reversing the identified encryption functions to extract the encryption key, initialization vector and block mode was relatively simple.</p>
 
-<p><img src="https://ajxchapman.github.io/assets/lightbulbs-2014/6.png" alt="IDA Pro disassembly of firmware encryption code" /><br />
+<p><img src="https://blog.ajxchapman.com/assets/lightbulbs-2014/6.png" alt="IDA Pro disassembly of firmware encryption code" /><br />
 <em>IDA Pro disassembly of firmware encryption code</em></p>
 
 <p>The final step was to prove the accuracy of the extracted encryption variables by using them to decrypt WiFi credentials sniffed off the mesh network.</p>

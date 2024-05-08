@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a GitHub Gist." />
 <meta property="og:description" content="My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a GitHub Gist." />
-<link rel="canonical" href="https://ajxchapman.github.io/bugbounty/2019/03/26/h1-702-ctf-2019.html" />
-<meta property="og:url" content="https://ajxchapman.github.io/bugbounty/2019/03/26/h1-702-ctf-2019.html" />
+<link rel="canonical" href="https://blog.ajxchapman.com/bugbounty/2019/03/26/h1-702-ctf-2019.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/bugbounty/2019/03/26/h1-702-ctf-2019.html" />
 <meta property="og:site_name" content="Alex Chapman’s Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-03-26T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"H1-702 2019 - CTF Writeup","dateModified":"2019-03-26T00:00:00-05:00","datePublished":"2019-03-26T00:00:00-05:00","@type":"BlogPosting","description":"My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a GitHub Gist.","url":"https://ajxchapman.github.io/bugbounty/2019/03/26/h1-702-ctf-2019.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/bugbounty/2019/03/26/h1-702-ctf-2019.html"},"@context":"https://schema.org"}</script>
+{"headline":"H1-702 2019 - CTF Writeup","dateModified":"2019-03-26T00:00:00-05:00","datePublished":"2019-03-26T00:00:00-05:00","@type":"BlogPosting","description":"My goal for this CTF was to primarily use tools and scripts that I had personally written to complete it. Throughout this challenge I used and extended my personal toolkit extensively. All the proof of concept tools I have produced as a result of this CTF are available in a GitHub Gist.","url":"https://blog.ajxchapman.com/bugbounty/2019/03/26/h1-702-ctf-2019.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/bugbounty/2019/03/26/h1-702-ctf-2019.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
         <a href="/">
           <h1 class="project-name">Alex Chapman's Blog</h1>
         </a>
-        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
 </h2>
         <div class="social">
           <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
@@ -85,7 +85,7 @@
 <p>The script (<a href="https://gist.github.com/ajxchapman/b7baca094e61ff120c44379029646b97#file-image_extract-py">available here</a>) went through each line in the image, annotated the identified characters and attempted to determine if a given character was a <code class="highlighter-rouge">1</code> or a <code class="highlighter-rouge">0</code> based on the character width (a non-fixed width font was used in the image which helped).</p>
 
 <p>A copy of the annotated image can be seen below:
-<img src="https://ajxchapman.github.io/assets/h1-702-ctf-2019/image_annotated.png" alt="Annotated image" /></p>
+<img src="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/image_annotated.png" alt="Annotated image" /></p>
 
 <p>The output was somewhat tricky, as the character extraction was not 100% reliable due to image composition and noise, and no single line included the full output. With a little fiddling, however, the full binary code was easily extracted, and the message decoded:</p>
 <ul>
@@ -126,7 +126,7 @@
 <h2 id="stage-2---android-apk">Stage 2 - Android APK</h2>
 <p>Without a spare test Android device to hand I downloaded and ran <a href="http://www.android-x86.org/">Android x86</a> in a VirtualBox Virtual Machine. Running the <code class="highlighter-rouge">h1thermostat</code> application downloaded from the previous stage I was greeted with a login screen:</p>
 
-<p><img src="https://ajxchapman.github.io/assets/h1-702-ctf-2019/android_x86.png" alt="Android x86" /></p>
+<p><img src="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/android_x86.png" alt="Android x86" /></p>
 
 <p>Analysis of the network traffic from the VM using <a href="https://www.wireshark.org/">Wireshark</a> showed the <code class="highlighter-rouge">h1thermostat</code> application sends unencrypted HTTP requests to a server at <code class="highlighter-rouge">35.243.186.41</code>:</p>
 
@@ -237,7 +237,7 @@ print(decrypt("aKe2ZHj8oYjIqvbWwXi01599IT979iLWxWp6e7LhCqYZUBGSSLBZz6kkEzuElZViz
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">GRANT</span> <span class="n">FILE</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">'root'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span><span class="o">#</span>
 </code></pre></div></div>
 
-<p>With <code class="highlighter-rouge">LOAD_FILE</code> re-enabled I was able to extract the source code for the FliteThermostat API application from <code class="highlighter-rouge">/app/main.py</code>, see attachment <a href="https://ajxchapman.github.io/assets/h1-702-ctf-2019/main_1.py">main_1.py</a>! Although this was quite a fun attack vector, it actually didn’t lead to any further stages of the CTF.</p>
+<p>With <code class="highlighter-rouge">LOAD_FILE</code> re-enabled I was able to extract the source code for the FliteThermostat API application from <code class="highlighter-rouge">/app/main.py</code>, see attachment <a href="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/main_1.py">main_1.py</a>! Although this was quite a fun attack vector, it actually didn’t lead to any further stages of the CTF.</p>
 
 <p>Going back to the database, dumping the contents of the <code class="highlighter-rouge">Devices</code> table shows numerous IP addresses, most from reserved IPv4 ranges. Ignoring the reserved addresses the table included a single publicly routable address which was extracted with the following query using the <a href="https://gist.github.com/ajxchapman/b7baca094e61ff120c44379029646b97#file-decrypt_sqli-py">decrypt_sqli.py</a> tool:</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 decrypt_sqli.py <span class="nt">--characters</span> <span class="s2">"._1234567890"</span> <span class="s2">"SELECT CONCAT(ID, '_', IP) from devices WHERE IP not LIKE '2__.%' and IP not LIKE '10.%' and IP not LIKE '192.88.%' ORDER BY ID DESC"</span>
@@ -260,7 +260,7 @@ print(decrypt("aKe2ZHj8oYjIqvbWwXi01599IT979iLWxWp6e7LhCqYZUBGSSLBZz6kkEzuElZViz
 
 <h4 id="attachments">Attachments</h4>
 <ul>
-  <li><a href="https://ajxchapman.github.io/assets/h1-702-ctf-2019/main_1.py">main_1.py</a></li>
+  <li><a href="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/main_1.py">main_1.py</a></li>
 </ul>
 
 <h3 id="summary-of-issues-2">Summary of Issues</h3>
@@ -389,18 +389,18 @@ Upgrade-Insecure-Requests: 1
 ...
 </code></pre></div></div>
 
-<p><img src="https://ajxchapman.github.io/assets/h1-702-ctf-2019/shell.gif" alt="Screencast" /></p>
+<p><img src="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/shell.gif" alt="Screencast" /></p>
 
 <p>A quick check with <code class="highlighter-rouge">curl</code> showed that the webservers on two of the IP addresses were pointing at the previous FliteThermostat Backend application, whilst the 3rd was hosting a new application, and the next stage of the CTF.</p>
 
 <p>Using SSH to reverse tunnel traffic through the compromised host to the new web server I could access the new application from my browser:</p>
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-N</span> <span class="nt">-R</span> 8001:172.27.0.2:80 <span class="nt">-o</span> <span class="s2">"StrictHostKeyChecking no"</span> <span class="nt">-o</span> <span class="s2">"UserKnownHostsFile /dev/null"</span> &lt;user&gt;@&lt;server&gt;
 </code></pre></div></div>
-<p><img src="https://ajxchapman.github.io/assets/h1-702-ctf-2019/application.png" alt="Application" /></p>
+<p><img src="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/application.png" alt="Application" /></p>
 
 <h4 id="attachments-1">Attachments</h4>
 <ul>
-  <li><a href="https://ajxchapman.github.io/assets/h1-702-ctf-2019/main_2.py">main_2.py</a></li>
+  <li><a href="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/main_2.py">main_2.py</a></li>
 </ul>
 
 <h4 id="tools-4">Tools</h4>
@@ -492,14 +492,14 @@ Upgrade-Insecure-Requests: 1
 
 <p>Finally, trying it out for real with the payload <code class="highlighter-rouge">&lt;/&lt;/x&gt;style&gt;&lt;link+rel='attachment'+href='file:///app/main.py'&gt;</code> confirmed the contents of the file was included in an <code class="highlighter-rouge">/EmbeddedFile</code> stream, and could be extracted through the FireFox PDF renderer to view the contents.</p>
 
-<p><img src="https://ajxchapman.github.io/assets/h1-702-ctf-2019/embeddedfile.png" alt="EmbeddedFile" /></p>
+<p><img src="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/embeddedfile.png" alt="EmbeddedFile" /></p>
 
 <p>Gaining access to the <code class="highlighter-rouge">/app/main.py</code> file in this stage was the final flag in this CTF!</p>
 
 <h4 id="attachments-2">Attachments:</h4>
 <ul>
-  <li><a href="https://ajxchapman.github.io/assets/h1-702-ctf-2019/main_3.py">main_3.py</a></li>
-  <li><a href="https://ajxchapman.github.io/assets/h1-702-ctf-2019/pdfize.pdf">pdfize.pdf</a></li>
+  <li><a href="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/main_3.py">main_3.py</a></li>
+  <li><a href="https://blog.ajxchapman.com/assets/h1-702-ctf-2019/pdfize.pdf">pdfize.pdf</a></li>
 </ul>
 
 <h3 id="summary-of-issues-5">Summary of Issues:</h3>

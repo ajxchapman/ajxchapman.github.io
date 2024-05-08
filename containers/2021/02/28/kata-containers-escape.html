@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration." />
 <meta property="og:description" content="Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration." />
-<link rel="canonical" href="https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html" />
-<meta property="og:url" content="https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html" />
+<link rel="canonical" href="https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html" />
 <meta property="og:site_name" content="Alex Chapman’s Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-28T00:00:00-06:00" />
 <script type="application/ld+json">
-{"headline":"BitBucket Pipelines Kata Containers Virtual Machine Escape","dateModified":"2021-02-28T00:00:00-06:00","datePublished":"2021-02-28T00:00:00-06:00","@type":"BlogPosting","description":"Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration.","url":"https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html"},"@context":"https://schema.org"}</script>
+{"headline":"BitBucket Pipelines Kata Containers Virtual Machine Escape","dateModified":"2021-02-28T00:00:00-06:00","datePublished":"2021-02-28T00:00:00-06:00","@type":"BlogPosting","description":"Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration.","url":"https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
         <a href="/">
           <h1 class="project-name">Alex Chapman's Blog</h1>
         </a>
-        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
 </h2>
         <div class="social">
           <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
@@ -86,7 +86,7 @@
 <p>In the new BitBucket Pipelines environment build jobs were executed as Kubernetes Pods with Kata Containers configured as the container runtime, causing each build job to be executed within separate Kata VMs.</p>
 
 <figure class="image">
-  <img src="https://ajxchapman.github.io/assets/kata-hostPath-2021/overview.png" alt="BitBucket Pipelines environment overview" />
+  <img src="https://blog.ajxchapman.com/assets/kata-hostPath-2021/overview.png" alt="BitBucket Pipelines environment overview" />
   <figcaption><sup>BitBucket Pipelines environment overview</sup></figcaption>
 </figure>
 
@@ -214,7 +214,7 @@ root@host<span class="nv">$ </span><span class="nb">cat</span> /opt/docker/bin/d
 <p>Moving back to the Pipelines environment, I confirmed I was able to modify the <code class="highlighter-rouge">docker</code> binary on the container host, and have the modified binary affect another build, <em>very cool</em>!</p>
 
 <figure class="image">
-  <img src="https://ajxchapman.github.io/assets/kata-hostPath-2021/docker_backdoor.png" alt="BitBucket Pipelines output showing result of running the modified `docker` binary from a build job" />
+  <img src="https://blog.ajxchapman.com/assets/kata-hostPath-2021/docker_backdoor.png" alt="BitBucket Pipelines output showing result of running the modified `docker` binary from a build job" />
   <figcaption><sup>BitBucket Pipelines output showing result of running the modified `docker` binary from a build job</sup></figcaption>
 </figure>
 

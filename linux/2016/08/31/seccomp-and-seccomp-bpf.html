@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="This post delves into the details of seccomp and seccomp-BPF, how they are implemented and how developers can configure them. Seccomp and Seccomp-BPF are used to limit the system calls available to a Linux process. Typically developers will implement a seccomp configuration for their application, however seccomp configurations can also be applied by system administrators to pre-compiled applications using various tricks." />
 <meta property="og:description" content="This post delves into the details of seccomp and seccomp-BPF, how they are implemented and how developers can configure them. Seccomp and Seccomp-BPF are used to limit the system calls available to a Linux process. Typically developers will implement a seccomp configuration for their application, however seccomp configurations can also be applied by system administrators to pre-compiled applications using various tricks." />
-<link rel="canonical" href="https://ajxchapman.github.io/linux/2016/08/31/seccomp-and-seccomp-bpf.html" />
-<meta property="og:url" content="https://ajxchapman.github.io/linux/2016/08/31/seccomp-and-seccomp-bpf.html" />
+<link rel="canonical" href="https://blog.ajxchapman.com/linux/2016/08/31/seccomp-and-seccomp-bpf.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/linux/2016/08/31/seccomp-and-seccomp-bpf.html" />
 <meta property="og:site_name" content="Alex Chapman’s Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2016-08-31T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Seccomp and Seccomp-BPF","dateModified":"2016-08-31T00:00:00-05:00","datePublished":"2016-08-31T00:00:00-05:00","@type":"BlogPosting","description":"This post delves into the details of seccomp and seccomp-BPF, how they are implemented and how developers can configure them. Seccomp and Seccomp-BPF are used to limit the system calls available to a Linux process. Typically developers will implement a seccomp configuration for their application, however seccomp configurations can also be applied by system administrators to pre-compiled applications using various tricks.","url":"https://ajxchapman.github.io/linux/2016/08/31/seccomp-and-seccomp-bpf.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/linux/2016/08/31/seccomp-and-seccomp-bpf.html"},"@context":"https://schema.org"}</script>
+{"headline":"Seccomp and Seccomp-BPF","dateModified":"2016-08-31T00:00:00-05:00","datePublished":"2016-08-31T00:00:00-05:00","@type":"BlogPosting","description":"This post delves into the details of seccomp and seccomp-BPF, how they are implemented and how developers can configure them. Seccomp and Seccomp-BPF are used to limit the system calls available to a Linux process. Typically developers will implement a seccomp configuration for their application, however seccomp configurations can also be applied by system administrators to pre-compiled applications using various tricks.","url":"https://blog.ajxchapman.com/linux/2016/08/31/seccomp-and-seccomp-bpf.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/linux/2016/08/31/seccomp-and-seccomp-bpf.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
         <a href="/">
           <h1 class="project-name">Alex Chapman's Blog</h1>
         </a>
-        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
 </h2>
         <div class="social">
           <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>

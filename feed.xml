@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Alex Chapman's Blog</title>
-    <description>A tech blog about all things bug bounty, security and development.
+    <description>A tech blog about all things Bug Bounty, security and development.
 </description>
-    <link>https://ajxchapman.github.io/</link>
-    <atom:link href="https://ajxchapman.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 May 2024 07:48:32 -0500</pubDate>
-    <lastBuildDate>Wed, 08 May 2024 07:48:32 -0500</lastBuildDate>
+    <link>https://blog.ajxchapman.com/</link>
+    <atom:link href="https://blog.ajxchapman.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 08 May 2024 09:40:28 -0500</pubDate>
+    <lastBuildDate>Wed, 08 May 2024 09:40:28 -0500</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -15,8 +15,8 @@
         <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/zYjbItyOoRY&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 </description>
         <pubDate>Thu, 10 Aug 2023 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/media/2023/08/10/ctbb.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/media/2023/08/10/ctbb.html</guid>
+        <link>https://blog.ajxchapman.com/media/2023/08/10/ctbb.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/media/2023/08/10/ctbb.html</guid>
         
         
         <category>media</category>
@@ -29,8 +29,8 @@
 
 </description>
         <pubDate>Wed, 10 Nov 2021 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/security/2021/11/10/practical-security-recommendations-for-startups.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/security/2021/11/10/practical-security-recommendations-for-startups.html</guid>
+        <link>https://blog.ajxchapman.com/security/2021/11/10/practical-security-recommendations-for-startups.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/security/2021/11/10/practical-security-recommendations-for-startups.html</guid>
         
         
         <category>security</category>
@@ -42,8 +42,8 @@
         <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/Km6toD6CAAw&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 </description>
         <pubDate>Mon, 22 Mar 2021 00:00:00 -0500</pubDate>
-        <link>https://ajxchapman.github.io/media/2021/03/22/gitlab-ama.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/media/2021/03/22/gitlab-ama.html</guid>
+        <link>https://blog.ajxchapman.com/media/2021/03/22/gitlab-ama.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/media/2021/03/22/gitlab-ama.html</guid>
         
         
         <category>media</category>
@@ -60,8 +60,8 @@
 
 </description>
         <pubDate>Sun, 28 Feb 2021 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/containers/2021/02/28/kata-containers-escape.html</guid>
+        <link>https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/containers/2021/02/28/kata-containers-escape.html</guid>
         
         
         <category>containers</category>
@@ -75,8 +75,8 @@
 &lt;p&gt;“The two avenues of exploitation I found would allow writing of arbitrary files as the real root user” or seizing ownership of files previously accessible only by the root user, security researcher Alex Chapman, who unearthed the flaw, tells The Daily Swig.&lt;/p&gt;
 </description>
         <pubDate>Tue, 09 Feb 2021 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/media/2021/02/09/daily-swig.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/media/2021/02/09/daily-swig.html</guid>
+        <link>https://blog.ajxchapman.com/media/2021/02/09/daily-swig.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/media/2021/02/09/daily-swig.html</guid>
         
         
         <category>media</category>
@@ -89,8 +89,8 @@
 
 </description>
         <pubDate>Tue, 02 Feb 2021 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/advisory/2021/02/02/CVE-2021-21284.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/advisory/2021/02/02/CVE-2021-21284.html</guid>
+        <link>https://blog.ajxchapman.com/advisory/2021/02/02/CVE-2021-21284.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/advisory/2021/02/02/CVE-2021-21284.html</guid>
         
         
         <category>advisory</category>
@@ -102,8 +102,8 @@
         <description>&lt;p&gt;&lt;strong&gt;Bugcrowd bug report to a Private Program:&lt;/strong&gt; Kata Containers was found to be vulnerable to an issue allowing Kata VMs to write to &lt;code class=&quot;highlighter-rouge&quot;&gt;hostPath&lt;/code&gt; mount points which should have been read only. This issue was fixed in the Kata Containers project and assigned CVE-2020-28914.&lt;/p&gt;
 </description>
         <pubDate>Mon, 30 Nov 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</guid>
+        <link>https://blog.ajxchapman.com/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/bugreports/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html</guid>
         
         
         <category>bugreports</category>
@@ -116,8 +116,8 @@
 
 </description>
         <pubDate>Thu, 19 Nov 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/containers/2020/11/19/privileged-container-escape.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/containers/2020/11/19/privileged-container-escape.html</guid>
+        <link>https://blog.ajxchapman.com/containers/2020/11/19/privileged-container-escape.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/containers/2020/11/19/privileged-container-escape.html</guid>
         
         
         <category>containers</category>
@@ -129,8 +129,8 @@
         <description>&lt;p&gt;An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes hostPath volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as readOnly inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Nov 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/advisory/2020/11/18/CVE-2020-28914.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/advisory/2020/11/18/CVE-2020-28914.html</guid>
+        <link>https://blog.ajxchapman.com/advisory/2020/11/18/CVE-2020-28914.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/advisory/2020/11/18/CVE-2020-28914.html</guid>
         
         
         <category>advisory</category>
@@ -142,8 +142,8 @@
         <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to GitLab:&lt;/strong&gt; GitLab-Runner, when running on Windows with a &lt;code class=&quot;highlighter-rouge&quot;&gt;docker&lt;/code&gt; executor, is vulnerable to Command Injection via the &lt;code class=&quot;highlighter-rouge&quot;&gt;DOCKER_AUTH_CONFIG&lt;/code&gt; build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 Nov 2020 00:00:00 -0600</pubDate>
-        <link>https://ajxchapman.github.io/bugreports/2020/11/04/hackerone-gitlab-955016.html</link>
-        <guid isPermaLink="true">https://ajxchapman.github.io/bugreports/2020/11/04/hackerone-gitlab-955016.html</guid>
+        <link>https://blog.ajxchapman.com/bugreports/2020/11/04/hackerone-gitlab-955016.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/bugreports/2020/11/04/hackerone-gitlab-955016.html</guid>
         
         
         <category>bugreports</category>
