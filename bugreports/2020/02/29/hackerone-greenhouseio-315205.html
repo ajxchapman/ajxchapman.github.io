@@ -1,114 +1,92 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <meta charset="utf-8">
-  <meta name="robots" content="noindex">
-  <meta http-equiv="refresh" content="1; url=https://hackerone.com/reports/315205">
-  <title>https://hackerone.com/reports/315205</title>
-  <link rel="canonical" href="https://hackerone.com/reports/315205">
-  <script>
-function redirect() {
-  window.location='https://hackerone.com/reports/315205';
-}
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="HackerOne bug report to Greenhouse.io: The configuration of the Sintra framework application hosted at oauth-redirector.services.greenhouse.io exposes internal information when exceptions occur. The application is configured with the show_exceptions setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur." />
+<meta property="og:description" content="HackerOne bug report to Greenhouse.io: The configuration of the Sintra framework application hosted at oauth-redirector.services.greenhouse.io exposes internal information when exceptions occur. The application is configured with the show_exceptions setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur." />
+<link rel="canonical" href="https://ajxchapman.github.io/bugreports/2020/02/29/hackerone-greenhouseio-315205.html" />
+<meta property="og:url" content="https://ajxchapman.github.io/bugreports/2020/02/29/hackerone-greenhouseio-315205.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-02-29T00:00:00-06:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","description":"HackerOne bug report to Greenhouse.io: The configuration of the Sintra framework application hosted at oauth-redirector.services.greenhouse.io exposes internal information when exceptions occur. The application is configured with the show_exceptions setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur.","url":"https://ajxchapman.github.io/bugreports/2020/02/29/hackerone-greenhouseio-315205.html","headline":"Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io","dateModified":"2020-02-29T00:00:00-06:00","datePublished":"2020-02-29T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ajxchapman.github.io/bugreports/2020/02/29/hackerone-greenhouseio-315205.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+          <h1 class="project-name">Alex Chapman's Blog</h1>
+        </a>
+        <h2 class="project-tagline">A tech blog about all things bug bounty, security and development.
+</h2>
+        <div class="social">
+          <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
+          <a href="https://infosec.exchange/@ajxchapman" rel="me" target="_blank"><img src="/assets/icons/mastodon.svg"></a>
+          <a href="https://github.com/ajxchapman" target="_blank"><img src="/assets/icons/github.svg"></a>
+          <a href="https://hackerone.com/ajxchapman" target="_blank"><img src="/assets/icons/hackerone.svg"></a>
+          <a href="https://bugcrowd.com/ajxchapman" target="_blank"><img src="/assets/icons/bugcrowd.svg"></a>
+        </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
 
 
+  
 
-async function calculateClientId() {
-  /*
-  Calculate a semi-unique client Id which rotates every 4 hours. Client Id is
-  calculated from the browser user-agent, language and timezone only. This is
-  meant to be enough to track a browser across pages for a period of time, but
-  othing more. The client Id is is non-persistent and re-calculated each page
-  load, it is not stored in a cookie or local storage.
-  */
-  const identifier = [
-    new Date() - new Date() % (4 * 60 * 60 * 1000), // TrackingID is keyed to the time
-    navigator.userAgent,                            // User agent
-    navigator.language,                             // Browser language, e.g. "en-US"
-    new Date().getTimezoneOffset()                  // Timezone offset
-  ];
+  
 
-  // Hash the identifier, discard a potion of the hash and coerce into the correct format
-  const msgUint8 = new TextEncoder().encode(identifier.join(","));
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(-32);
-  return `${hashHex.slice(0, 8)}-${hashHex.slice(8, 12)}-${hashHex.slice(12, 16)}-${hashHex.slice(16, 20)}-${hashHex.slice(20, 32)}`;
-}
-
-(function() {
-  // Only perform analytics on browsers which have not enabled doNotTrack
-  if (navigator.doNotTrack != 1) {
-    /*
-    References:
-      https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
-      https://developers.google.com/analytics/devguides/collection/analyticsjs/cookies-user-id#disabling_cookies
-      https://developers.google.com/analytics/devguides/collection/analyticsjs/ip-anonymization
-    */
-
-    var promises = [];
+  
     
-    calculateClientId().then((clientId) => {
-      const stat_vars = {
-        v:  1,                    // Version
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Greenhouse.io - Debug information disclosure on oauth-redirector.services.greenhouse.io</h1>
+    <p class="post-meta">
+      <time datetime="2020-02-29T00:00:00-06:00" itemprop="datePublished">
+        2020-02-29
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to Greenhouse.io:</strong> The configuration of the Sintra framework application hosted at <code class="highlighter-rouge">oauth-redirector.services.greenhouse.io</code> exposes internal information when exceptions occur. The application is configured with the <code class="highlighter-rouge">show_exceptions</code> setting which causes internal application configuration, environment variables and source code snippets to be exposed when exceptions occur.</p>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/bugreports/index.html">More Bug Reports posts</a>
+    
+  </div>
+</article>
+
+
+
+      <footer class="site-footer">
         
-        cid: clientId,            // Client Id
-        t: 'pageview',            // Hit type
-        aip: 1,                   // Set anonymizeIp to mask IP addresses
-        dl: window.location.href, // Document location
-        dt: document.title,       // Document title
-        dr: document.referrer,    // Document referrer
-        z: Date.now()             // Cache buster
-      };
-      const url = 'https://logs-01.loggly.com/inputs/c77487f5-9e26-4c31-bb3e-feb5c17a00e6/tag/loggly-jslogger';
-
-      
-      promises.push(fetch(url, {
-        credentials: 'omit',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: JSON.stringify(stat_vars)
-      }));
-      
-    });
-    
-    calculateClientId().then((clientId) => {
-      const stat_vars = {
-        v:  1,                    // Version
-        tid: 'UA-157572028-1', // Endpoint Id
-        cid: clientId,            // Client Id
-        t: 'pageview',            // Hit type
-        aip: 1,                   // Set anonymizeIp to mask IP addresses
-        dl: window.location.href, // Document location
-        dt: document.title,       // Document title
-        dr: document.referrer,    // Document referrer
-        z: Date.now()             // Cache buster
-      };
-      const url = 'https://www.google-analytics.com/collect';
-
-      
-      let uri_vars = [];
-      for (var_key in stat_vars) {
-        uri_vars.push(`${var_key}=${encodeURIComponent(stat_vars[var_key])}`);
-      }
-
-      promises.push(fetch(`${url}?${uri_vars.join('&')}`, {
-        credentials: 'omit'
-      }));
-      
-    });
-    
-
-    
-    
-    redirect();
-    
-  }
-})();
-
-
-
-setTimeout(redirect, 1000);
-  </script>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
 </html>
