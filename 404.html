@@ -1,5 +1,83 @@
 <html>
     <body>
-        <h1>404 Test Page</h1>
+        <script>
+let posts = [
+        '/posts/2024/05/08/exploit-archeology.html',
+        '/posts/2023/08/10/ctbb.html',
+        '/posts/2021/11/10/practical-security-recommendations-for-startups.html',
+        '/posts/2021/03/22/gitlab-ama.html',
+        '/posts/2021/02/28/kata-containers-escape.html',
+        '/posts/2021/02/09/daily-swig.html',
+        '/posts/2021/02/02/CVE-2021-21284.html',
+        '/posts/2020/11/30/bugcrowd-private-7bf77429-2b94-44ea-b6f9-c1fc59b2fd17.html',
+        '/posts/2020/11/19/privileged-container-escape.html',
+        '/posts/2020/11/18/CVE-2020-28914.html',
+        '/posts/2020/11/04/hackerone-gitlab-955016.html',
+        '/posts/2020/10/26/daily-swig.html',
+        '/posts/2020/10/01/CVE-2020-13347.html',
+        '/posts/2020/09/25/hackerone-spotlight.html',
+        '/posts/2020/09/09/insiderphd.html',
+        '/posts/2020/03/30/CVE-2020-8145.html',
+        '/posts/2020/03/30/CVE-2020-8144.html',
+        '/posts/2020/02/29/hackerone-greenhouseio-315205.html',
+        '/posts/2020/02/28/hackerone-semrush-316713.html',
+        '/posts/2020/02/10/on-full-time-bug-bounty-hunting.html',
+        '/posts/2020/01/30/hackerone-wordpress-205481.html',
+        '/posts/2020/01/01/bug-hunting-year-in-review.html',
+        '/posts/2019/12/12/hackerone-gitlab-541169.html',
+        '/posts/2019/12/11/hackerone-gitlab-534794.html',
+        '/posts/2019/09/12/hackerone-hacker-interview.html',
+        '/posts/2019/09/11/continuous-integration-continuous-bounties.html',
+        '/posts/2019/07/29/CVE-2019-5469.html',
+        '/posts/2019/07/02/hackerone-new-relic-344032.html',
+        '/posts/2019/04/23/perforce-local-file-disclosure.html',
+        '/posts/2019/04/23/hackerone-lob-520717.html',
+        '/posts/2019/04/04/perforce-local-file-disclosure.html',
+        '/posts/2019/03/26/h1-702-ctf-2019.html',
+        '/posts/2019/02/01/CVE-2019-5430.html',
+        '/posts/2018/07/02/hackerone-ubiquiti-inc-329770.html',
+        '/posts/2018/04/28/hackerone-ubiquiti-inc-329749.html',
+        '/posts/2018/03/13/hackerone-semrush-312543.html',
+        '/posts/2017/09/19/CVE-2017-14719.html',
+        '/posts/2017/01/23/CVE-2016-1801.html',
+        '/posts/2017/01/14/blind-sql-injection.html',
+        '/posts/2017/01/04/CVE-2017-5384.html',
+        '/posts/2016/08/31/seccomp-and-seccomp-bpf.html',
+        '/posts/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html',
+        '/posts/2016/07/20/CVE-2016-5134.html',
+        '/posts/2016/07/06/CVE-2016-3763.html',
+        '/posts/2016/04/14/pia-traffic-interception.html',
+        '/posts/2016/04/14/openvpn-traffic-interception.html',
+        '/posts/2016/03/10/firefox-pac-url-disclosure.html',
+        '/posts/2016/03/10/chrome-pac-url-disclosure.html',
+        '/posts/2015/10/07/dompdf-file-disclosure.html',
+        '/posts/2015/08/05/wsuspect-compromising-the-windows-enterprise-via-windows-update.html',
+        '/posts/2014/09/11/hacking-an-internet-enabled-lagomorph.html',
+        '/posts/2014/07/04/hacking-into-internet-connected-light-bulbs.html',
+        '/posts/2014/05/02/CVE-2014-2892.html',
+        '/posts/2014/01/16/CVE-2014-1207.html',
+        '/posts/2013/10/17/CVE-2013-5970.html',
+        '/posts/2013/09/17/CVE-2013-1721.html',
+        '/posts/2013/08/29/CVE-2013-1661.html',
+        '/posts/2013/08/20/CVE-2013-2901.html',
+        '/posts/2013/07/04/firefox-libgles-integer-overflow.html',
+        '/posts/2013/07/04/chrome-libgles-integer-overflow.html',
+        '/posts/2013/02/21/CVE-2013-1659.html',
+        '/posts/2012/10/21/examination-of-the-vmware-esxi-binary-protocol-using-canape.html',
+];
+
+let path = window.location.pathname;
+if (!path.match(new RegExp('^/posts/'))) {
+    // Check for old style /category/YYYY/MM/DD/title.html links
+    let m = path.match(new RegExp('/[0-9]{4}/[0-9]{2}/[0-9]{2}/[^/]+.html$'));
+    if (m) {
+        path = `/posts${m[0]}`;
+    }
+}
+
+if (posts.indexOf(path) != -1) {
+    window.location = path;
+}
+        </script>
     </body>
 </html>

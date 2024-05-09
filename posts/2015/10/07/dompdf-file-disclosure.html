@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>dompdf - Local File Disclosure | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="dompdf - Local File Disclosure" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Dompdf is vulnerable to a file disclosure vulnerability which can be exploited by anonymous, unauthenticated attackers to download arbitrary files from the underlying hosting server. Exploitation of this issue requires a non-standard configuration option to be set, specifically the DOMPDF_ENABLE_REMOTE option must be set to true." />
+<meta property="og:description" content="Dompdf is vulnerable to a file disclosure vulnerability which can be exploited by anonymous, unauthenticated attackers to download arbitrary files from the underlying hosting server. Exploitation of this issue requires a non-standard configuration option to be set, specifically the DOMPDF_ENABLE_REMOTE option must be set to true." />
+<link rel="canonical" href="https://blog.ajxchapman.com/posts/2015/10/07/dompdf-file-disclosure.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/posts/2015/10/07/dompdf-file-disclosure.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-07T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"dompdf - Local File Disclosure","dateModified":"2015-10-07T00:00:00-05:00","datePublished":"2015-10-07T00:00:00-05:00","@type":"BlogPosting","description":"Dompdf is vulnerable to a file disclosure vulnerability which can be exploited by anonymous, unauthenticated attackers to download arbitrary files from the underlying hosting server. Exploitation of this issue requires a non-standard configuration option to be set, specifically the DOMPDF_ENABLE_REMOTE option must be set to true.","url":"https://blog.ajxchapman.com/posts/2015/10/07/dompdf-file-disclosure.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/posts/2015/10/07/dompdf-file-disclosure.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+          <h1 class="project-name">Alex Chapman's Blog</h1>
+        </a>
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
+</h2>
+        <div class="social">
+          <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
+          <a href="https://infosec.exchange/@ajxchapman" rel="me" target="_blank"><img src="/assets/icons/mastodon.svg"></a>
+          <a href="https://github.com/ajxchapman" target="_blank"><img src="/assets/icons/github.svg"></a>
+          <a href="https://hackerone.com/ajxchapman" target="_blank"><img src="/assets/icons/hackerone.svg"></a>
+          <a href="https://bugcrowd.com/ajxchapman" target="_blank"><img src="/assets/icons/bugcrowd.svg"></a>
+        </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+    
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">dompdf - Local File Disclosure</h1>
+    <p class="post-meta">
+      <time datetime="2015-10-07T00:00:00-05:00" itemprop="datePublished">
+        2015-10-07
+      </time>
+      
+        • <span itemprop="category">Bug Reports</span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>Dompdf is vulnerable to a file disclosure vulnerability which can be exploited by anonymous, unauthenticated attackers to download arbitrary files from the underlying hosting server. Exploitation of this issue requires a non-standard configuration option to be set, specifically the DOMPDF_ENABLE_REMOTE option must be set to true.</p>
+
+<!--more-->
+
+<p><em>Patch resulting from this bug report be viewed at <a href="https://github.com/dompdf/dompdf/commit/b09e8e9eb8c0007d61b4123783a62f34673c5237">https://github.com/dompdf/dompdf/commit/b09e8e9eb8c0007d61b4123783a62f34673c5237</a></em></p>
+
+<pre class="bugreport">
+Description:        Dompdf Local File Disclosure
+Versions Affected:  Dompdf 0.6.1
+URL:	            http://dompdf.github.io
+Category:           File Disclosure
+Credit:             Alex Chapman of Context Information Security
+
+Summary:
+--------
+Dompdf is vulnerable to a file disclosure vulnerability which can be exploited by anonymous, unauthenticated attackers to download arbitrary files from the underlying hosting server. Exploitation of this issue requires a non-standard configuration option to be set, specifically the DOMPDF_ENABLE_REMOTE option must be set to true. It should be noted that this configuration has been observed during an assessment of a popular 3rd party application which uses the dompdf library.
+
+Analysis:
+---------
+The function load_html_file in include/dompdf.cls.php takes a file path as an argument, under certain circumstances (such as when invoked from dompdf.php) this filepath can be entirely user controlled. The function attempts to check if the supplied file is a local file path, line 481 below, and performs some security checking on the local path to ensure sensitive local files are not disclosed, lines 482-500. However, the check for the local "file://" URI is performed case sentitive, and can thus be bypassed with an all uppercase local URI of "FILE://". This will fail the if statement on line 481, bypassing the security checks on lines 482-500, and be passed to file_get_contents on line 502, which treats both "file://" and "FILE://" alike.
+
+467 function load_html_file($file) {
+468   $this-&gt;save_locale();
+469
+470   // Store parsing warnings as messages (this is to prevent output to the
+471   // browser if the html is ugly and the dom extension complains,
+472   // preventing the pdf from being streamed.)
+473   if ( !$this-&gt;_protocol &amp;&amp; !$this-&gt;_base_host &amp;&amp; !$this-&gt;_base_path ) {
+474     list($this-&gt;_protocol, $this-&gt;_base_host, $this-&gt;_base_path) = explode_url($file);
+475   }
+476
+477   if ( !$this-&gt;get_option("enable_remote") &amp;&amp; ($this-&gt;_protocol != "" &amp;&amp; $this-&gt;_protocol !== "file://" ) ) {
+478     throw new DOMPDF_Exception("Remote file requested, but DOMPDF_ENABLE_REMOTE is false.");
+479   }
+480
+481   if ($this-&gt;_protocol == "" || $this-&gt;_protocol === "file://") {
+...
+500   }
+501
+502   $contents = file_get_contents($file, null, $this-&gt;_http_context);
+https://github.com/dompdf/dompdf/blob/v0.6.1/include/dompdf.cls.php
+
+See the Proof of Concept section below for a demonstration of how this issue could be exploited.
+
+It should be noted that the vulnerable code appears to have been ported to the newer v0.7 betas (under src/Dompdf.php loadHtmlFile), however exploitability has not been confirmed on these beta versions.
+
+Proof of Concept:
+-----------------
+The following HTTP request can be used against a vulnerable server to exercise this vulnerability:
+    http://localhost/dompdf/dompdf.php?input_file=FILE:///etc/passwd
+
+This proof of concept requires that the DOMPDF_ENABLE_REMOTE configuration value in dompdf_config.inc.php be set to true.
+
+This proof of concept demonstrates how the issue can be exploited to disclose the contents of arbitrary files on the underlying hosting server.
+
+Disclosure Timeline
+-------------------
+20151007 - Initial Discovery and vendor contact
+20151107 - Patch committed
+</pre>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/bugreports/index.html">More Bug Reports posts</a>
+    
+  </div>
+</article>
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
