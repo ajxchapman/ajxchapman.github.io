@@ -51,15 +51,70 @@
   
 
   
+    
+    
+
+
 
   
 
-  
 
-  
 
   
     
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/posts/2020/11/04/hackerone-gitlab-955016.html" target="_blank">GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-11-04T00:00:00-06:00" itemprop="datePublished">
+        2020-11-04
+      </time>
+      
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to GitLab:</strong> GitLab-Runner, when running on Windows with a <code class="highlighter-rouge">docker</code> executor, is vulnerable to Command Injection via the <code class="highlighter-rouge">DOCKER_AUTH_CONFIG</code> build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.</p>
+
+  </div>
+  
+    <a href="/posts/2020/11/04/hackerone-gitlab-955016.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
     
     
 
@@ -88,7 +143,7 @@
         2020-10-26
       </time>
       
-        • <span itemprop="category">Media</span>
+        • <span itemprop="category"><a href="/categories/media.html">Media</a></span>
       
       
     </p>
@@ -107,14 +162,11 @@
 
     
     
-      
-    
   
     
 
 
   
-    
     
     
 
@@ -143,7 +195,7 @@
         2020-10-01
       </time>
       
-        • <span itemprop="category">Advisories</span>
+        • <span itemprop="category"><a href="/categories/advisories.html">Advisories</a></span>
       
       
         • <span itemprop="cve">CVE-2020-13347</span>
@@ -181,7 +233,6 @@
   
     
     
-    
 
 
 
@@ -208,7 +259,7 @@
         2020-09-25
       </time>
       
-        • <span itemprop="category">Media</span>
+        • <span itemprop="category"><a href="/categories/media.html">Media</a></span>
       
       
     </p>
@@ -244,7 +295,6 @@
   
     
     
-    
 
 
 
@@ -271,7 +321,7 @@
         2020-09-09
       </time>
       
-        • <span itemprop="category">Media</span>
+        • <span itemprop="category"><a href="/categories/media.html">Media</a></span>
       
       
     </p>
@@ -293,7 +343,6 @@
 
 
   
-    
     
     
 
@@ -322,7 +371,7 @@
         2020-03-30
       </time>
       
-        • <span itemprop="category">Advisories</span>
+        • <span itemprop="category"><a href="/categories/advisories.html">Advisories</a></span>
       
       
         • <span itemprop="cve">CVE-2020-8145</span>
@@ -346,7 +395,6 @@
 
 
   
-    
     
     
 
@@ -375,7 +423,7 @@
         2020-03-30
       </time>
       
-        • <span itemprop="category">Advisories</span>
+        • <span itemprop="category"><a href="/categories/advisories.html">Advisories</a></span>
       
       
         • <span itemprop="cve">CVE-2020-8144</span>
@@ -405,7 +453,6 @@
   
     
     
-    
 
 
 
@@ -432,7 +479,7 @@
         2020-02-29
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
     </p>
@@ -458,7 +505,6 @@
   
 
   
-    
     
     
 
@@ -487,7 +533,7 @@
         2020-02-28
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
     </p>
@@ -513,7 +559,6 @@
   
     
     
-    
 
 
 
@@ -528,7 +573,7 @@
         2020-02-10
       </time>
       
-        • <span itemprop="category">Bug Bounty</span>
+        • <span itemprop="category"><a href="/categories/bugbounty.html">Bug Bounty</a></span>
       
       
     </p>
@@ -540,63 +585,6 @@
   </div>
   
     <a href="/posts/2020/02/10/on-full-time-bug-bounty-hunting.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/posts/2020/01/30/hackerone-wordpress-205481.html" target="_blank">WordPress - Wordpress unzip_file path traversal</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2020-01-30T00:00:00-06:00" itemprop="datePublished">
-        2020-01-30
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-        • <span itemprop="cve">CVE-2017-14719</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p><strong>HackerOne bug report to WordPress:</strong> The Wordpress unzip_file function (https://codex.wordpress.org/Function_Reference/unzip_file) is vulnerable to path traversal when extracting zip files. Extracting untrusted zip files using this function this could lead to code execution through placing arbitrary PHP files in the DocumentRoot of the webserver.</p>
-
-  </div>
-  
-    <a href="/posts/2020/01/30/hackerone-wordpress-205481.html" target="_blank">Continue reading on hackerone.com...</a>
   
 </article>
 

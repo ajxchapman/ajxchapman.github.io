@@ -6,13 +6,28 @@
 </description>
     <link>https://blog.ajxchapman.com/</link>
     <atom:link href="https://blog.ajxchapman.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 May 2024 07:39:24 -0500</pubDate>
-    <lastBuildDate>Thu, 09 May 2024 07:39:24 -0500</lastBuildDate>
+    <pubDate>Thu, 09 May 2024 09:58:15 -0500</pubDate>
+    <lastBuildDate>Thu, 09 May 2024 09:58:15 -0500</lastBuildDate>
 
     
     
       
       
+      
+      <item>
+        <title>Exploit Archeology - Exploiting an old unknown Server Side Browser</title>
+        <description>&lt;p&gt;I was recently hacking on a Bug Bounty target and identified an interesting API endpoint which would render user supplied HTML, and execute any included JavaScript. Exploiting Server Side Browser bugs has been a focus of mine for the past couple of years, so I set out to exploit this newly identified feature. This blog post details my journey into researching and exploiting what turned out to be a decade old Server Side Browser.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 08 May 2024 00:00:00 -0500</pubDate>
+        <link>https://blog.ajxchapman.com/posts/2024/05/08/exploit-archeology.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/posts/2024/05/08/exploit-archeology.html</guid>
+        
+        
+          <category>exploits</category>
+        
+      </item>
+    
       
       
       
@@ -164,22 +179,6 @@
         
         
           <category>advisory</category>
-        
-      </item>
-    
-      
-      
-      
-      <item>
-        <title>GitLab - GitLab-Runner on Windows `DOCKER_AUTH_CONFIG` container host Command Injection</title>
-        <description>&lt;p&gt;&lt;strong&gt;HackerOne bug report to GitLab:&lt;/strong&gt; GitLab-Runner, when running on Windows with a &lt;code class=&quot;highlighter-rouge&quot;&gt;docker&lt;/code&gt; executor, is vulnerable to Command Injection via the &lt;code class=&quot;highlighter-rouge&quot;&gt;DOCKER_AUTH_CONFIG&lt;/code&gt; build variable. Injected commands are executed on the container host, not within a Docker container, as such could compromise all future builds which are executed by the runner.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 04 Nov 2020 00:00:00 -0600</pubDate>
-        <link>https://blog.ajxchapman.com/posts/2020/11/04/hackerone-gitlab-955016.html</link>
-        <guid isPermaLink="true">https://blog.ajxchapman.com/posts/2020/11/04/hackerone-gitlab-955016.html</guid>
-        
-        
-          <category>bugreports</category>
         
       </item>
     

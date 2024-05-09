@@ -49,7 +49,64 @@
   
 
   
+
+  
     
+    
+
+
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/posts/2020/01/30/hackerone-wordpress-205481.html" target="_blank">WordPress - Wordpress unzip_file path traversal</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2020-01-30T00:00:00-06:00" itemprop="datePublished">
+        2020-01-30
+      </time>
+      
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
+      
+      
+        • <span itemprop="cve">CVE-2017-14719</span>
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to WordPress:</strong> The Wordpress unzip_file function (https://codex.wordpress.org/Function_Reference/unzip_file) is vulnerable to path traversal when extracting zip files. Extracting untrusted zip files using this function this could lead to code execution through placing arbitrary PHP files in the DocumentRoot of the webserver.</p>
+
+  </div>
+  
+    <a href="/posts/2020/01/30/hackerone-wordpress-205481.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
     
     
 
@@ -66,7 +123,7 @@
         2020-01-01
       </time>
       
-        • <span itemprop="category">Bug Bounty</span>
+        • <span itemprop="category"><a href="/categories/bugbounty.html">Bug Bounty</a></span>
       
       
     </p>
@@ -84,8 +141,6 @@
 
     
     
-      
-    
   
     
 
@@ -95,7 +150,6 @@
   
 
   
-    
     
     
 
@@ -124,7 +178,7 @@
         2019-12-12
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
     </p>
@@ -150,7 +204,6 @@
   
 
   
-    
     
     
 
@@ -179,7 +232,7 @@
         2019-12-11
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
         • <span itemprop="cve">CVE-2019-5469</span>
@@ -217,7 +270,6 @@
   
     
     
-    
 
 
 
@@ -244,7 +296,7 @@
         2019-09-12
       </time>
       
-        • <span itemprop="category">Media</span>
+        • <span itemprop="category"><a href="/categories/media.html">Media</a></span>
       
       
     </p>
@@ -282,7 +334,6 @@
   
     
     
-    
 
 
 
@@ -297,7 +348,7 @@
         2019-09-11
       </time>
       
-        • <span itemprop="category">Presentations</span>
+        • <span itemprop="category"><a href="/categories/presentations.html">Presentations</a></span>
       
       
     </p>
@@ -320,7 +371,6 @@
 
 
   
-    
     
     
 
@@ -349,7 +399,7 @@
         2019-07-29
       </time>
       
-        • <span itemprop="category">Advisories</span>
+        • <span itemprop="category"><a href="/categories/advisories.html">Advisories</a></span>
       
       
         • <span itemprop="cve">CVE-2019-5469</span>
@@ -379,7 +429,6 @@
   
     
     
-    
 
 
 
@@ -406,7 +455,7 @@
         2019-07-02
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
     </p>
@@ -434,7 +483,6 @@
   
     
     
-    
 
 
 
@@ -449,7 +497,7 @@
         2019-04-23
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
     </p>
@@ -478,7 +526,6 @@
   
     
     
-    
 
 
 
@@ -505,7 +552,7 @@
         2019-04-23
       </time>
       
-        • <span itemprop="category">Bug Reports</span>
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
       
       
     </p>
@@ -516,50 +563,6 @@
   </div>
   
     <a href="/posts/2019/04/23/hackerone-lob-520717.html" target="_blank">Continue reading on hackerone.com...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-
-  
-
-  
-    
-    
-    
-
-
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/posts/2019/04/04/perforce-local-file-disclosure.html" >Perforce - Helix Command-Line Client Arbitrary File Read / Write</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2019-04-04T00:00:00-05:00" itemprop="datePublished">
-        2019-04-04
-      </time>
-      
-        • <span itemprop="category">Bug Reports</span>
-      
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>The <code class="highlighter-rouge">p4</code> Helix Command-Line Client accepts and responds to Perforce protocol commands supplied by a connected server without any validation. A malicious Perforce server can send arbitrary Perforce protocol commands to connecting clients in order to expose the contents of client system files or write arbitrary files on the client system.</p>
-
-
-  </div>
-  
-    <a href="/posts/2019/04/04/perforce-local-file-disclosure.html">Continue reading...</a>
   
 </article>
 
