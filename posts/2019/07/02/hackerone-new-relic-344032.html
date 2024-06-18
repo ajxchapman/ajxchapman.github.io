@@ -1,11 +1,214 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <meta charset="utf-8">
-  <title>Redirecting&hellip;</title>
-  <link rel="canonical" href="https://hackerone.com/reports/344032">
-  <script>location="https://hackerone.com/reports/344032"</script>
-  <meta http-equiv="refresh" content="0; url=https://hackerone.com/reports/344032">
-  <meta name="robots" content="noindex">
-  <h1>Redirecting&hellip;</h1>
-  <a href="https://hackerone.com/reports/344032">Click here if you are not redirected.</a>
+  <head>
+    <meta charset="UTF-8">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests | Alex Chapman’s Blog</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="HackerOne bug report to New Relic: The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services." />
+<meta property="og:description" content="HackerOne bug report to New Relic: The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services." />
+<link rel="canonical" href="https://blog.ajxchapman.com/posts/2019/07/02/hackerone-new-relic-344032.html" />
+<meta property="og:url" content="https://blog.ajxchapman.com/posts/2019/07/02/hackerone-new-relic-344032.html" />
+<meta property="og:site_name" content="Alex Chapman’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-07-02T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests","dateModified":"2019-07-02T00:00:00-05:00","datePublished":"2019-07-02T00:00:00-05:00","@type":"BlogPosting","description":"HackerOne bug report to New Relic: The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.","url":"https://blog.ajxchapman.com/posts/2019/07/02/hackerone-new-relic-344032.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.ajxchapman.com/posts/2019/07/02/hackerone-new-relic-344032.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+  </head>
+  <body>
+
+      <header class="page-header" role="banner">
+        <a href="/">
+          <h1 class="project-name">Alex Chapman's Blog</h1>
+        </a>
+        <h2 class="project-tagline">A tech blog about all things Bug Bounty, security and development.
+</h2>
+        <div class="social">
+          <a href="https://twitter.com/ajxchapman" target="_blank"><img src="/assets/icons/twitter.svg"></a>
+          <a href="https://infosec.exchange/@ajxchapman" rel="me" target="_blank"><img src="/assets/icons/mastodon.svg"></a>
+          <a href="https://github.com/ajxchapman" target="_blank"><img src="/assets/icons/github.svg"></a>
+          <a href="https://hackerone.com/ajxchapman" target="_blank"><img src="/assets/icons/hackerone.svg"></a>
+          <a href="https://bugcrowd.com/ajxchapman" target="_blank"><img src="/assets/icons/bugcrowd.svg"></a>
+        </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      
+
+
+  
+
+  
+
+  
+    
+    
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="postheader">
+    <a href="/">Home</a>
+  </div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">New Relic - Blind SSRF in Ticketing Integrations Jira webhooks leading to internal network enumeration and blind HTTP requests</h1>
+    <p class="post-meta">
+      <time datetime="2019-07-02T00:00:00-05:00" itemprop="datePublished">
+        2019-07-02
+      </time>
+      
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
+      
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to New Relic:</strong> The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.</p>
+
+<!--more-->
+
+<p><em>Note: This previously disclosed report has been re-posted here as the New Relic program migrated away from HackerOne, which un-disclosed all reports 😑</em></p>
+
+<p><strong>Summary</strong>
+The Ticketing Integrations Jira webhooks for Jira 5/6 and Jira 4 are vulnerable to Blind SSRF issues. These endpoints can be abused to map internal NewRelic network services and send blind HTTP GET and POST requests to identified services.</p>
+
+<p><strong>Details</strong>
+The Ticketing Integrations Jira 4 and Jira 5/6 webhooks accept arbitrary URLs for webhook destinations. Internal or local IP addresses can be used as the URL host, causing the webhooks to fire against these internal systems.</p>
+
+<p>HTTP responses received from testing the webhooks can be assessed to determine the state of the webhook destination. The HTTP responses differ if a webhook destination URL points to a closed tcp port (e.g. http://nr.webhooks.pw:21) or an open tcp port (e.g. http://nr.webhooks.pw:22).</p>
+
+<p>This technique was used to profile the open tcp ports on the local system making the webhook HTTP requests. The following open ports were identified on http://127.0.0.1:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>22/tcp
+25/tcp
+80/tcp
+199/tcp
+514/tcp
+5666/tcp
+8100/tcp
+9999/tcp
+55555/tcp
+</code></pre></div></div>
+
+<p>A small scan of internal accessible systems identified the following hosts with open SSH ports (22/tcp)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10.1.0.5
+10.1.0.6
+10.1.0.7
+10.1.0.8
+10.1.0.9
+10.1.0.17
+10.1.0.18
+</code></pre></div></div>
+
+<p>Once services have been identified, restricted HTTP requests can be sent to the service endpoint via the webhooks functionality. In these requests the attacks has full control over the HTTP path and query string. The HTTP response code can often be inferred, however the response body is not accessible</p>
+
+<p><strong>Suggested Fix</strong>
+Restrict permitted webhook addresses to only external network addresses outside the NewRelic external networks, i.e. exclude <code class="highlighter-rouge">127.0.0.0/8</code>, <code class="highlighter-rouge">10.0.0.0/8</code>, <code class="highlighter-rouge">172.16.0.0/12</code>, <code class="highlighter-rouge">192.168.0.0/16</code> and New Relic external ranges e.g. <code class="highlighter-rouge">185.221.84.0/21</code>, <code class="highlighter-rouge">162.247.240.0/22</code> and <code class="highlighter-rouge">50.31.164.0/24</code> (and any other NewRelic owned external IP address ranges). Also consider restricting access to local IPv6 addresses.</p>
+
+<p><strong>Browsers Verified</strong></p>
+<ul>
+  <li>Firefox 59.0.2 (64-bit) macOS</li>
+</ul>
+
+<h2 id="steps-to-reproduce">Steps to Reproduce</h2>
+<ol>
+  <li>Browse to the Jira 4 Ticketing Integrations Page for your account (https://rpm.newrelic.com/accounts/xxxxxxx/integrations?page=ticketing#tab-integrations=_jira_4)
+OR</li>
+  <li>Browse to the Jira 5/6 Ticketing Integrations Page for your account (https://rpm.newrelic.com/accounts/xxxxxxx/integrations?page=ticketing#tab-integrations=_jira_5_6)</li>
+  <li>Add http://127.0.0.1:<portnumber> for the URL, choosing a port you would like to check the state of on the local system, e.g. 22</portnumber></li>
+  <li>Select the “Integrate with JIRA” button</li>
+</ol>
+
+<p><strong>For Jira 4</strong>
+If the HTTP response code is 200 an error message will display the state of the port, e.g. <code class="highlighter-rouge">Error authenticating connection: can't connect to http://127.0.0.1:21</code>, otherwise if the response code is 500 it indicates the chosen port is open.</p>
+
+<p><strong>For Jira 5/6</strong>
+If the HTTP response code is 200 it indicates the chosen port is closed, otherwise if the response code is 500 it indicates the chosen port is open.</p>
+
+<h2 id="supporting-material">Supporting Material</h2>
+
+<h3 id="port-scanning-101017">Port Scanning 10.1.0.17</h3>
+<p>Using the Jira 4 Ticketing Integration to port scan 10.1.0.17:</p>
+
+<p>Response showing closed port 21/tcp on <code class="highlighter-rouge">10.1.0.17</code>:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+...
+Error authenticating connection: can&amp;#x27;t connect to http://10.1.0.17:21/
+</code></pre></div></div>
+
+<p>Error response indicating open port 22/tcp on <code class="highlighter-rouge">10.1.0.17</code>:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 500 Internal Server Error
+...
+Oops! You've found our error page.
+</code></pre></div></div>
+
+<p>Response showing closed port 23/tcp on <code class="highlighter-rouge">10.1.0.17</code>:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+...
+Error authenticating connection: can&amp;#x27;t connect to http://10.1.0.17:23/
+</code></pre></div></div>
+
+<h2 id="impact">Impact</h2>
+
+<p>An attacker could abuse this issue in order to identify hosts and service on the internal New Relic networks. Once identified, blind HTTP payloads could be sent to these services in an attempt to exploit them.</p>
+
+<p>The hacker selected the <strong>Server-Side Request Forgery (SSRF)</strong> weakness. This vulnerability type requires contextual information from the hacker. They provided the following answers:</p>
+
+<p><strong>Can internal services be reached bypassing network access control?</strong>
+Yes</p>
+
+<p><strong>What internal services were accessible?</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:22/tcp
+127.0.0.1:25/tcp
+127.0.0.1:80/tcp
+127.0.0.1:199/tcp
+127.0.0.1:514/tcp
+127.0.0.1:5666/tcp
+127.0.0.1:8100/tcp
+127.0.0.1:9999/tcp
+127.0.0.1:55555/tcp
+10.1.0.5:22/tcp
+10.1.0.6:22/tcp
+10.1.0.7:22/tcp
+10.1.0.8:22/tcp
+10.1.0.9:22/tcp
+10.1.0.17:22/tcp
+10.1.0.18:22/tcp
+</code></pre></div></div>
+
+<p><strong>Security Impact</strong>
+An attacker could abuse this issue in order to identify hosts and service on the internal NewRelic networks. Once identified, blind HTTP payloads could be sent to these services in an attempt to exploit them.</p>
+
+<h2 id="comment---april-27-2018">Comment - April 27, 2018</h2>
+<p>…</p>
+
+<p>One potential avenue I thought of with this issue is gaining access to IP gated external services, such as https://rpm-admin.newrelic.com. When attempting to access this service from an external IP address the following error is presented:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Please connect (or VPN) to an office network to access. IP: 146.198.145.57
+</code></pre></div></div>
+<p>Using this issue it may be possible to circumvent the IP restrictions present on this service.</p>
+
+<p>…</p>
+
+  </div>
+
+  <div class="postfooter">
+    <a href="/">Home</a>
+    
+      <a href="/categories/bugreports.html">More bug report posts</a>
+    
+  </div>
+</article>
+
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
 </html>
