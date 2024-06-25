@@ -6,10 +6,26 @@
 </description>
     <link>https://blog.ajxchapman.com/</link>
     <atom:link href="https://blog.ajxchapman.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 20 Jun 2024 15:01:45 -0500</pubDate>
-    <lastBuildDate>Thu, 20 Jun 2024 15:01:45 -0500</lastBuildDate>
+    <pubDate>Tue, 25 Jun 2024 07:41:45 -0500</pubDate>
+    <lastBuildDate>Tue, 25 Jun 2024 07:41:45 -0500</lastBuildDate>
 
     
+    
+      
+      
+      
+      <item>
+        <title>Bug Bounty Reports Explained: The secret to finding many Criticals</title>
+        <description>&lt;iframe width=&quot;832&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/sW2jsZB27jk&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Tue, 25 Jun 2024 00:00:00 -0500</pubDate>
+        <link>https://blog.ajxchapman.com/posts/2024/06/25/bbre.html</link>
+        <guid isPermaLink="true">https://blog.ajxchapman.com/posts/2024/06/25/bbre.html</guid>
+        
+        
+          <category>media</category>
+        
+      </item>
     
       
       
@@ -163,22 +179,6 @@
         
         
           <category>containers</category>
-        
-      </item>
-    
-      
-      
-      
-      <item>
-        <title>Kata Containers - Improper file permissions for read-only volumes</title>
-        <description>&lt;p&gt;An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes hostPath volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as readOnly inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 18 Nov 2020 00:00:00 -0600</pubDate>
-        <link>https://blog.ajxchapman.com/posts/2020/11/18/CVE-2020-28914.html</link>
-        <guid isPermaLink="true">https://blog.ajxchapman.com/posts/2020/11/18/CVE-2020-28914.html</guid>
-        
-        
-          <category>advisory</category>
         
       </item>
     

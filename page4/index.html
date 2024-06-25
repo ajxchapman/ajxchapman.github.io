@@ -56,6 +56,62 @@
 
 
 
+  
+
+
+
+  
+    
+
+
+
+    
+  
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/posts/2019/04/23/hackerone-lob-520717.html" target="_blank">Lob - Old WebKit HTML agent in Template Preview function has multiple known vulnerabilities leading to RCE</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2019-04-23T00:00:00-05:00" itemprop="datePublished">
+        2019-04-23
+      </time>
+      
+        • <span itemprop="category"><a href="/categories/bugreports.html">Bug Reports</a></span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>HackerOne bug report to Lob:</strong> The Template Preview function allows users to render arbitrary HTML to a PDF document, this includes the ability to execute arbitrary Javascript. The HTML agent used to render the HTML is based on an old version of WebKit which has known security issues, for which public exploits and Proof of Concepts (PoCs) are available.</p>
+
+  </div>
+  
+    <a href="/posts/2019/04/23/hackerone-lob-520717.html" target="_blank">Continue reading on hackerone.com...</a>
+  
+</article>
+
+
+    
+    
+      
+    
+  
+    
+
+
+  
+
+  
+
+  
+    
+    
+
+
+
 
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
@@ -84,8 +140,6 @@
 
 
     
-    
-      
     
   
     
@@ -497,58 +551,6 @@
   </div>
   
     <a href="/posts/2017/01/14/blind-sql-injection.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/posts/2017/01/04/CVE-2017-5384.html" target="_blank">Mozilla Firefox - Information disclosure via Proxy Auto-Config (PAC)</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2017-01-04T00:00:00-06:00" itemprop="datePublished">
-        2017-01-04
-      </time>
-      
-        • <span itemprop="category"><a href="/categories/advisories.html">Advisories</a></span>
-      
-      
-        • <span itemprop="cve">CVE-2017-5384</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>Proxy Auto-Config (PAC) files can specify a JavaScript function called for all URL requests with the full URL path which exposes more information than would be sent to the proxy itself in the case of HTTPS. Normally the Proxy Auto-Config file is specified by the user or machine owner and presumed to be non-malicious, but if a user has enabled Web Proxy Auto Detect (WPAD) this file can be served remotely. This vulnerability affects Firefox &lt; 51.</p>
-
-  </div>
-  
-    <a href="/posts/2017/01/04/CVE-2017-5384.html" target="_blank">Continue reading on www.mozilla.org...</a>
   
 </article>
 

@@ -54,34 +54,49 @@
   
 
   
+
+  
+
+  
     
     
 
 
+
+  
+
+
+
+  
+    
+
+
+
+    
+  
 
 
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">
-      <a href="/posts/2024/05/08/exploit-archeology.html" >Exploit Archeology - Exploiting an old unknown Server Side Browser</a>
+      <a href="/posts/2024/06/25/bbre.html" target="_blank">Bug Bounty Reports Explained: The secret to finding many Criticals</a>
     </h1>
     <p class="post-meta">
-      <time datetime="2024-05-08T00:00:00-05:00" itemprop="datePublished">
-        2024-05-08
+      <time datetime="2024-06-25T00:00:00-05:00" itemprop="datePublished">
+        2024-06-25
       </time>
       
-        • <span itemprop="category"><a href="/categories/exploits.html">Exploits</a></span>
+        • <span itemprop="category"><a href="/categories/media.html">Media</a></span>
       
       
     </p>
   </header>
   <div class="post-content" itemprop="articleBody">
-    <p>I was recently hacking on a Bug Bounty target and identified an interesting API endpoint which would render user supplied HTML, and execute any included JavaScript. Exploiting Server Side Browser bugs has been a focus of mine for the past couple of years, so I set out to exploit this newly identified feature. This blog post details my journey into researching and exploiting what turned out to be a decade old Server Side Browser.</p>
-
+    <iframe width="832" height="468" src="https://www.youtube.com/embed/sW2jsZB27jk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 
   </div>
   
-    <a href="/posts/2024/05/08/exploit-archeology.html">Continue reading...</a>
+    <a href="/posts/2024/06/25/bbre.html" target="_blank">Continue reading on www.youtube.com...</a>
   
 </article>
 
@@ -355,6 +370,53 @@
 </div>
 
       
+    
+  
+    
+
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+
+
+
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">
+      <a href="/posts/2024/05/08/exploit-archeology.html" >Exploit Archeology - Exploiting an old unknown Server Side Browser</a>
+    </h1>
+    <p class="post-meta">
+      <time datetime="2024-05-08T00:00:00-05:00" itemprop="datePublished">
+        2024-05-08
+      </time>
+      
+        • <span itemprop="category"><a href="/categories/exploits.html">Exploits</a></span>
+      
+      
+    </p>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <p>I was recently hacking on a Bug Bounty target and identified an interesting API endpoint which would render user supplied HTML, and execute any included JavaScript. Exploiting Server Side Browser bugs has been a focus of mine for the past couple of years, so I set out to exploit this newly identified feature. This blog post details my journey into researching and exploiting what turned out to be a decade old Server Side Browser.</p>
+
+
+  </div>
+  
+    <a href="/posts/2024/05/08/exploit-archeology.html">Continue reading...</a>
+  
+</article>
+
+
+    
     
   
     
@@ -796,58 +858,6 @@
   </div>
   
     <a href="/posts/2020/11/19/privileged-container-escape.html">Continue reading...</a>
-  
-</article>
-
-
-    
-    
-  
-    
-
-
-  
-    
-    
-
-
-
-  
-
-
-
-  
-    
-
-
-
-    
-  
-
-
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">
-      <a href="/posts/2020/11/18/CVE-2020-28914.html" target="_blank">Kata Containers - Improper file permissions for read-only volumes</a>
-    </h1>
-    <p class="post-meta">
-      <time datetime="2020-11-18T00:00:00-06:00" itemprop="datePublished">
-        2020-11-18
-      </time>
-      
-        • <span itemprop="category"><a href="/categories/advisories.html">Advisories</a></span>
-      
-      
-        • <span itemprop="cve">CVE-2020-28914</span>
-      
-    </p>
-  </header>
-  <div class="post-content" itemprop="articleBody">
-    <p>An improper file permissions vulnerability affects Kata Containers prior to 1.11.5. When using a Kubernetes hostPath volume and mounting either a file or directory into a container as readonly, the file/directory is mounted as readOnly inside the container, but is still writable inside the guest. For a container breakout situation, a malicious guest can potentially modify or delete files/directories expected to be read-only.</p>
-
-  </div>
-  
-    <a href="/posts/2020/11/18/CVE-2020-28914.html" target="_blank">Continue reading on github.com...</a>
   
 </article>
 
