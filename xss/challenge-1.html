@@ -166,7 +166,7 @@
             if (typeof func !== 'function') {
               throw new Error('First argument must be a function');
             }
-            if ([Function, eval, setTimeout, setInterval, window.setImmediate].indexOf(func) >= 0) {
+            if ([Function, eval, setTimeout, setInterval, window.setImmediate, open].indexOf(func) >= 0) {
               throw new Error('String execution is not allowed');
             }
             return func(arg);
