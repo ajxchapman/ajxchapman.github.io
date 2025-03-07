@@ -182,7 +182,7 @@
 
               // Walk the AST making sure all function calls are to a function named `run`
               const walk = (node) => {
-                if (['ArrowFunctionExpression', "AssignmentExpression", "TaggedTemplateExpression", "ImportExpression", "ConditionalExpression", "IfStatement", "FunctionExpression", "FunctionDeclaration", "NewExpression", "SpreadElement"].indexOf(node.type) >= 0) {
+                if (['ArrowFunctionExpression', "AssignmentExpression", "TaggedTemplateExpression", "VariableDeclaration", "ForStatement", "ImportExpression", "ConditionalExpression", "IfStatement", "FunctionExpression", "FunctionDeclaration", "NewExpression", "SpreadElement"].indexOf(node.type) >= 0) {
                   throw new Error(`${node.type}s are not allowed`);
                 }
                 if (node.type === 'CallExpression') {
