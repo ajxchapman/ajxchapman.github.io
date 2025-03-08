@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <title>XSS Challenge 1</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/acorn/8.14.0/acorn.min.js"
         integrity="sha512-OLeHAVgUy2eGc9m8hcmI/zZYIUYHmlEuAIMlQD/njBsjc+UMZO/4Soi2bRggy5oCHv1Mb7v/b1egkPi3SM+JVQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -199,7 +200,7 @@
             const ast = acorn.parse(expression);
             console.log(ast);
 
-            // Walk the AST making sure all function calls are to a function named `run`
+            // Walk the AST making sure no malicious javascript can be executed
             const walk = (node) => {
                 if (['ArrowFunctionExpression', "AssignmentExpression", "TaggedTemplateExpression", "VariableDeclaration", "ForStatement", "ImportExpression", "ConditionalExpression", "IfStatement", "FunctionExpression", "FunctionDeclaration", "NewExpression", "SpreadElement"].indexOf(node.type) >= 0) {
                     throw new Error(`${node.type}s are not allowed`);
