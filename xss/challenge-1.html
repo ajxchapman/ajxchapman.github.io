@@ -1,214 +1,265 @@
 <html>
 
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/acorn/8.14.0/acorn.min.js"
-    integrity="sha512-OLeHAVgUy2eGc9m8hcmI/zZYIUYHmlEuAIMlQD/njBsjc+UMZO/4Soi2bRggy5oCHv1Mb7v/b1egkPi3SM+JVQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f9fafb;
-      color: #111827;
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/acorn/8.14.0/acorn.min.js"
+        integrity="sha512-OLeHAVgUy2eGc9m8hcmI/zZYIUYHmlEuAIMlQD/njBsjc+UMZO/4Soi2bRggy5oCHv1Mb7v/b1egkPi3SM+JVQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9fafb;
+            color: #111827;
+        }
 
-    .form-container {
-      width: 100%;
-      max-width: 500px;
-      padding: 24px;
-    }
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 24px;
+        }
 
-    .form-group {
-      margin-bottom: 24px;
-    }
+        .form-group {
+            margin-bottom: 24px;
+        }
 
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      font-size: 14px;
-      color: #374151;
-    }
+        .form-div {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #374151;
+        }
 
-    .textarea {
-      width: 100%;
-      min-height: 120px;
-      padding: 12px 16px;
-      border-radius: 6px;
-      border: 2px solid #d1d5db;
-      font-family: inherit;
-      font-size: 14px;
-      line-height: 1.5;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
-      resize: vertical;
-    }
+        .form-controls {
+            display: flex;
+        }
 
-    .textarea:focus {
-      outline: none;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-    }
+        .goal {
+            font-style: italic;
+            font-weight: 700;
+            color: #ef4444;
+        }
 
-    /* Error state */
-    .textarea.error {
-      border-color: #ef4444;
-      background-color: #fef2f2;
-    }
+        .secret {
+            font-weight: 900;
+        }
 
-    .textarea.error:focus {
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
+        .textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 2px solid #d1d5db;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.5;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            resize: vertical;
+            margin-bottom: 8px;
+        }
 
-    .error-message {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-top: 8px;
-      color: #ef4444;
-      font-size: 13px;
-      line-height: 1.4;
-      animation: slideIn 0.2s ease-in-out;
-    }
+        .textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
 
-    .error-icon {
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
+        /* Error state */
+        .textarea.error {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
 
-    .error-text {
-      flex-grow: 1;
-    }
+        .textarea.error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
 
-    .counter {
-      display: flex;
-      justify-content: flex-end;
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 8px;
-    }
+        .error-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 8px;
+            margin-left: 8px;
+            color: #ef4444;
+            font-size: 13px;
+            line-height: 1.4;
+            animation: slideIn 0.2s ease-in-out;
+        }
 
-    .counter.error {
-      color: #ef4444;
-      font-weight: 600;
-    }
+        .error-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
 
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-5px);
-      }
+        .error-text {
+            flex-grow: 1;
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
 
-    .submit-button {
-      background-color: #4f46e5;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
 
-    .submit-button:hover {
-      background-color: #4338ca;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .submit-button:active {
-      transform: scale(0.98);
-    }
+        .submit-button {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
 
-    .hidden {
-      display: none;
-    }
-  </style>
+        .submit-button:hover {
+            background-color: #4338ca;
+        }
+
+        .submit-button:active {
+            transform: scale(0.98);
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>XSS Challenge 1</h1>
+    <div class="form-container">
+        <form>
+            <div class="form-group">
+                <div class="form-div">
+                    Enter your mathmatical JavaScript expression below, then click the `Calculate` button to execute it.<br />
+                </div>
+                <div class="form-div goal">
+                    Goal: Leak the `Secret value` into JavaScript and exfiltrate to an external server.
+                </div>
+                <div class="form-div secret">
+                    Secret Value: <span id="secret"></span>
+                </div>
+                <textarea id="code" class="textarea" style="width: 100%; height: 100px;"
+                    spellcheck="false">calcPrint(calcCall(Math.max, 1.1, 2.3) + 2)</textarea>
+                <div class="form-controls">
+                    <input class="submit-button" type="submit" value="Calculate" />
+                    <div class="error-message hidden">
+                        <span class="error-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </span>
+                        <span class="error-text"></span>
+                    </div>
+                </div>
+                <div id="output"></div>
+            </div>
+        </form>
+    </div>
 
-
-  <div class="form-container">
-    <form>
-      <div class="form-group">
-        <label for="message" class="form-label">
-          Enter JavaScript code below, then click the "Parse" button to validate it.
-          <br><b>Note</b> The only permitted function call is `run`. All other function calls will throw an error.
-        </label>
-        <textarea id="code" style="width: 100%; height: 200px;">run(alert, 1)</textarea>
-        <input type="submit" value="Execute" />
-        <!-- Error output -->
-        <div class="error-message hidden">
-          <span class="error-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-          </span>
-          <span class="error-text"></span>
-        </div>
-
-        <script>
-
-          function run(func, arg) {
+    <script>
+        // Allow calls of permitted functions, e.g. `Math.max`
+        function calcCall(func, ...args) {
             if (typeof func !== 'function') {
-              throw new Error('First argument must be a function');
+                throw new Error('First argument must be a function');
             }
-            if ([Function, eval, setTimeout, setInterval, window.setImmediate, open].indexOf(func) >= 0) {
-              throw new Error('String execution is not allowed');
+            if ([Function, eval, setTimeout, setInterval, window.setImmediate].indexOf(func) >= 0) {
+                throw new Error('String execution is not allowed');
             }
-            return func(arg);
-          }
+            return func(...args);
+        }
 
-          document.querySelector('form').addEventListener('submit', function (event) {
-            const errorMessage = document.querySelector('.error-message');
-            errorMessage.classList.add('hidden');
-            try {
-              const code = document.getElementById('code').value;
-              const ast = acorn.parse(code);
-              console.log(ast);
+        // Print the result of the calculation
+        function calcPrint(result) {
+            console.log(result);
+            let outputElement = document.createElement('pre');
+            outputElement.textContent = result;
+            return document.querySelector('#output').appendChild(outputElement);
+        }
 
-              // Walk the AST making sure all function calls are to a function named `run`
-              const walk = (node) => {
+        function runExpression(expression) {
+            const ast = acorn.parse(expression);
+            console.log(ast);
+
+            // Walk the AST making sure all function calls are to a function named `run`
+            const walk = (node) => {
                 if (['ArrowFunctionExpression', "AssignmentExpression", "TaggedTemplateExpression", "VariableDeclaration", "ForStatement", "ImportExpression", "ConditionalExpression", "IfStatement", "FunctionExpression", "FunctionDeclaration", "NewExpression", "SpreadElement"].indexOf(node.type) >= 0) {
-                  throw new Error(`${node.type}s are not allowed`);
+                    throw new Error(`${node.type}s are not allowed`);
                 }
                 if (node.type === 'CallExpression') {
-                  if (node.callee.name !== 'run') {
-                    throw new Error('Function calls must be to a function named `run`');
-                  }
+                    let callee = node.callee?.name || (node.callee?.object?.name + '.' + node.callee?.property?.name);
+                    if (!callee.startsWith('calc')) {
+                        throw new Error(`Invalid call to function '${callee}'`);
+                    }
                 }
                 for (const key in node) {
-                  if (node[key] && typeof node[key] === 'object') {
-                    walk(node[key]);
-                  }
+                    if (node[key] && typeof node[key] === 'object') {
+                        walk(node[key]);
+                    }
                 }
-              };
+            };
+            walk(ast);
 
-              walk(ast);
-              eval(code);
+            let expressionFunc = new Function("'use strict'; " +
+                Object.keys(window)
+                    // Filter out built-in functions and objects exposing only `calc` functions
+                    .filter(e => !e.startsWith('calc') && e != 'Math')
+                    .map(e => `let ${e} = null;`)
+                    .join('')
+                + expression
+            );
+            expressionFunc();
+        }
+
+        // Add event listeners
+        document.querySelector('form').addEventListener('submit', function (event) {
+            const errorMessage = document.querySelector('.error-message');
+            errorMessage.classList.add('hidden');
+            document.getElementById('code').classList.remove('error');
+
+            const expression = document.getElementById('code').value;
+            document.querySelector('#output').appendChild(document.createElement('pre')).textContent = `Executing code: ${expression.replace(/[;\s]*\n/g, '; ')}`;
+            try {
+                runExpression(expression);
             }
             catch (error) {
-
-              errorMessage.classList.remove('hidden');
-              errorMessage.querySelector('.error-text').textContent = error.message;
+                console.error(error);
+                errorMessage.classList.remove('hidden');
+                errorMessage.querySelector('.error-text').textContent = error.message;
+                document.getElementById('code').classList.add('error');
             }
 
             event.preventDefault();
             return false;
-          });
-        </script>
+        });
+
+        document.querySelector('#code').addEventListener('focus', function () {
+            document.getElementById('code').classList.remove('error');
+        });
+
+        // On load set the secret value to a random value
+        (() => {
+            document.getElementById('secret').textContent = `token-` + Math.random().toString(36).substring(2);
+        })();
+    </script>
 </body>
+
 </html>
